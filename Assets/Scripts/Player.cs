@@ -30,53 +30,58 @@ public class Player : MonoBehaviour
 
     void Update()
     {
-        Vector2 rayStart = new Vector2(transform.position.x, transform.position.y - 1.01f);
-        if (Physics2D.Raycast(rayStart, Vector2.down, 0.1f))
-        {
-            IsGrounded = true;
-        }
-        else
-        {
-            IsGrounded = false;
-        }
+        if (Game.Current.GameHasEnded)
+            return;
 
+        //
+        // [Inputs]
+        //
         if (Input.GetKeyDown(KeyCode.Space))
         {
+            ResetState();
             MoveState = State.Attacking;
         }
-        else if (Input.GetKeyDown(KeyCode.W) && IsGrounded)
+        if (IsGrounded)
         {
-            MoveState = State.Jumping;
-        }
-        else if (Input.GetKeyDown(KeyCode.S) && IsGrounded && MoveState != State.Sliding)
-        {
-            MoveState = State.Sliding;
+            if (Input.GetKeyDown(KeyCode.W) && MoveState != State.Jumping)
+            {
+                ResetState();
+                MoveState = State.Jumping;
 
-            TimeSinceLastSlide = Time.realtimeSinceStartup;
-            Animator.SetBool("Sliding", true);
+                Animator.SetBool("Jumping", true);
+            }
+            if (Input.GetKey(KeyCode.S) && MoveState != State.Sliding)
+            {
+                ResetState();
+                MoveState = State.Sliding;
+
+                TimeSinceLastSlide = Time.realtimeSinceStartup;
+                Animator.SetBool("Sliding", true);
+            }
         }
     }
 
     void FixedUpdate()
     {
-        // Game has ended...
         if (Game.Current.GameHasEnded)
         {
             ResetState();
             return;
         }
 
-        // Player Movement
+        //
+        // [Movement]
+        //
         if (MoveState == State.Attacking)
         {
-            Debug.Log("Attacking");
+            Debug.Log("ATTACK");
 
             ResetState();
         }
-        else if (MoveState == State.Jumping)
+        else if (MoveState == State.Jumping && IsGrounded)
         {
             Body.AddForce(Vector2.up * JumpForce, ForceMode2D.Impulse);
-            ResetState();
+            IsGrounded = false;
         }
         else if (MoveState == State.Sliding)
         {
@@ -84,10 +89,28 @@ public class Player : MonoBehaviour
             Collider.size = new Vector2(BBoxSize.x, BBoxSize.y / 2);
         }
 
-        // Player is no long sliding.
-        if (MoveState != State.Sliding || ElapsedTimeSliding > MaxSlideTime)
+        // Stop Sliding
+        if (ElapsedTimeSliding > MaxSlideTime && MoveState == State.Sliding)
         {
             ResetState();
+        }
+    }
+
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+        foreach (var contact in collision.contacts)
+        {
+            Debug.Log($"{contact.collider.name} {contact.normal}");
+
+            if (contact.normal == Vector2.up)
+            {
+                IsGrounded = true;
+                ResetState();
+            }
+            else
+            {
+                Game.Current.GameHasEnded = true;
+            }
         }
     }
 
@@ -96,9 +119,10 @@ public class Player : MonoBehaviour
         MoveState = State.Running;
 
         // Reset Animator.
+        Animator.SetBool("Jumping", false);
         Animator.SetBool("Sliding", false);
 
-        // Reset Collider;
+        // Reset Collider.
         Collider.offset = Vector2.zero;
         Collider.size = BBoxSize;
     }
