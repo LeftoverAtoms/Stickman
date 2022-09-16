@@ -2,22 +2,26 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    Game Game;
-
-    // Components
+    Animator Animator;
     BoxCollider2D Collider;
     Rigidbody2D Body;
 
-    // Variables
+    public float MoveSpeed = 10f;
     public State MoveState;
     float JumpForce = 100f;
-    public float MoveSpeed = 10f;
+
+    public bool IsGrounded;
+
+    // TODO: Find better names for these vars.
+    float ElapsedTimeSliding { get { return Time.realtimeSinceStartup - TimeSinceLastSlide; } }
+    float MaxSlideTime = 1f;
+    float TimeSinceLastSlide;
+
     Vector2 BBoxSize;
 
     void Start()
     {
-        Game = GameObject.FindGameObjectWithTag("Game").GetComponent<Game>();
-
+        Animator = GetComponent<Animator>();
         Body = GetComponent<Rigidbody2D>();
         Collider = GetComponent<BoxCollider2D>();
 
@@ -26,52 +30,77 @@ public class Player : MonoBehaviour
 
     void Update()
     {
-        // Inputs
-        if (Input.GetKeyDown(KeyCode.Space)) MoveState = State.Attacking;
-        else if (Input.GetKeyDown(KeyCode.W)) MoveState = State.Jumping;
-        else if (Input.GetKeyDown(KeyCode.S)) MoveState = State.Sliding;
+        Vector2 rayStart = new Vector2(transform.position.x, transform.position.y - 1.01f);
+        if (Physics2D.Raycast(rayStart, Vector2.down, 0.1f))
+        {
+            IsGrounded = true;
+        }
+        else
+        {
+            IsGrounded = false;
+        }
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            MoveState = State.Attacking;
+        }
+        else if (Input.GetKeyDown(KeyCode.W) && IsGrounded)
+        {
+            MoveState = State.Jumping;
+        }
+        else if (Input.GetKeyDown(KeyCode.S) && IsGrounded && MoveState != State.Sliding)
+        {
+            MoveState = State.Sliding;
+
+            TimeSinceLastSlide = Time.realtimeSinceStartup;
+            Animator.SetBool("Sliding", true);
+        }
     }
 
     void FixedUpdate()
     {
-        // Reset Collider
-        if (MoveState != State.Sliding)
-        {
-            Collider.offset = Vector2.zero;
-            Collider.size = BBoxSize;
-        }
-
         // Game has ended...
-        if (Game.GameHasEnded)
+        if (Game.Current.GameHasEnded)
         {
-            Debug.Log("GameOver");
             ResetState();
             return;
         }
 
         // Player Movement
-        if (MoveState is State.Attacking)
+        if (MoveState == State.Attacking)
         {
             Debug.Log("Attacking");
+
             ResetState();
         }
-        else if (MoveState is State.Jumping)
+        else if (MoveState == State.Jumping)
         {
-            Debug.Log("Jumping");
             Body.AddForce(Vector2.up * JumpForce, ForceMode2D.Impulse);
             ResetState();
         }
-        else if (MoveState is State.Sliding)
+        else if (MoveState == State.Sliding)
         {
-            Debug.Log("Sliding");
             Collider.offset = new Vector2(0f, -0.25f);
             Collider.size = new Vector2(BBoxSize.x, BBoxSize.y / 2);
+        }
+
+        // Player is no long sliding.
+        if (MoveState != State.Sliding || ElapsedTimeSliding > MaxSlideTime)
+        {
+            ResetState();
         }
     }
 
     void ResetState()
     {
         MoveState = State.Running;
+
+        // Reset Animator.
+        Animator.SetBool("Sliding", false);
+
+        // Reset Collider;
+        Collider.offset = Vector2.zero;
+        Collider.size = BBoxSize;
     }
 
     public enum State

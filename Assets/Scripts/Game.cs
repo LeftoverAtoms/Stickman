@@ -2,9 +2,13 @@ using UnityEngine;
 
 public class Game : MonoBehaviour
 {
-    // Store script references of all major gameobjects.
-    public Background Background;
-    public Player Player;
+    // The reference to this class and all it's variables
+    // within that instance can be accessed with this variable.
+    public static Game Current { get; private set; }
+
+    // Store class references.
+    public Background Background { get; private set; }
+    public Player Player { get; private set; }
 
     public GameObject[] ObstaclePrefabs;
 
@@ -14,13 +18,15 @@ public class Game : MonoBehaviour
     {
         Background = GameObject.FindGameObjectWithTag("Background").GetComponent<Background>();
         Player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
+        Current = this;
 
         CreateObstacle();
     }
 
     void FixedUpdate()
     {
-        if (GameHasEnded) return;
+        if (GameHasEnded)
+            return;
     }
 
     void CreateObstacle()

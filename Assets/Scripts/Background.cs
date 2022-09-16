@@ -2,26 +2,24 @@ using UnityEngine;
 
 public class Background : MonoBehaviour
 {
-    Game Game;
-
-    Vector3 InitalBackgroundPos;
-    float BackgroundRepeatWidth;
+    Vector2 InitalPos;
+    float RepeatWidth = 56.4f;
 
     void Start()
     {
-        Game = GameObject.FindGameObjectWithTag("Game").GetComponent<Game>();
-
-        InitalBackgroundPos = transform.position;
-        BackgroundRepeatWidth = GetComponent<BoxCollider2D>().size.x / 2;
+        InitalPos = transform.position;
     }
 
     void FixedUpdate()
     {
-        transform.Translate(Vector3.left * Game.Player.MoveSpeed * Time.deltaTime);
+        if (Game.Current.GameHasEnded)
+            return;
 
-        if (transform.position.x < InitalBackgroundPos.x - BackgroundRepeatWidth)
+        transform.Translate(Vector3.left * Game.Current.Player.MoveSpeed * Time.deltaTime);
+
+        if (transform.position.x < InitalPos.x - RepeatWidth)
         {
-            transform.position = InitalBackgroundPos;
+            transform.position = InitalPos;
         }
     }
 }

@@ -12,6 +12,8 @@ public class Obstacle : MonoBehaviour
 
     void Update()
     {
+        if (Game.Current.GameHasEnded) return;
+
         transform.Translate(Vector3.left * Speed * Time.deltaTime);
     }
 }
