@@ -15,7 +15,7 @@ public class Background : MonoBehaviour
         if (Game.Current.GameHasEnded)
             return;
 
-        transform.Translate(Vector3.left * Game.Current.Player.MoveSpeed * Time.deltaTime);
+        transform.Translate(Vector3.left * Game.Current.Speed * Time.deltaTime);
 
         if (transform.position.x < InitalPos.x - RepeatWidth)
         {

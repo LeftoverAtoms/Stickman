@@ -6,7 +6,6 @@ public class Player : MonoBehaviour
     BoxCollider2D Collider;
     Rigidbody2D Body;
 
-    public float MoveSpeed = 10f;
     public State MoveState;
     float JumpForce = 100f;
 

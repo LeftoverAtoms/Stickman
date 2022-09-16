@@ -10,9 +10,12 @@ public class Game : MonoBehaviour
     public Background Background { get; private set; }
     public Player Player { get; private set; }
 
+    // Prefabs
     public GameObject[] ObstaclePrefabs;
+    public GameObject[] ThrowablePrefabs;
 
     public bool GameHasEnded = false;
+    public float Speed = 10f;
 
     void Start()
     {
@@ -21,6 +24,7 @@ public class Game : MonoBehaviour
         Current = this;
 
         CreateObstacle();
+        CreateThrowable();
     }
 
     void FixedUpdate()
@@ -33,5 +37,11 @@ public class Game : MonoBehaviour
     {
         var obj = Instantiate(ObstaclePrefabs[0]);
         obj.gameObject.AddComponent<Obstacle>();
+    }
+
+    void CreateThrowable()
+    {
+        var obj = Instantiate(ThrowablePrefabs[0]);
+        obj.gameObject.AddComponent<Throwable>();
     }
 }

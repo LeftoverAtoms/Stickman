@@ -385,8 +385,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ObstaclePrefabs:
-  - {fileID: 2825198480976440891, guid: b4e367e2b2c51e449b34c431c8f3774a, type: 3}
+  - {fileID: 7172388800541604747, guid: b4e367e2b2c51e449b34c431c8f3774a, type: 3}
+  ThrowablePrefabs:
+  - {fileID: 6101607845117883173, guid: 1a3b0dbb86e243b43af863e9dabbfef7, type: 3}
   GameHasEnded: 0
+  Speed: 10
 --- !u!1 &1065834517
 GameObject:
   m_ObjectHideFlags: 0

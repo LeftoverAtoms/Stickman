@@ -3,18 +3,17 @@ using UnityEngine;
 public class Obstacle : MonoBehaviour
 {
     float InitalXPos = 24f;
-    float Speed = 10f;
 
     void Awake()
     {
         transform.position = new Vector2(InitalXPos, transform.position.y);
     }
 
-    void Update()
+    void FixedUpdate()
     {
         if (Game.Current.GameHasEnded)
             return;
 
-        transform.Translate(Vector3.left * Speed * Time.deltaTime);
+        transform.Translate(Vector3.left * Game.Current.Speed * Time.deltaTime);
     }
 }
