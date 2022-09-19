@@ -3,11 +3,10 @@ using UnityEngine;
 public class Enemy : MonoBehaviour
 {
     public float Range = 7.5f;
-    public bool HasThrowable = true;
 
     void Start()
     {
-        
+        // Start offscreen
     }
 
     void FixedUpdate()

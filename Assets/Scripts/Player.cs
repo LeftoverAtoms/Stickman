@@ -6,6 +6,8 @@ public class Player : MonoBehaviour
     BoxCollider2D Collider;
     Rigidbody2D Body;
 
+    Weapon Weapon;
+
     public State MoveState;
     float JumpForce = 100f;
 
@@ -74,6 +76,7 @@ public class Player : MonoBehaviour
         if (MoveState == State.Attacking)
         {
             Debug.Log("ATTACK");
+            Weapon.Attack();
 
             ResetState();
         }

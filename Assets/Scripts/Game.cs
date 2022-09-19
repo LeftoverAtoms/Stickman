@@ -24,7 +24,6 @@ public class Game : MonoBehaviour
         Current = this;
 
         CreateObstacle();
-        CreateThrowable();
     }
 
     void FixedUpdate()
@@ -37,11 +36,5 @@ public class Game : MonoBehaviour
     {
         var obj = Instantiate(ObstaclePrefabs[0]);
         obj.gameObject.AddComponent<Obstacle>();
-    }
-
-    void CreateThrowable()
-    {
-        var obj = Instantiate(ThrowablePrefabs[0]);
-        obj.gameObject.AddComponent<Throwable>();
     }
 }
