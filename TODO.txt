@@ -1,0 +1,20 @@
+High Priority:
+1. Enemies
+2. Weapons
+
+Low Priority:
+1. Dive while in air to get to the ground faster
+2. Improve animation quality/add more in general
+
+
+
+
+Weapons:
+* Bool AutoAttack
+* Float Range
+
+// Fists = Open Slot/Default Weapon
+
+				      [ Drop Weapon ] -> Equip Fists
+Fists -> Equip Weapon -> [ Melee ] -> [ Keep Weapon ]
+		         [ Throw ] -> Unequip Weapon -> Equip Fists

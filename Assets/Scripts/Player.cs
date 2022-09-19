@@ -6,6 +6,8 @@ public class Player : MonoBehaviour
     BoxCollider2D Collider;
     Rigidbody2D Body;
 
+    Weapon Weapon;
+
     public State MoveState;
     float JumpForce = 100f;
 
@@ -25,6 +27,9 @@ public class Player : MonoBehaviour
         Collider = GetComponent<BoxCollider2D>();
 
         BBoxSize = Collider.size;
+
+        gameObject.AddComponent<Weapon>();
+        Weapon = GetComponent<Weapon>();
     }
 
     void Update()
@@ -38,7 +43,7 @@ public class Player : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space))
         {
             ResetState();
-            MoveState = State.Attacking;
+            Weapon.Melee();
         }
         if (IsGrounded)
         {
@@ -71,13 +76,7 @@ public class Player : MonoBehaviour
         //
         // [Movement]
         //
-        if (MoveState == State.Attacking)
-        {
-            Debug.Log("ATTACK");
-
-            ResetState();
-        }
-        else if (MoveState == State.Jumping && IsGrounded)
+        if (MoveState == State.Jumping && IsGrounded)
         {
             Body.AddForce(Vector2.up * JumpForce, ForceMode2D.Impulse);
             IsGrounded = false;
@@ -131,6 +130,5 @@ public class Player : MonoBehaviour
         Running,
         Jumping,
         Sliding,
-        Attacking
     }
 }
