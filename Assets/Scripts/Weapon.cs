@@ -5,29 +5,43 @@ public class Weapon : MonoBehaviour
     public Player Owner { get; private set; }
 
     bool AutoAttack; // For enemies or even testing I suppose.
-    float Range;
+    float MeleeRange; // For raycast
+    float ThrowRange; // For Autoattack
 
     float LocalYPos = 1f; // [RENAME] Where the ray or projectile is thrown from.
 
     float ProjectileSpeed = 10f;
 
-    // Switch Sprite parameter with an enum or something? IDK
-    public Weapon( Player owner, Sprite img )
+    void Start()
     {
+        Owner = Game.Current.Player;
         var a = GetComponent<SpriteRenderer>();
-        a.sprite = img;
+        a.sprite = Sprites.Milk;
+    }
 
-        Owner = owner;
+    void FixedUpdate()
+    {
+        if (AutoAttack)
+        {
+        }
     }
 
     public void Melee()
     {
         Vector2 start = new Vector2(Owner.transform.position.x, Owner.transform.position.y);
-        Physics2D.Raycast(start, Vector2.right, Range);
+        var hit = Physics2D.Raycast(start, Vector2.right, MeleeRange);
+
+        var obj = hit.collider.gameObject;
+        Debug.Log(obj.name);
     }
 
     public void Throw()
     {
 
+    }
+
+    public class Sprites
+    {
+        public static Sprite Milk { get { return Resources.Load<Sprite>("Sprites/Weapons/Milk.png"); } }
     }
 }

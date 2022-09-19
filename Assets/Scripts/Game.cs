@@ -37,4 +37,10 @@ public class Game : MonoBehaviour
         var obj = Instantiate(ObstaclePrefabs[0]);
         obj.gameObject.AddComponent<Obstacle>();
     }
+
+    void CreateWeapon()
+    {
+        var obj = new GameObject();
+        obj.gameObject.AddComponent<Weapon>();
+    }
 }
