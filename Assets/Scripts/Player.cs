@@ -1,35 +1,22 @@
 using UnityEngine;
 
-public class Player : MonoBehaviour
+public class Player : Character
 {
-    Animator Animator;
-    BoxCollider2D Collider;
-    Rigidbody2D Body;
+    // 
+    public State MoveState { get; private set; }
 
-    Weapon Weapon;
-
-    public State MoveState;
-    float JumpForce = 100f;
-
-    public bool IsGrounded;
+    //
+    float JumpVelocity = 96f;
+    bool IsGrounded;
 
     // TODO: Find better names for these vars.
-    float ElapsedTimeSliding { get { return Time.realtimeSinceStartup - TimeSinceLastSlide; } }
-    float MaxSlideTime = 1f;
-    float TimeSinceLastSlide;
+    float TimeSinceLastSlide, MaxSlideTime = 1f;
 
-    Vector2 BBoxSize;
-
-    void Start()
+    protected override void Start()
     {
-        Animator = GetComponent<Animator>();
-        Body = GetComponent<Rigidbody2D>();
-        Collider = GetComponent<BoxCollider2D>();
+        base.Start();
 
-        BBoxSize = Collider.size;
-
-        gameObject.AddComponent<Weapon>();
-        Weapon = GetComponent<Weapon>();
+        LookDirection = new Vector2(1f, 0f);
     }
 
     void Update()
@@ -43,7 +30,7 @@ public class Player : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space))
         {
             ResetState();
-            Weapon.Melee();
+            Weapon?.Throw();
         }
         if (IsGrounded)
         {
@@ -78,7 +65,7 @@ public class Player : MonoBehaviour
         //
         if (MoveState == State.Jumping && IsGrounded)
         {
-            Body.AddForce(Vector2.up * JumpForce, ForceMode2D.Impulse);
+            Body.AddForce(Vector2.up * JumpVelocity, ForceMode2D.Impulse);
             IsGrounded = false;
         }
         else if (MoveState == State.Sliding)
@@ -88,7 +75,8 @@ public class Player : MonoBehaviour
         }
 
         // Stop Sliding
-        if (ElapsedTimeSliding > MaxSlideTime && MoveState == State.Sliding)
+        var elapsed = Time.realtimeSinceStartup - TimeSinceLastSlide;
+        if (elapsed > MaxSlideTime && MoveState == State.Sliding)
         {
             ResetState();
         }
@@ -98,7 +86,7 @@ public class Player : MonoBehaviour
     {
         foreach (var contact in collision.contacts)
         {
-            Debug.Log($"{contact.collider.name} {contact.normal}");
+            //Debug.Log($"{contact.collider.name} {contact.normal}");
 
             if (contact.normal == Vector2.up)
             {
@@ -130,5 +118,6 @@ public class Player : MonoBehaviour
         Running,
         Jumping,
         Sliding,
+        Attacking
     }
 }

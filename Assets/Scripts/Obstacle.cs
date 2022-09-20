@@ -6,7 +6,7 @@ public class Obstacle : MonoBehaviour
 
     void Awake()
     {
-        transform.position = new Vector2(InitalXPos, transform.position.y);
+        transform.position = new Vector2(InitalXPos, transform.position.y); // Prefabs will fix this
     }
 
     void FixedUpdate()

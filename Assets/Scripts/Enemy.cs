@@ -1,12 +1,10 @@
 using UnityEngine;
 
-public class Enemy : MonoBehaviour
+public class Enemy : Character
 {
-    public float Range = 7.5f;
-
-    void Start()
+    protected override void Start()
     {
-        // Start offscreen
+        base.Start();
     }
 
     void FixedUpdate()
