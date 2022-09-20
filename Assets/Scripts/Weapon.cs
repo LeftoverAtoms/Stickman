@@ -2,34 +2,25 @@ using UnityEngine;
 
 public class Weapon : MonoBehaviour
 {
-    public Player Owner { get; private set; }
+    public GameObject Owner { get; private set; }
 
-    bool AutoAttack; // For enemies or even testing I suppose.
-    float MeleeRange; // For raycast
-    float ThrowRange; // For Autoattack
+    float MeleeRange;
 
-    float LocalYPos = 1f; // [RENAME] Where the ray or projectile is thrown from.
-
-    float ProjectileSpeed = 10f;
-
-    void Start()
-    {
-        Owner = Game.Current.Player;
-        var a = GetComponent<SpriteRenderer>();
-        a.sprite = Sprites.Milk;
-    }
+    bool IsProjectile => Velocity.magnitude > 0f;
+    Vector2 Velocity;
 
     void FixedUpdate()
     {
-        if (AutoAttack)
+        if (IsProjectile)
         {
+            Velocity.y -= 10f * Time.deltaTime; // Gravity
+            transform.Translate(Velocity * Time.deltaTime);
         }
     }
 
     public void Melee()
     {
-        Vector2 start = new Vector2(Owner.transform.position.x, Owner.transform.position.y);
-        var hit = Physics2D.Raycast(start, Vector2.right, MeleeRange);
+        var hit = Physics2D.Raycast(Owner.transform.position, Vector2.right, MeleeRange);
 
         var obj = hit.collider.gameObject;
         Debug.Log(obj.name);
@@ -37,11 +28,33 @@ public class Weapon : MonoBehaviour
 
     public void Throw()
     {
-
+        transform.parent = null;
+        Velocity = new Vector2(10f, 2.5f);
     }
 
-    public class Sprites
+    void OnTriggerEnter2D(Collider2D collision)
     {
-        public static Sprite Milk { get { return Resources.Load<Sprite>("Sprites/Weapons/Milk.png"); } }
+        Character obj;
+        if (collision.gameObject.TryGetComponent<Character>(out obj))
+        {
+            if (!this.IsProjectile)
+            {
+                obj.EquipWeapon(this);
+                return;
+            }
+
+            // Damage characters facing in the opposite direction than the motion of this object.
+            float result = Vector2.Dot(obj.LookDirection, this.Velocity.normalized);
+            if (result < 0f)
+            {
+                Velocity = Vector2.zero;
+                Destroy(gameObject);
+            }
+        }
+        else
+        {
+            Velocity = Vector2.zero;
+            Destroy(gameObject);
+        }
     }
 }

@@ -15,6 +15,13 @@ Weapons:
 
 // Fists = Open Slot/Default Weapon
 
-				      [ Drop Weapon ] -> Equip Fists
+						 [ Drop Weapon ] -> Equip Fists
 Fists -> Equip Weapon -> [ Melee ] -> [ Keep Weapon ]
-		         [ Throw ] -> Unequip Weapon -> Equip Fists
+						 [ Throw ] -> Unequip Weapon -> Equip Fists
+
+Pickup Weapon -> Equiped UI Element -> Owned by player now
+
+Bugs:
+* Projectile can be (thrown) multiple times before it is destroyed
+* Cannot pickup certain weapons?
+* Accessing destroyed weapons.
