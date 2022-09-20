@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class Weapon : MonoBehaviour
 {
-    public GameObject Owner { get; private set; }
+    public Character Owner { get; set; }
 
     float MeleeRange;
 
@@ -37,7 +37,8 @@ public class Weapon : MonoBehaviour
         Character obj;
         if (collision.gameObject.TryGetComponent<Character>(out obj))
         {
-            if (!this.IsProjectile)
+            // Check for inventory space.
+            if (obj.Weapon is null && !this.IsProjectile)
             {
                 obj.EquipWeapon(this);
                 return;
@@ -45,15 +46,18 @@ public class Weapon : MonoBehaviour
 
             // Damage characters facing in the opposite direction than the motion of this object.
             float result = Vector2.Dot(obj.LookDirection, this.Velocity.normalized);
-            if (result < 0f)
+            if (result < 0f && this.IsProjectile)
             {
                 Velocity = Vector2.zero;
+                Owner.UnequipWeapon(this);
                 Destroy(gameObject);
             }
         }
-        else
+        // Anything within the world.
+        else if (this.IsProjectile)
         {
             Velocity = Vector2.zero;
+            Owner.UnequipWeapon(this);
             Destroy(gameObject);
         }
     }

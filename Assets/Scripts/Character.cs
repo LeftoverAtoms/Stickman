@@ -7,8 +7,8 @@ public class Character : MonoBehaviour
     public BoxCollider2D Collider { get; private set; }
     public Vector2 BBoxSize { get; private set; }
 
-    public Vector2 LookDirection;
-    public Weapon Weapon { get; protected set; }
+    public Vector2 LookDirection { get; set; }
+    public Weapon Weapon { get; set; }
 
     protected virtual void Start()
     {
@@ -22,7 +22,15 @@ public class Character : MonoBehaviour
     public void EquipWeapon(Weapon obj)
     {
         obj.transform.parent = transform;
-        obj.transform.position = Vector2.zero;
+        obj.transform.position = Vector2.up;
+        obj.Owner = this;
         Weapon = obj;
+    }
+
+    public void UnequipWeapon(Weapon obj)
+    {
+        obj.transform.parent = null;
+        obj.Owner = null;
+        Weapon = null;
     }
 }

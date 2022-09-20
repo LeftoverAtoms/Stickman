@@ -23,5 +23,3 @@ Pickup Weapon -> Equiped UI Element -> Owned by player now
 
 Bugs:
 * Projectile can be (thrown) multiple times before it is destroyed
-* Cannot pickup certain weapons?
-* Accessing destroyed weapons.

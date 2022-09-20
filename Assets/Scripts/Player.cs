@@ -30,7 +30,7 @@ public class Player : Character
         if (Input.GetKeyDown(KeyCode.Space))
         {
             ResetState();
-            Weapon.Throw();
+            Weapon?.Throw();
         }
         if (IsGrounded)
         {
