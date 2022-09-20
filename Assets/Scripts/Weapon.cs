@@ -2,16 +2,23 @@ using UnityEngine;
 
 public class Weapon : MonoBehaviour
 {
+    // Properties
     public Character Owner { get; set; }
+    public Vector2 InitialVelocity
+    {
+        get { Vector2 velocity = initial_velocity; velocity.x *= LookDirection.x > 0f ? 1f : -1f; return velocity; }
+        set { initial_velocity = value; }
+    }
 
-    float MeleeRange;
+    public Vector2 Velocity;
+    public Vector2 LookDirection;
+    float MeleeRange = 16f;
 
-    bool IsProjectile => Velocity.magnitude > 0f;
-    Vector2 Velocity;
+    Vector2 initial_velocity = new Vector2(10f, 2.5f);
 
     void FixedUpdate()
     {
-        if (IsProjectile)
+        if (Velocity.magnitude > 0f)
         {
             Velocity.y -= 10f * Time.deltaTime; // Gravity
             transform.Translate(Velocity * Time.deltaTime);
@@ -28,36 +35,43 @@ public class Weapon : MonoBehaviour
 
     public void Throw()
     {
-        transform.parent = null;
-        Velocity = new Vector2(10f, 2.5f);
+        Owner.UnequipWeapon(this);
+        Velocity = InitialVelocity;
     }
 
     void OnTriggerEnter2D(Collider2D collision)
     {
+        // Character collision.
         Character obj;
         if (collision.gameObject.TryGetComponent<Character>(out obj))
         {
-            // Check for inventory space.
-            if (obj.Weapon is null && !this.IsProjectile)
+            if (Velocity.magnitude > 0f)
             {
-                obj.EquipWeapon(this);
-                return;
+                // Damage characters facing in the opposite direction
+                // than the motion of this object.
+                float result = Vector2.Dot(obj.LookDirection, LookDirection);
+                if (result < 0f)
+                {
+                    Velocity = Vector2.zero;
+                    Debug.Log("Character Remove");
+                    Destroy(gameObject);
+                }
             }
-
-            // Damage characters facing in the opposite direction than the motion of this object.
-            float result = Vector2.Dot(obj.LookDirection, this.Velocity.normalized);
-            if (result < 0f && this.IsProjectile)
+            else
             {
-                Velocity = Vector2.zero;
-                Owner.UnequipWeapon(this);
-                Destroy(gameObject);
+                // Pickup this weapon if this character has inventory space.
+                if (!obj.HasWeapon)
+                {
+                    obj.EquipWeapon(this);
+                    return;
+                }
             }
         }
         // Anything within the world.
-        else if (this.IsProjectile)
+        else if (Velocity.magnitude > 0f)
         {
             Velocity = Vector2.zero;
-            Owner.UnequipWeapon(this);
+            Debug.Log("World Remove");
             Destroy(gameObject);
         }
     }
