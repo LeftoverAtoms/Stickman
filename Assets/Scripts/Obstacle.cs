@@ -1,12 +1,13 @@
 using UnityEngine;
 
-public class Obstacle : MonoBehaviour
+public class Obstacle : BaseObject
 {
     float InitalXPos = 24f;
 
     void Awake()
     {
         transform.position = new Vector2(InitalXPos, transform.position.y); // Prefabs will fix this
+        LookDirection = Vector3.left;
     }
 
     void FixedUpdate()
@@ -14,6 +15,6 @@ public class Obstacle : MonoBehaviour
         if (Game.Current.GameHasEnded)
             return;
 
-        transform.Translate(Vector3.left * Game.Current.Speed * Time.deltaTime);
+        transform.Translate(LookDirection * Game.Current.Speed * Time.deltaTime);
     }
 }

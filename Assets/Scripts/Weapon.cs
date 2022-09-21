@@ -1,20 +1,14 @@
 using UnityEngine;
 
-public class Weapon : MonoBehaviour
+public class Weapon : BaseObject
 {
-    // Properties
-    public Character Owner { get; set; }
-    public Vector2 InitialVelocity
-    {
-        get { Vector2 velocity = initial_velocity; velocity.x *= LookDirection.x > 0f ? 1f : -1f; return velocity; }
-        set { initial_velocity = value; }
-    }
+    Vector2 InitialVelocity { get { var velocity = new Vector2(10f, 2.5f); velocity.x *= LookDirection.x > 0f ? 1f : -1f; return velocity; } }
 
+    public Character Owner;
     public Vector2 Velocity;
-    public Vector2 LookDirection;
     float MeleeRange = 16f;
 
-    Vector2 initial_velocity = new Vector2(10f, 2.5f);
+    bool WasThrown;
 
     void FixedUpdate()
     {
@@ -37,29 +31,50 @@ public class Weapon : MonoBehaviour
     {
         Owner.UnequipWeapon(this);
         Velocity = InitialVelocity;
+        WasThrown = true;
     }
 
     void OnTriggerEnter2D(Collider2D collision)
     {
-        // Character collision.
-        Character obj;
-        if (collision.gameObject.TryGetComponent<Character>(out obj))
+        bool IsCharacter = collision.gameObject.TryGetComponent<Character>(out Character obj);
+
+        if (WasThrown)
         {
-            if (Velocity.magnitude > 0f)
+            if (IsCharacter)
             {
-                // Damage characters facing in the opposite direction
-                // than the motion of this object.
-                float result = Vector2.Dot(obj.LookDirection, LookDirection);
-                if (result < 0f)
+                // Damage characters facing in the opposite direction than the motion of this object.
+                Debug.Log(Vector2.Dot(obj.LookDirection, LookDirection));
+                if (Vector2.Dot(obj.LookDirection, LookDirection) < 0f)
                 {
-                    Velocity = Vector2.zero;
-                    Debug.Log("Character Remove");
-                    Destroy(gameObject);
+                    obj.TakeDamage();
                 }
             }
             else
             {
-                // Pickup this weapon if this character has inventory space.
+                Velocity = Vector2.zero;
+                Destroy(gameObject);
+            }
+        }
+        else if (IsCharacter && !obj.HasWeapon)
+        {
+            obj.EquipWeapon(this);
+        }
+
+        /*
+        if (collision.gameObject.TryGetComponent<Character>(out obj))
+        {
+            if (Velocity.magnitude > 0f)
+            {
+                // Damage characters facing in the opposite direction than the motion of this object.
+                Debug.Log(Vector2.Dot(obj.LookDirection, LookDirection));
+                if (Vector2.Dot(obj.LookDirection, LookDirection) < 0f)
+                {
+                    Velocity = Vector2.zero;
+                    obj.TakeDamage();
+                }
+            }
+            else
+            {
                 if (!obj.HasWeapon)
                 {
                     obj.EquipWeapon(this);
@@ -71,8 +86,8 @@ public class Weapon : MonoBehaviour
         else if (Velocity.magnitude > 0f)
         {
             Velocity = Vector2.zero;
-            Debug.Log("World Remove");
             Destroy(gameObject);
         }
+        */
     }
 }

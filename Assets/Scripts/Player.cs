@@ -2,10 +2,8 @@ using UnityEngine;
 
 public class Player : Character
 {
-    // 
     public State MoveState { get; private set; }
 
-    //
     float JumpVelocity = 96f;
     bool IsGrounded;
 
