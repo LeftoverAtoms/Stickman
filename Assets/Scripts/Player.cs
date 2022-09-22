@@ -18,8 +18,15 @@ public class Player : Character
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
+            if (Weapon.IsThrowable)
+            {
+                Weapon?.Throw();
+            }
+            else
+            {
+                Weapon?.Melee();
+            }
             SwapState(State.Attacking);
-            Weapon?.Throw();
         }
         if (IsGrounded)
         {

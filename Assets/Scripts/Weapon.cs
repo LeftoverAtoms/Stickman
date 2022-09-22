@@ -7,7 +7,7 @@ public class Weapon : BaseObject
 
     public Character Owner;
     public Vector2 Velocity;
-    private float MeleeRange = 16f;
+    private float MeleeRange = 2f;
 
     private bool WasThrown;
 
@@ -22,10 +22,20 @@ public class Weapon : BaseObject
 
     public void Melee()
     {
-        var hit = Physics2D.Raycast(Owner.transform.position, Vector2.right, MeleeRange);
-
-        var obj = hit.collider.gameObject;
-        Debug.Log(obj.name);
+        var hits = Physics2D.RaycastAll(Owner.transform.position, LookDirection, MeleeRange);
+        
+        foreach (var hit in hits)
+        {
+            if (hit.collider.gameObject.TryGetComponent(out Character obj))
+            {
+                if (Owner.IsTeamedWith(obj))
+                {
+                    Debug.Log(obj.name);
+                    obj.TakeDamage();
+                    break;
+                }
+            }
+        }
     }
 
     public void Throw()
@@ -37,14 +47,13 @@ public class Weapon : BaseObject
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        bool IsCharacter = collision.gameObject.TryGetComponent<Character>(out Character obj);
+        bool IsCharacter = collision.gameObject.TryGetComponent(out Character obj);
 
         if (WasThrown)
         {
             if (IsCharacter)
             {
                 // Damage characters facing in the opposite direction than the motion of this object.
-                Debug.Log(Vector2.Dot(obj.LookDirection, LookDirection));
                 if (Vector2.Dot(obj.LookDirection, LookDirection) < 0f)
                 {
                     obj.TakeDamage();
@@ -59,6 +68,7 @@ public class Weapon : BaseObject
         else if (IsCharacter && !obj.HasWeapon)
         {
             obj.EquipWeapon(this);
+            obj.Weapon.IsThrowable = true;
         }
     }
 }

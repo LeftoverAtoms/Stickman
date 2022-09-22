@@ -53,10 +53,19 @@ public class Character : BaseObject
         }
     }
 
+    public bool IsTeamedWith(Character obj)
+    {
+        if (Vector2.Dot(obj.LookDirection, LookDirection) < 0f)
+        {
+            return true;
+        }
+        return false;
+    }
+
     public void EquipWeapon(Weapon obj)
     {
         obj.transform.parent = transform;
-        obj.transform.position = Vector2.up;
+        //obj.transform.position = Vector2.up;
         obj.LookDirection = LookDirection;
         obj.Owner = this;
         Weapon = obj;
