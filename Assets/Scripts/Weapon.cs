@@ -3,6 +3,7 @@ using UnityEngine;
 public class Weapon : BaseObject
 {
     private Vector2 InitialVelocity { get { var velocity = new Vector2(10f, 2.5f); velocity.x *= LookDirection.x > 0f ? 1f : -1f; return velocity; } }
+    public bool IsThrowable { get; private set; }
 
     public Character Owner;
     public Vector2 Velocity;
