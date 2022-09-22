@@ -1,30 +1,29 @@
 using UnityEngine;
+using UnityEngine.Networking;
 
 public class Player : Character
 {
-    public State MoveState { get; private set; }
+    private State MoveState { get; set; }
 
-    float JumpVelocity = 96f;
-    bool IsGrounded;
-
-    // TODO: Find better names for these vars.
-    float TimeSinceLastSlide, MaxSlideTime = 1f;
+    private readonly float JumpHeight = 72f, MaxSlideTime = 1f;
+    private float TimeSinceSlide;
+    private bool IsGrounded;
 
     protected override void Start()
     {
         base.Start();
-
-        LookDirection = new Vector2(1f, 0f);
+        CanRecieveDamage = true;
+        LookDirection = Vector2.right;
     }
 
-    void Update()
+    private void Update()
     {
         if (Game.Current.GameHasEnded)
+        {
+            gameObject.SetActive(false);
             return;
+        }
 
-        //
-        // [Inputs]
-        //
         if (Input.GetKeyDown(KeyCode.Space))
         {
             ResetState();
@@ -36,55 +35,46 @@ public class Player : Character
             {
                 ResetState();
                 MoveState = State.Jumping;
-
                 Animator.SetBool("Jumping", true);
             }
             if (Input.GetKey(KeyCode.S) && MoveState != State.Sliding)
             {
                 ResetState();
                 MoveState = State.Sliding;
-
-                TimeSinceLastSlide = Time.realtimeSinceStartup;
                 Animator.SetBool("Sliding", true);
+                TimeSinceSlide = 0f;
             }
         }
     }
 
-    void FixedUpdate()
+    private void FixedUpdate()
     {
-        if (Game.Current.GameHasEnded)
+        if (IsGrounded)
         {
-            ResetState();
-            return;
-        }
+            if (MoveState == State.Jumping)
+            {
+                Body.AddForce(Vector2.up * JumpHeight, ForceMode2D.Impulse);
+                IsGrounded = false;
+            }
+            if (MoveState == State.Sliding)
+            {
+                Collider.offset = new Vector2(0f, -0.25f);
+                Collider.size = new Vector2(BBoxSize.x, BBoxSize.y / 2f);
 
-        //
-        // [Movement]
-        //
-        if (MoveState == State.Jumping && IsGrounded)
-        {
-            Body.AddForce(Vector2.up * JumpVelocity, ForceMode2D.Impulse);
-            IsGrounded = false;
-        }
-        else if (MoveState == State.Sliding)
-        {
-            Collider.offset = new Vector2(0f, -0.25f);
-            Collider.size = new Vector2(BBoxSize.x, BBoxSize.y / 2);
-        }
-
-        // Stop Sliding
-        var elapsed = Time.realtimeSinceStartup - TimeSinceLastSlide;
-        if (elapsed > MaxSlideTime && MoveState == State.Sliding)
-        {
-            ResetState();
+                TimeSinceSlide += Time.deltaTime;
+                if (TimeSinceSlide >= MaxSlideTime)
+                {
+                    ResetState();
+                }
+            }
         }
     }
 
-    void OnCollisionEnter2D(Collision2D collision)
+    private void OnCollisionEnter2D(Collision2D collision)
     {
         foreach (var contact in collision.contacts)
         {
-            //Debug.Log($"{contact.collider.name} {contact.normal}");
+            Debug.Log($"{contact.normal} {contact.collider.name}");
 
             if (contact.normal == Vector2.up)
             {
@@ -98,7 +88,7 @@ public class Player : Character
         }
     }
 
-    void ResetState()
+    private void ResetState()
     {
         MoveState = State.Running;
 

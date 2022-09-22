@@ -16,7 +16,7 @@ public class Game : MonoBehaviour
     public bool GameHasEnded = false;
     public float Speed = 10f;
 
-    void Awake()
+    private void Awake()
     {
         Background = GameObject.FindGameObjectWithTag("Background").GetComponent<Background>();
         Player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
@@ -25,15 +25,15 @@ public class Game : MonoBehaviour
         CreateObstacle();
     }
 
-    void FixedUpdate()
+    private void FixedUpdate()
     {
         if (GameHasEnded)
             return;
     }
 
-    void CreateObstacle()
+    private void CreateObstacle()
     {
         var obj = Instantiate(ObstaclePrefabs[0]);
-        obj.gameObject.AddComponent<Obstacle>();
+        obj.AddComponent<Obstacle>();
     }
 }

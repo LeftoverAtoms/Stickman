@@ -10,7 +10,7 @@ public class BaseObject : MonoBehaviour
     public float Health { get; set; } = 100f;
     public Vector2 LookDirection { get; set; }
 
-    protected bool CanRecieveDamage { get; set; }
+    public bool CanRecieveDamage { get; protected set; }
 
     protected virtual void Start()
     {
@@ -18,7 +18,10 @@ public class BaseObject : MonoBehaviour
         Body = GetComponent<Rigidbody2D>();
         Collider = GetComponent<BoxCollider2D>();
 
-        BBoxSize = Collider.size;
+        if (Collider != null)
+        {
+            BBoxSize = Collider.size;
+        }
     }
 
     public void TakeDamage(float dmg = 100f)
