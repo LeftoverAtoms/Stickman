@@ -24,8 +24,7 @@ public class Enemy : Character
         if (HasWeapon)
         {
             var dist = Vector2.Distance(transform.position, Target.transform.position);
-            Debug.Log(dist);
-            if (Weapon.IsThrowable && dist <= ThrowRange)
+            if (Weapon.IsThrowable && !Weapon.WasThrown && dist <= ThrowRange)
             {
                 Weapon?.Throw();
             }

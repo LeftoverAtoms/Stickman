@@ -22,8 +22,8 @@ public class Character : BaseObject
             }
             if (MoveState == State.Sliding)
             {
-                Collider.offset = new Vector2(0f, -0.25f);
-                Collider.size = new Vector2(BBoxSize.x, BBoxSize.y / 2f);
+                Collider.offset = new Vector2(0f, -0.375f);
+                Collider.size = new Vector2(BBoxSize.x, BBoxSize.y / 4f);
 
                 TimeSinceSlide += Time.deltaTime;
                 if (TimeSinceSlide >= MaxSlideTime)
