@@ -2,11 +2,11 @@ using UnityEngine;
 
 public class Character : BaseObject
 {
-    protected State MoveState { get; set; }
+    public bool IsGrounded { get; protected set; }
+    public State MoveState { get; protected set; }
 
     protected readonly float JumpHeight = 72f, MaxSlideTime = 1f;
     protected float TimeSinceSlide;
-    protected bool IsGrounded;
 
     public bool HasWeapon => Weapon != null;
     public Weapon Weapon;

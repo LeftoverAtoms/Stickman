@@ -14,7 +14,8 @@ public class Game : MonoBehaviour
     public GameObject[] ObstaclePrefabs;
 
     public bool GameHasEnded = false;
-    public float Speed = 10f;
+    public float DeltaSpeed => Speed * Time.deltaTime;
+    public float Speed = 6f;
 
     private void Awake()
     {

@@ -24,13 +24,9 @@ public class Enemy : Character
         if (HasWeapon)
         {
             var dist = Vector2.Distance(transform.position, Target.transform.position);
-            if (Weapon.IsThrowable && !Weapon.WasThrown && dist <= ThrowRange)
+            if (!Weapon.WasThrown && dist <= ThrowRange)
             {
                 Weapon?.Throw();
-            }
-            else if (dist <= MeleeRange)
-            {
-                Weapon?.Melee();
             }
         }
     }
