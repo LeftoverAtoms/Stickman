@@ -13,8 +13,8 @@ public class Game : MonoBehaviour
     // Prefabs
     //public GameObject[] ObstaclePrefabs;
 
-    public bool GameHasEnded = false;
     public float Speed = 6f;
+    public bool GameHasEnded = false;
 
     private void Awake()
     {

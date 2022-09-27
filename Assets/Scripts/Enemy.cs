@@ -21,12 +21,9 @@ public class Enemy : Character
         transform.Translate(Game.Current.Speed * Time.deltaTime * LookDirection);
 
         var dist = Vector2.Distance(transform.position, Target.transform.position);
-        if (ProjectileWeapon != null)
+        if (dist <= ThrowRange)
         {
-            if (!ProjectileWeapon.WasThrown && dist <= ThrowRange)
-            {
-                ProjectileWeapon?.Throw();
-            }
+            ProjectileWeapon?.TryThrow();
         }
     }
 }

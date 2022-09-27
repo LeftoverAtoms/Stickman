@@ -18,7 +18,7 @@ public class Player : Character
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            ProjectileWeapon?.Throw();
+            ProjectileWeapon?.TryThrow();
             SwapState(State.Attacking);
         }
         if (IsGrounded)

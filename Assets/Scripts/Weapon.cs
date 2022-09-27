@@ -2,13 +2,19 @@ using UnityEngine;
 
 public class Weapon : BaseObject
 {
-    private Vector2 InitialVelocity = new Vector2(15f, 3f);
-
     public Character Owner;
     public Vector2 Velocity;
 
     public Type WeaponType;
-    public bool WasThrown;
+
+    [HideInInspector] private Vector2 InitialVelocity;
+    [HideInInspector] private bool WasThrown;
+
+    protected override void Start()
+    {
+        base.Start();
+        InitialVelocity = new Vector2(15f, 3f);
+    }
 
     private void FixedUpdate()
     {
@@ -31,8 +37,11 @@ public class Weapon : BaseObject
         return velocity;
     }
 
-    public void Throw()
+    public void TryThrow()
     {
+        if (WasThrown)
+            return;
+
         Owner.UnequipWeapon(this);
         Velocity = GetInitialVelocity();
         WasThrown = true;
@@ -91,6 +100,7 @@ public class Weapon : BaseObject
         }
     }
     */
+
     public enum Type
     {
         Melee, Projectile

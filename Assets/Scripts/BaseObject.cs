@@ -6,11 +6,10 @@ public class BaseObject : MonoBehaviour
     public Rigidbody2D Body { get; private set; }
     public BoxCollider2D Collider { get; private set; }
 
-    public Vector2 BBoxSize { get; private set; }
-    public float Health { get; set; } = 100f;
-    public Vector2 LookDirection { get; set; }
+    public float Health = 100f;
 
-    public bool CanRecieveDamage { get; protected set; }
+    [HideInInspector] public bool CanRecieveDamage;
+    [HideInInspector] public Vector2 BBoxSize, LookDirection;
 
     protected virtual void Start()
     {

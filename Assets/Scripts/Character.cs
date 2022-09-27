@@ -2,14 +2,14 @@ using UnityEngine;
 
 public class Character : BaseObject
 {
-    public bool IsGrounded { get; protected set; }
-    public State MoveState { get; protected set; }
-
-    protected readonly float JumpHeight = 72f, MaxSlideTime = 1f;
-    protected float TimeSinceSlide;
-
     public Weapon MeleeWeapon;
     public Weapon ProjectileWeapon;
+
+    public float JumpHeight = 72f, MaxSlideTime = 1f;
+
+    [HideInInspector] public bool IsGrounded;
+    [HideInInspector] private float TimeSinceSlide;
+    [HideInInspector] public State MoveState;
 
     protected virtual void FixedUpdate()
     {
@@ -64,11 +64,11 @@ public class Character : BaseObject
 
     public void EquipWeapon(Weapon obj)
     {
-        if (obj.WeaponType == Weapon.Type.Melee && MeleeWeapon == null)
+        if (MeleeWeapon == null && obj.WeaponType == Weapon.Type.Melee)
         {
             MeleeWeapon = obj;
         }
-        else if (obj.WeaponType == Weapon.Type.Projectile && ProjectileWeapon == null)
+        else if (ProjectileWeapon == null && obj.WeaponType == Weapon.Type.Projectile)
         {
             ProjectileWeapon = obj;
         }
