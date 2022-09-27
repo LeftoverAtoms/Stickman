@@ -8,8 +8,8 @@ public class Character : BaseObject
     protected readonly float JumpHeight = 72f, MaxSlideTime = 1f;
     protected float TimeSinceSlide;
 
-    public bool HasWeapon => Weapon != null;
-    public Weapon Weapon;
+    public Weapon MeleeWeapon;
+    public Weapon ProjectileWeapon;
 
     protected virtual void FixedUpdate()
     {
@@ -64,18 +64,37 @@ public class Character : BaseObject
 
     public void EquipWeapon(Weapon obj)
     {
+        if (obj.WeaponType == Weapon.Type.Melee && MeleeWeapon == null)
+        {
+            MeleeWeapon = obj;
+        }
+        else if (obj.WeaponType == Weapon.Type.Projectile && ProjectileWeapon == null)
+        {
+            ProjectileWeapon = obj;
+        }
+        else
+        {
+            return;
+        }
+
         obj.transform.parent = transform;
-        //obj.transform.position = Vector2.up;
         obj.LookDirection = LookDirection;
         obj.Owner = this;
-        Weapon = obj;
     }
 
     public void UnequipWeapon(Weapon obj)
     {
+        if (obj.WeaponType == Weapon.Type.Melee)
+        {
+            MeleeWeapon = null;
+        }
+        else if (obj.WeaponType == Weapon.Type.Projectile)
+        {
+            ProjectileWeapon = null;
+        }
+
         obj.transform.parent = null;
         obj.Owner = null;
-        Weapon = null;
     }
 
     protected void SwapState(State state)
@@ -91,25 +110,22 @@ public class Character : BaseObject
         switch (state)
         {
             case State.Running:
-                MoveState = State.Running;
-                break;
+            MoveState = State.Running;
+            break;
             case State.Jumping:
-                MoveState = State.Jumping;
-                Animator.SetBool("Jumping", true);
-                break;
+            MoveState = State.Jumping;
+            Animator.SetBool("Jumping", true);
+            break;
             case State.Sliding:
-                MoveState = State.Sliding;
-                Animator.SetBool("Sliding", true);
-                TimeSinceSlide = 0f;
-                break;
+            MoveState = State.Sliding;
+            Animator.SetBool("Sliding", true);
+            TimeSinceSlide = 0f;
+            break;
         }
     }
 
     public enum State
     {
-        Running,
-        Jumping,
-        Sliding,
-        Attacking
+        Running, Jumping, Sliding, Attacking
     }
 }

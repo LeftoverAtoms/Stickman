@@ -12,7 +12,6 @@ public class Enemy : Character
         base.Start();
         CanRecieveDamage = true;
         LookDirection = Vector2.left;
-        Target = Game.Current.Player;
     }
 
     protected override void FixedUpdate()
@@ -21,12 +20,12 @@ public class Enemy : Character
 
         transform.Translate(Game.Current.Speed * Time.deltaTime * LookDirection);
 
-        if (HasWeapon)
+        var dist = Vector2.Distance(transform.position, Target.transform.position);
+        if (ProjectileWeapon != null)
         {
-            var dist = Vector2.Distance(transform.position, Target.transform.position);
-            if (!Weapon.WasThrown && dist <= ThrowRange)
+            if (!ProjectileWeapon.WasThrown && dist <= ThrowRange)
             {
-                Weapon?.Throw();
+                ProjectileWeapon?.Throw();
             }
         }
     }

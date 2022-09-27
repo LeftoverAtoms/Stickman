@@ -20,6 +20,3 @@ Fists -> Equip Weapon -> [ Melee ] -> [ Keep Weapon ]
 						 [ Throw ] -> Unequip Weapon -> Equip Fists
 
 Pickup Weapon -> Equiped UI Element -> Owned by player now
-
-Bugs:
-* Projectile can be (thrown) multiple times before it is destroyed

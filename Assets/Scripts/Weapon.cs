@@ -2,17 +2,13 @@ using UnityEngine;
 
 public class Weapon : BaseObject
 {
-    private Vector2 InitialVelocity = new Vector2(10f, 3f);
+    private Vector2 InitialVelocity = new Vector2(15f, 3f);
 
     public Character Owner;
     public Vector2 Velocity;
 
+    public Type WeaponType;
     public bool WasThrown;
-
-    protected override void Start()
-    {
-        base.Start();
-    }
 
     private void FixedUpdate()
     {
@@ -21,18 +17,16 @@ public class Weapon : BaseObject
             Velocity.y -= 9.8f * Time.deltaTime; // Gravity
             transform.Translate(Velocity * Time.deltaTime);
         }
-        Debug.Log(Velocity);
     }
 
     public Vector2 GetInitialVelocity()
     {
         var velocity = InitialVelocity;
 
-        if (LookDirection.x < 0)
+        if (LookDirection.x < 0) // Vector2.left
         {
             velocity.x = -velocity.x;
             velocity.x -= Game.Current.Speed * 0.25f;
-            Debug.Log(velocity.x);
         }
         return velocity;
     }
@@ -55,11 +49,9 @@ public class Weapon : BaseObject
             //Debug.Log(Vector2.Dot(obj.LookDirection, LookDirection));
             if (IsBaseObject)
             {
-                // Ignore all damage.
                 if (character.MoveState is Character.State.Sliding)
                     return;
 
-                // Something was hit.
                 if (Vector2.Dot(obj.LookDirection, LookDirection) < 0f)
                 {
                     obj.TakeDamage();
@@ -72,8 +64,7 @@ public class Weapon : BaseObject
             }
             Debug.Log("Deleted");
         }
-        // Try to pickup a weapon.
-        if (IsCharacter && !character.HasWeapon)
+        else if (IsCharacter)
         {
             character.EquipWeapon(this);
         }
@@ -100,4 +91,8 @@ public class Weapon : BaseObject
         }
     }
     */
+    public enum Type
+    {
+        Melee, Projectile
+    }
 }

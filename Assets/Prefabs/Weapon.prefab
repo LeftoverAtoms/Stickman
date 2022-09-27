@@ -114,5 +114,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83c1e5a57932dee4f992115d9b79c4f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  InitialVelocity: {x: 15, y: 3}
   Owner: {fileID: 0}
   Velocity: {x: 0, y: 0}
+  WasThrown: 0

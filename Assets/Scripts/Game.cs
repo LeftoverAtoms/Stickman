@@ -11,30 +11,16 @@ public class Game : MonoBehaviour
     public Player Player { get; private set; }
 
     // Prefabs
-    public GameObject[] ObstaclePrefabs;
+    //public GameObject[] ObstaclePrefabs;
 
     public bool GameHasEnded = false;
-    public float DeltaSpeed => Speed * Time.deltaTime;
     public float Speed = 6f;
 
     private void Awake()
     {
         Background = GameObject.FindGameObjectWithTag("Background").GetComponent<Background>();
         Player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
+        Enemy.Target = Player;
         Current = this;
-
-        CreateObstacle();
-    }
-
-    private void FixedUpdate()
-    {
-        if (GameHasEnded)
-            return;
-    }
-
-    private void CreateObstacle()
-    {
-        var obj = Instantiate(ObstaclePrefabs[0]);
-        obj.AddComponent<Obstacle>();
     }
 }
