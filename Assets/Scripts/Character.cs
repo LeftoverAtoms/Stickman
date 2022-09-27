@@ -9,18 +9,18 @@ public class Character : BaseObject
 
     [HideInInspector] public bool IsGrounded;
     [HideInInspector] private float TimeSinceSlide;
-    [HideInInspector] public State MoveState;
+    [HideInInspector] public MoveState MoveState;
 
     protected virtual void FixedUpdate()
     {
         if (IsGrounded)
         {
-            if (MoveState == State.Jumping)
+            if (MoveState == MoveState.Jumping)
             {
                 Body.AddForce(Vector2.up * JumpHeight, ForceMode2D.Impulse);
                 IsGrounded = false;
             }
-            if (MoveState == State.Sliding)
+            if (MoveState == MoveState.Sliding)
             {
                 Collider.offset = new Vector2(0f, -0.375f);
                 Collider.size = new Vector2(BBoxSize.x, BBoxSize.y / 4f);
@@ -28,7 +28,7 @@ public class Character : BaseObject
                 TimeSinceSlide += Time.deltaTime;
                 if (TimeSinceSlide >= MaxSlideTime)
                 {
-                    SwapState(State.Running);
+                    SwapState(MoveState.Running);
                 }
             }
         }
@@ -47,57 +47,37 @@ public class Character : BaseObject
             }
             else
             {
-                SwapState(State.Running);
+                SwapState(MoveState.Running);
                 IsGrounded = true;
             }
         }
     }
 
-    public bool IsTeamedWith(Character obj)
+    public void EquipWeapon(Weapon wpn)
     {
-        if (Vector2.Dot(obj.LookDirection, LookDirection) < 0f)
-        {
-            return true;
-        }
-        return false;
-    }
-
-    public void EquipWeapon(Weapon obj)
-    {
-        if (MeleeWeapon == null && obj.WeaponType == Weapon.Type.Melee)
-        {
-            MeleeWeapon = obj;
-        }
-        else if (ProjectileWeapon == null && obj.WeaponType == Weapon.Type.Projectile)
-        {
-            ProjectileWeapon = obj;
-        }
-        else
-        {
+        if (wpn.Owner != null)
             return;
-        }
 
-        obj.transform.parent = transform;
-        obj.LookDirection = LookDirection;
-        obj.Owner = this;
+        if (MeleeWeapon == null && wpn.WeaponType == WeaponType.Melee) MeleeWeapon = wpn;
+        else if (ProjectileWeapon == null && wpn.WeaponType == WeaponType.Projectile) ProjectileWeapon = wpn;
+        else return;
+
+        wpn.transform.parent = transform;
+        wpn.LookDirection = LookDirection;
+        wpn.Owner = this;
     }
 
-    public void UnequipWeapon(Weapon obj)
+    public void UnequipWeapon(Weapon wpn)
     {
-        if (obj.WeaponType == Weapon.Type.Melee)
-        {
-            MeleeWeapon = null;
-        }
-        else if (obj.WeaponType == Weapon.Type.Projectile)
-        {
-            ProjectileWeapon = null;
-        }
+        if (wpn.WeaponType == WeaponType.Melee) MeleeWeapon = null;
+        else if (wpn.WeaponType == WeaponType.Projectile) ProjectileWeapon = null;
 
-        obj.transform.parent = null;
-        obj.Owner = null;
+        wpn.transform.parent = null;
+        wpn.PreviousOwner = wpn.Owner;
+        wpn.Owner = null;
     }
 
-    protected void SwapState(State state)
+    protected void SwapState(MoveState state)
     {
         // Reset Animator.
         Animator.SetBool("Jumping", false);
@@ -109,23 +89,23 @@ public class Character : BaseObject
 
         switch (state)
         {
-            case State.Running:
-            MoveState = State.Running;
+            case MoveState.Running:
+            MoveState = MoveState.Running;
             break;
-            case State.Jumping:
-            MoveState = State.Jumping;
+            case MoveState.Jumping:
+            MoveState = MoveState.Jumping;
             Animator.SetBool("Jumping", true);
             break;
-            case State.Sliding:
-            MoveState = State.Sliding;
+            case MoveState.Sliding:
+            MoveState = MoveState.Sliding;
             Animator.SetBool("Sliding", true);
             TimeSinceSlide = 0f;
             break;
         }
     }
+}
 
-    public enum State
-    {
-        Running, Jumping, Sliding, Attacking
-    }
+public enum MoveState
+{
+    Running, Jumping, Sliding, Attacking
 }

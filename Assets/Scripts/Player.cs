@@ -16,20 +16,25 @@ public class Player : Character
 
     private void Update()
     {
+        if (Input.GetKeyDown(KeyCode.C))
+        {
+            Game.GiveProjectileWeapon(this);
+        }
+
         if (Input.GetKeyDown(KeyCode.Space))
         {
             ProjectileWeapon?.TryThrow();
-            SwapState(State.Attacking);
+            SwapState(MoveState.Attacking);
         }
         if (IsGrounded)
         {
-            if (Input.GetKeyDown(KeyCode.W) && MoveState != State.Jumping)
+            if (Input.GetKeyDown(KeyCode.W) && MoveState != MoveState.Jumping)
             {
-                SwapState(State.Jumping);
+                SwapState(MoveState.Jumping);
             }
-            if (Input.GetKey(KeyCode.S) && MoveState != State.Sliding)
+            if (Input.GetKey(KeyCode.S) && MoveState != MoveState.Sliding)
             {
-                SwapState(State.Sliding);
+                SwapState(MoveState.Sliding);
             }
         }
     }

@@ -11,6 +11,7 @@ public class Game : MonoBehaviour
     public Player Player { get; private set; }
 
     // Prefabs
+    public static GameObject WeaponGO;
     //public GameObject[] ObstaclePrefabs;
 
     public float Speed = 6f;
@@ -20,7 +21,18 @@ public class Game : MonoBehaviour
     {
         Background = GameObject.FindGameObjectWithTag("Background").GetComponent<Background>();
         Player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
+        WeaponGO = Resources.Load<GameObject>("Prefabs/Weapon");
         Enemy.Target = Player;
         Current = this;
+    }
+
+    public static void GiveProjectileWeapon(Character ctr)
+    {
+        if (ctr.ProjectileWeapon != null) return;
+
+        var obj = Instantiate(WeaponGO, ctr.transform);
+        var wpn = obj.GetComponent<Weapon>();
+        wpn.WeaponType = WeaponType.Projectile;
+        ctr.EquipWeapon(wpn);
     }
 }

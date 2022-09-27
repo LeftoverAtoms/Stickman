@@ -2,10 +2,10 @@ using UnityEngine;
 
 public class Weapon : BaseObject
 {
-    public Character Owner;
+    public Character Owner, PreviousOwner;
     public Vector2 Velocity;
 
-    public Type WeaponType;
+    public WeaponType WeaponType;
 
     [HideInInspector] private Vector2 InitialVelocity;
     [HideInInspector] private bool WasThrown;
@@ -21,7 +21,8 @@ public class Weapon : BaseObject
         if (WasThrown)
         {
             Velocity.y -= 9.8f * Time.deltaTime; // Gravity
-            transform.Translate(Velocity * Time.deltaTime);
+            transform.Translate(Velocity * Time.deltaTime, Space.World);
+            transform.Rotate(Vector3.back, 10f, Space.Self);
         }
     }
 
@@ -58,10 +59,10 @@ public class Weapon : BaseObject
             //Debug.Log(Vector2.Dot(obj.LookDirection, LookDirection));
             if (IsBaseObject)
             {
-                if (character.MoveState is Character.State.Sliding)
+                if (character.MoveState == MoveState.Sliding)
                     return;
 
-                if (Vector2.Dot(obj.LookDirection, LookDirection) < 0f)
+                if (PreviousOwner.CanDamage(obj))
                 {
                     obj.TakeDamage();
                     Destroy(gameObject);
@@ -71,7 +72,6 @@ public class Weapon : BaseObject
             {
                 Destroy(gameObject);
             }
-            Debug.Log("Deleted");
         }
         else if (IsCharacter)
         {
@@ -100,9 +100,9 @@ public class Weapon : BaseObject
         }
     }
     */
+}
 
-    public enum Type
-    {
-        Melee, Projectile
-    }
+public enum WeaponType
+{
+    Melee, Projectile
 }
