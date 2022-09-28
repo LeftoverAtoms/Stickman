@@ -28,7 +28,8 @@ public class Game : MonoBehaviour
 
     public static void GiveProjectileWeapon(Character ctr)
     {
-        if (ctr.ProjectileWeapon != null) return;
+        if (ctr.ProjectileWeapon != null)
+            return;
 
         var obj = Instantiate(WeaponGO, ctr.transform);
         var wpn = obj.GetComponent<Weapon>();

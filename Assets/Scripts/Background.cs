@@ -3,7 +3,7 @@ using UnityEngine;
 public class Background : MonoBehaviour
 {
     private Vector2 InitalPos;
-    private float RepeatWidth = 27.25f;
+    private float RepeatWidth = 40.96f;
 
     private void Start()
     {

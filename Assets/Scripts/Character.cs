@@ -53,13 +53,21 @@ public class Character : BaseObject
         }
     }
 
+    public override bool CanDamage(BaseObject obj)
+    {
+        if (MoveState == MoveState.Sliding)
+            return false;
+
+        return base.CanDamage(obj);
+    }
+
     public void EquipWeapon(Weapon wpn)
     {
         if (wpn.Owner != null)
             return;
 
-        if (MeleeWeapon == null && wpn.WeaponType == WeaponType.Melee) MeleeWeapon = wpn;
-        else if (ProjectileWeapon == null && wpn.WeaponType == WeaponType.Projectile) ProjectileWeapon = wpn;
+        if (ProjectileWeapon == null && wpn.WeaponType == WeaponType.Projectile) {ProjectileWeapon = wpn;}
+        else if (MeleeWeapon == null && wpn.WeaponType == WeaponType.Melee) {MeleeWeapon = wpn;}
         else return;
 
         wpn.transform.parent = transform;
@@ -69,8 +77,8 @@ public class Character : BaseObject
 
     public void UnequipWeapon(Weapon wpn)
     {
-        if (wpn.WeaponType == WeaponType.Melee) MeleeWeapon = null;
-        else if (wpn.WeaponType == WeaponType.Projectile) ProjectileWeapon = null;
+        if (wpn.WeaponType == WeaponType.Projectile) {ProjectileWeapon = null;}
+        else if (wpn.WeaponType == WeaponType.Melee) {MeleeWeapon = null;}
 
         wpn.transform.parent = null;
         wpn.PreviousOwner = wpn.Owner;

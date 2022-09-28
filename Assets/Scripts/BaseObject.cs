@@ -23,7 +23,7 @@ public class BaseObject : MonoBehaviour
         }
     }
 
-    public bool CanDamage(BaseObject obj)
+    public virtual bool CanDamage(BaseObject obj)
     {
         if (Vector2.Dot(LookDirection, obj.LookDirection) < 0f)
         {

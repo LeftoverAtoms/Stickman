@@ -59,9 +59,6 @@ public class Weapon : BaseObject
             //Debug.Log(Vector2.Dot(obj.LookDirection, LookDirection));
             if (IsBaseObject)
             {
-                if (character.MoveState == MoveState.Sliding)
-                    return;
-
                 if (PreviousOwner.CanDamage(obj))
                 {
                     obj.TakeDamage();

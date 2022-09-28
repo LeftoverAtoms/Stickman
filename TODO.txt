@@ -20,3 +20,6 @@ Fists -> Equip Weapon -> [ Melee ] -> [ Keep Weapon ]
 						 [ Throw ] -> Unequip Weapon -> Equip Fists
 
 Pickup Weapon -> Equiped UI Element -> Owned by player now
+
+Style:
+Make the graphics look like we're in a sketchbook!
