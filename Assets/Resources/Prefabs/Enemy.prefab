@@ -167,6 +167,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aede92eb033a7c1438733a9416926bf3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Weapon: {fileID: 0}
+  Health: 100
+  CanRecieveDamage: 0
+  BBoxSize: {x: 0, y: 0}
+  LookDirection: {x: 0, y: 0}
+  MeleeWeapon: {fileID: 0}
+  ProjectileWeapon: {fileID: 0}
+  JumpHeight: 72
+  MaxSlideTime: 1
+  IsGrounded: 0
+  MoveState: 0
   MeleeRange: 1
   ThrowRange: 10

@@ -11,9 +11,9 @@ public class Game : MonoBehaviour
     public Player Player { get; private set; }
 
     // Prefabs
+    public static GameObject[] Groups;
     public static GameObject WeaponGO;
-    //public GameObject[] ObstaclePrefabs;
-
+    
     public float Speed = 6f;
     public bool GameHasEnded = false;
 
@@ -21,18 +21,21 @@ public class Game : MonoBehaviour
     {
         Background = GameObject.FindGameObjectWithTag("Background").GetComponent<Background>();
         Player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
+
+        Groups = Resources.LoadAll<GameObject>("Prefabs/Groups");
         WeaponGO = Resources.Load<GameObject>("Prefabs/Weapon");
+
         Enemy.Target = Player;
         Current = this;
     }
 
+    // TODO: Make into generic give command by typing in weapon string.
     public static void GiveProjectileWeapon(Character ctr)
     {
         if (ctr.ProjectileWeapon != null)
             return;
 
-        var obj = Instantiate(WeaponGO, ctr.transform);
-        var wpn = obj.GetComponent<Weapon>();
+        var wpn = Instantiate(WeaponGO, ctr.transform).GetComponent<Weapon>();
         wpn.WeaponType = WeaponType.Projectile;
         ctr.EquipWeapon(wpn);
     }
