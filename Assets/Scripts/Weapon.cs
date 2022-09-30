@@ -4,16 +4,13 @@ public class Weapon : BaseObject
 {
     public Character Owner, PreviousOwner;
     public Vector2 Velocity;
+    public WeaponInfo Info;
 
-    public WeaponType WeaponType;
-
-    [HideInInspector] private Vector2 InitialVelocity;
-    [HideInInspector] private bool WasThrown;
+    private bool WasThrown;
 
     protected override void Start()
     {
-        base.Start();
-        InitialVelocity = new Vector2(15f, 3f);
+       base.Start();
     }
 
     private void FixedUpdate()
@@ -28,7 +25,7 @@ public class Weapon : BaseObject
 
     public Vector2 GetInitialVelocity()
     {
-        var velocity = InitialVelocity;
+        var velocity = Info.LaunchVelocity;
 
         if (LookDirection.x < 0) // Vector2.left
         {
@@ -97,9 +94,4 @@ public class Weapon : BaseObject
         }
     }
     */
-}
-
-public enum WeaponType
-{
-    Melee, Projectile
 }

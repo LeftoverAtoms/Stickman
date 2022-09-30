@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Linq;
 
 public class Game : MonoBehaviour
 {
@@ -7,12 +8,12 @@ public class Game : MonoBehaviour
     public static Game Current { get; private set; }
 
     // Store class references.
-    public Background Background { get; private set; }
-    public Player Player { get; private set; }
+    public static Background Background { get; private set; }
+    public static Player Player { get; private set; }
 
     // Prefabs
     public static GameObject[] Groups;
-    public static GameObject WeaponGO;
+    public static GameObject Weapon;
     
     public float Speed = 6f;
     public bool GameHasEnded = false;
@@ -23,7 +24,7 @@ public class Game : MonoBehaviour
         Player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
 
         Groups = Resources.LoadAll<GameObject>("Prefabs/Groups");
-        WeaponGO = Resources.Load<GameObject>("Prefabs/Weapon");
+        Weapon = Resources.Load<GameObject>("Prefabs/Weapon");
 
         Enemy.Target = Player;
         Current = this;
@@ -35,8 +36,17 @@ public class Game : MonoBehaviour
         if (ctr.ProjectileWeapon != null)
             return;
 
-        var wpn = Instantiate(WeaponGO, ctr.transform).GetComponent<Weapon>();
-        wpn.WeaponType = WeaponType.Projectile;
+        var wpn = Instantiate(Weapon, ctr.transform).GetComponent<Weapon>();
         ctr.EquipWeapon(wpn);
+    }
+
+    public static void GiveWeapon(string name, Character character)
+    {
+        var wpninfo = Resources.Load<WeaponInfo>($"ScriptableObjects/Weapons/{name}");
+        if (character.CanEquipWeapon(wpninfo))
+        {
+            var wpn = Instantiate(Weapon, character.transform).GetComponent<Weapon>();
+            character.EquipWeapon(wpn);
+        }
     }
 }

@@ -61,13 +61,18 @@ public class Character : BaseObject
         return base.CanDamage(obj);
     }
 
+    public bool CanEquipWeapon(WeaponInfo info)
+    {
+
+    }
+
     public void EquipWeapon(Weapon wpn)
     {
         if (wpn.Owner != null)
             return;
 
-        if (ProjectileWeapon == null && wpn.WeaponType == WeaponType.Projectile) {ProjectileWeapon = wpn;}
-        else if (MeleeWeapon == null && wpn.WeaponType == WeaponType.Melee) {MeleeWeapon = wpn;}
+        if (ProjectileWeapon == null && wpn.Info.Class == WeaponClass.Projectile) {ProjectileWeapon = wpn;}
+        else if (MeleeWeapon == null && wpn.Info.Class == WeaponClass.Melee) {MeleeWeapon = wpn;}
         else return;
 
         wpn.transform.parent = transform;
@@ -77,8 +82,8 @@ public class Character : BaseObject
 
     public void UnequipWeapon(Weapon wpn)
     {
-        if (wpn.WeaponType == WeaponType.Projectile) {ProjectileWeapon = null;}
-        else if (wpn.WeaponType == WeaponType.Melee) {MeleeWeapon = null;}
+        if (wpn.Info.Class == WeaponClass.Projectile) {ProjectileWeapon = null;}
+        else if (wpn.Info.Class == WeaponClass.Melee) {MeleeWeapon = null;}
 
         wpn.transform.parent = null;
         wpn.PreviousOwner = wpn.Owner;
