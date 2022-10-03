@@ -1,97 +1,107 @@
 using UnityEngine;
 
-public class Weapon : BaseObject
+namespace Stickman
 {
-    public Character Owner, PreviousOwner;
-    public Vector2 Velocity;
-    public WeaponInfo Info;
-
-    private bool WasThrown;
-
-    protected override void Start()
+    public class Weapon : Object
     {
-       base.Start();
-    }
+        public ScriptableWeapon Attribute;
+        public Character Owner, LastOwner;
+        public Vector2 Velocity;
 
-    private void FixedUpdate()
-    {
-        if (WasThrown)
+        private bool WasThrown;
+        private WeaponState State;
+
+        protected override void FixedUpdate()
         {
-            Velocity.y -= 9.8f * Time.deltaTime; // Gravity
-            transform.Translate(Velocity * Time.deltaTime, Space.World);
-            transform.Rotate(Vector3.back, 10f, Space.Self);
-        }
-    }
-
-    public Vector2 GetInitialVelocity()
-    {
-        var velocity = Info.LaunchVelocity;
-
-        if (LookDirection.x < 0) // Vector2.left
-        {
-            velocity.x = -velocity.x;
-            velocity.x -= Game.Current.Speed * 0.25f;
-        }
-        return velocity;
-    }
-
-    public void TryThrow()
-    {
-        if (WasThrown)
-            return;
-
-        Owner.UnequipWeapon(this);
-        Velocity = GetInitialVelocity();
-        WasThrown = true;
-    }
-
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        bool IsBaseObject = collision.gameObject.TryGetComponent<BaseObject>(out BaseObject obj);
-        bool IsCharacter = collision.gameObject.TryGetComponent<Character>(out Character character);
-
-        // Weapons can only inflict damage while they are thrown.
-        if (WasThrown)
-        {
-            //Debug.Log(Vector2.Dot(obj.LookDirection, LookDirection));
-            if (IsBaseObject)
+            if (WasThrown)
             {
-                if (PreviousOwner.CanDamage(obj))
+                Velocity.y -= 9.8f * Time.deltaTime; // Gravity
+                transform.Translate(Velocity * Time.deltaTime, Space.World);
+                transform.Rotate(Vector3.back, 10f, Space.Self);
+            }
+
+            if (State == WeaponState.Collectible)
+            {
+
+            }
+        }
+
+        public void TryThrow()
+        {
+            if (WasThrown)
+                return;
+
+            Owner.UnequipWeapon(this);
+            Velocity = GetInitialVelocity();
+            WasThrown = true;
+        }
+
+        private void OnTriggerEnter2D(Collider2D collision)
+        {
+            bool IsBaseObject = collision.gameObject.TryGetComponent<Object>(out Object obj);
+            bool IsCharacter = collision.gameObject.TryGetComponent<Character>(out Character character);
+
+            if (WasThrown)
+            {
+                if (IsBaseObject)
                 {
-                    obj.TakeDamage();
-                    Destroy(gameObject);
+                    if (LastOwner.CanDamage(obj))
+                    {
+                        obj.TakeDamage();
+                        Destroy(gameObject); //self
+                    }
+                }
+                else
+                {
+                    Destroy(gameObject); //self
                 }
             }
-            else
+            else if (IsCharacter)
             {
-                Destroy(gameObject);
+                character.EquipWeapon(this);
             }
         }
-        else if (IsCharacter)
+
+        private Vector2 GetInitialVelocity()
         {
-            character.EquipWeapon(this);
-        }
-    }
+            var velocity = Attribute.LaunchVelocity;
 
-    /*
-    public void Melee()
-    {
-        IsMeleeing = true;
-
-        var hits = Physics2D.RaycastAll(Owner.transform.position, LookDirection, MeleeRange);
-
-        foreach (var hit in hits)
-        {
-            if (hit.collider.gameObject.TryGetComponent(out Character obj))
+            if (LookDirection.x < 0) // Vector2.left
             {
-                if (Owner.IsTeamedWith(obj))
+                velocity.x = -velocity.x;
+                velocity.x -= Game.Current.Speed * 0.25f;
+            }
+            return velocity;
+        }
+
+        /*
+        public void Melee()
+        {
+            IsMeleeing = true;
+
+            var hits = Physics2D.RaycastAll(Owner.transform.position, LookDirection, MeleeRange);
+
+            foreach (var hit in hits)
+            {
+                if (hit.collider.gameObject.TryGetComponent(out Character obj))
                 {
-                    Debug.Log(obj.name);
-                    obj.TakeDamage();
-                    break;
+                    if (Owner.IsTeamedWith(obj))
+                    {
+                        Debug.Log(obj.name);
+                        obj.TakeDamage();
+                        break;
+                    }
                 }
             }
         }
+        */
     }
-    */
+
+    public enum WeaponState
+    {
+        Collectible,
+        Active,
+        Equiped,
+        Thrown,
+    }
 }

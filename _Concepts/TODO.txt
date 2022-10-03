@@ -1,0 +1,46 @@
+  ///////////////////////////
+ // What Am I Working On? //
+///////////////////////////
+
+	STICKMAN: An endless 2D platformer with resource management.
+
+  ///////////////
+ /// Concepts //
+///////////////
+
+	Characters:
+	* Segmented health bar [Convey easily digestible information]
+	* Damage taken results in knockback damage
+	* If target wasn't killed then target will also damage you
+
+	Player:
+	* Move up, down, left and right [Move world relative to player]
+	* Switch weapons with scroll and or number keys
+	* Use items/weapons with spacebar
+
+	Enemies:
+	* Patrol until line of sight or.. heard the player performing an action?
+	* Multiple types.. dependent on weapons, stats and or behavior?
+		* Health variety forces strategy
+
+	Items:
+	* Medkits
+	* Potions that boost specific weapon stats temporarily?
+
+	Weapons:
+	* Alternative weapons have improved stats over the fists but have limited uses (durability) and some require an item to use
+
+	Level:
+	* Something that forces the player to constantly progress like a BR circle or the demon monkeys in Temple Run.
+
+  /////////////////
+ /// Priorities //
+/////////////////
+
+	1.) Enemies: This is the most important aspect of the game. If the enemies aren't fun to play against then why play?
+	2.) Weapons: This is the main way of how the player will interact with enemies and the level.
+	3.) Levels: Procedural environments could break repetition.
+	4.) Player: Interesting movement mechanics are a necessity in platformers.
+		* Dive to the ground.
+		* Mantle on surfaces.
+	5.) Graphics: It shocks me how decent the current animations are.
