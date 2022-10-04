@@ -1,6 +1,4 @@
-using System.Runtime.InteropServices;
 using UnityEngine;
-using UnityEngine.TextCore.Text;
 
 namespace Stickman
 {
