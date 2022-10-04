@@ -11,11 +11,6 @@ namespace Stickman
             CanRecieveDamage = true;
         }
 
-        protected override void FixedUpdate()
-        {
-            base.FixedUpdate();
-        }
-
         protected override void Update()
         {
             if (Input.GetKeyDown(KeyCode.C))
@@ -41,19 +36,6 @@ namespace Stickman
                 if (Input.GetKey(KeyCode.S) && MoveState != MoveState.Sliding)
                 {
                     SwapState(MoveState.Sliding);
-                }
-            }
-        }
-
-        protected override void OnCollisionEnter2D(Collision2D collision)
-        {
-            base.OnCollisionEnter2D(collision);
-
-            if (collision.gameObject.TryGetComponent<Object>(out Object obj))
-            {
-                if (obj.CanDamage(this))
-                {
-                    this.TakeDamage();
                 }
             }
         }

@@ -4,14 +4,13 @@ namespace Stickman
 {
     public class Object : MonoBehaviour
     {
-        public Animator Animator { get; private set; }
-        public Rigidbody2D Body { get; private set; }
-        public BoxCollider2D Collider { get; private set; }
-
-        public float Health = 100f;
+        public Animator Animator;
+        public Rigidbody2D Body;
+        public BoxCollider2D Collider;
 
         public bool CanRecieveDamage;
         public Vector2 BBoxSize, LookDirection;
+        public float Health;
 
         protected virtual void Start()
         {
@@ -23,6 +22,8 @@ namespace Stickman
             {
                 BBoxSize = Collider.size;
             }
+
+            Health = 100f;
         }
 
         protected virtual void FixedUpdate() { }

@@ -29,6 +29,7 @@
 
 	Weapons:
 	* Alternative weapons have improved stats over the fists but have limited uses (durability) and some require an item to use
+	* Thrown weapons seek targets
 
 	Level:
 	* Something that forces the player to constantly progress like a BR circle or the demon monkeys in Temple Run.

@@ -6,34 +6,47 @@ namespace Stickman
     {
         public ScriptableWeapon Attribute;
         public Character Owner, LastOwner;
-        public Vector2 Velocity;
-
-        private bool WasThrown;
         private WeaponState State;
+        public Vector2 Velocity;
 
         protected override void FixedUpdate()
         {
-            if (WasThrown)
+            if (State == WeaponState.Attack)
             {
-                Velocity.y -= 9.8f * Time.deltaTime; // Gravity
-                transform.Translate(Velocity * Time.deltaTime, Space.World);
-                transform.Rotate(Vector3.back, 10f, Space.Self);
-            }
+                if (Attribute.Type == WeaponType.Melee)
+                {
 
-            if (State == WeaponState.Collectible)
-            {
-
+                }
+                else if (Attribute.Type == WeaponType.Projectile)
+                {
+                    Velocity.y -= 9.8f * Time.deltaTime; // Gravity
+                    transform.Translate(Velocity * Time.deltaTime, Space.World);
+                    transform.Rotate(Vector3.back, 10f, Space.Self);
+                }
             }
         }
 
         public void TryThrow()
         {
-            if (WasThrown)
+            if (State == WeaponState.Attack)
                 return;
 
             Owner.UnequipWeapon(this);
             Velocity = GetInitialVelocity();
-            WasThrown = true;
+            State = WeaponState.Attack;
+        }
+
+        public void Attack()
+        {
+            if (State == WeaponState.Attack)
+                return;
+
+            if (Attribute.Type == WeaponType.Projectile)
+            {
+                Owner.UnequipWeapon(this);
+                Velocity = GetInitialVelocity();
+            }
+            State = WeaponState.Attack;
         }
 
         private void OnTriggerEnter2D(Collider2D collision)
@@ -41,19 +54,19 @@ namespace Stickman
             bool IsBaseObject = collision.gameObject.TryGetComponent<Object>(out Object obj);
             bool IsCharacter = collision.gameObject.TryGetComponent<Character>(out Character character);
 
-            if (WasThrown)
+            if (State == WeaponState.Attack)
             {
                 if (IsBaseObject)
                 {
                     if (LastOwner.CanDamage(obj))
                     {
                         obj.TakeDamage();
-                        Destroy(gameObject); //self
+                        Destroy(this.gameObject);
                     }
                 }
                 else
                 {
-                    Destroy(gameObject); //self
+                    Destroy(this.gameObject);
                 }
             }
             else if (IsCharacter)
@@ -102,6 +115,6 @@ namespace Stickman
         Collectible,
         Active,
         Equiped,
-        Thrown,
+        Attack,
     }
 }

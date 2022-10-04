@@ -48,6 +48,14 @@ namespace Stickman
 
         protected virtual void OnCollisionEnter2D(Collision2D collision)
         {
+            if (collision.gameObject.TryGetComponent<Object>(out Object obj))
+            {
+                if (obj.CanDamage(this))
+                {
+                    this.TakeDamage();
+                }
+            }
+
             foreach (var contact in collision.contacts)
             {
                 if (contact.normal == Vector2.up)
@@ -60,8 +68,8 @@ namespace Stickman
 
         public override bool CanDamage(Object obj)
         {
-            if (MoveState == MoveState.Sliding)
-                return false;
+            //if (MoveState == MoveState.Sliding)
+            //    return false;
 
             return base.CanDamage(obj);
         }

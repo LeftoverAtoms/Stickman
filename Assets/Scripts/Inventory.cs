@@ -4,7 +4,22 @@ namespace Stickman
 {
     public class Inventory
     {
-        public List<Weapon> Items;
-        public Weapon ActiveChild;
+        public List<Object> Items;
+        public Object ActiveSlot;
+
+        public void Switch(int slot)
+        {
+
+        }
+
+        public void Add()
+        {
+
+        }
+
+        public void Remove()
+        {
+
+        }
     }
 }
