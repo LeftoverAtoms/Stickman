@@ -18,7 +18,7 @@ namespace Stickman
 
         public Character()
         {
-            Inventory = new Inventory();
+            Inventory = new Inventory(this);
             JumpHeight = 72f;
             MaxSlideTime = 1f;
         }
@@ -74,45 +74,48 @@ namespace Stickman
             return base.CanDamage(obj);
         }
 
-        public void EquipWeapon(Weapon wpn)
+        public bool Equip(Object obj) // TODO: Make a class for this.
         {
-            if (wpn.Owner != null)
-                return;
+            if (obj.Owner != null)
+                return false;
 
-            if (wpn.Attribute.Type == WeaponType.Projectile)
+            if (!Inventory.CanAdd())
+                return false;
+
+            Inventory.Add(obj);
+            obj.transform.parent = transform;
+            obj.LookDirection = LookDirection;
+            obj.Owner = this;
+
+            return true;
+
+            /*
+            if (obj.Attribute.Type == WeaponType.Projectile)
             {
                 if (ProjectileWeapon == null)
-                    ProjectileWeapon = wpn;
+                    ProjectileWeapon = obj;
             }
-            else if (wpn.Attribute.Type == WeaponType.Melee)
+            else if (obj.Attribute.Type == WeaponType.Melee)
             {
                 if (MeleeWeapon == null)
-                    MeleeWeapon = wpn;
+                    MeleeWeapon = obj;
             }
             else
             {
                 return;
             }
-
-            wpn.transform.parent = transform;
-            wpn.LookDirection = LookDirection;
-            wpn.Owner = this;
+            */
         }
 
-        public void UnequipWeapon(Weapon wpn)
+        public void Unequip(Object obj)
         {
-            if (wpn.Attribute.Type == WeaponType.Projectile)
+            if (obj is Weapon wpn)
             {
-                ProjectileWeapon = null;
-            }
-            else if (wpn.Attribute.Type == WeaponType.Melee)
-            {
-                MeleeWeapon = null;
+                wpn.LastOwner = this;
             }
 
-            wpn.transform.parent = null;
-            wpn.LastOwner = wpn.Owner;
-            wpn.Owner = null;
+            obj.transform.parent = null;
+            obj.Owner = null;
         }
 
         protected void SwapState(MoveState state)

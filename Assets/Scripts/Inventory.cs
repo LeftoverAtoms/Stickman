@@ -4,22 +4,38 @@ namespace Stickman
 {
     public class Inventory
     {
+        public Character Owner;
         public List<Object> Items;
-        public Object ActiveSlot;
+        public Object ActiveItem;
 
-        public void Switch(int slot)
+        public int Space = 2;
+
+        public Inventory(Character owner)
         {
-
+            Items = new List<Object>();
+            Owner = owner;
         }
 
-        public void Add()
+        public bool CanAdd()
         {
-
+            if (Items.Count < Space)
+            {
+                UnityEngine.Debug.Log(Items.Count);
+                return true;
+            }
+            return false;
         }
 
-        public void Remove()
+        public void Add(Object obj)
         {
+            Items.Add(obj);
+            UnityEngine.Debug.Log(Items.Count);
+        }
 
+        public void Remove(Object obj)
+        {
+            Owner.Unequip(obj);
+            Items.Remove(obj);
         }
     }
 }

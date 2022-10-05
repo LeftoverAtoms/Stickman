@@ -4,6 +4,7 @@ namespace Stickman
 {
     public class Object : MonoBehaviour
     {
+        public Object Owner;
         public Animator Animator;
         public Rigidbody2D Body;
         public BoxCollider2D Collider;

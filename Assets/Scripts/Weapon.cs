@@ -5,7 +5,7 @@ namespace Stickman
     public class Weapon : Object
     {
         public ScriptableWeapon Attribute;
-        public Character Owner, LastOwner;
+        public Character LastOwner;
         private WeaponState State;
         public Vector2 Velocity;
 
@@ -31,7 +31,7 @@ namespace Stickman
             if (State == WeaponState.Attack)
                 return;
 
-            Owner.UnequipWeapon(this);
+            (Owner as Character)?.Unequip(this);
             Velocity = GetInitialVelocity();
             State = WeaponState.Attack;
         }
@@ -43,7 +43,7 @@ namespace Stickman
 
             if (Attribute.Type == WeaponType.Projectile)
             {
-                Owner.UnequipWeapon(this);
+                (Owner as Character)?.Unequip(this);
                 Velocity = GetInitialVelocity();
             }
             State = WeaponState.Attack;
@@ -71,7 +71,7 @@ namespace Stickman
             }
             else if (IsCharacter)
             {
-                character.EquipWeapon(this);
+                character.Equip(this);
             }
         }
 

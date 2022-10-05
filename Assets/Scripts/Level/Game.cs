@@ -48,7 +48,10 @@ namespace Stickman
 
             var wpn = Instantiate(Weapon, character.transform).GetComponent<Weapon>();
             wpn.Attribute = wpnAttribute;
-            character.EquipWeapon(wpn);
+            if(!character.Equip(wpn))
+            {
+                Destroy(wpn);
+            }
         }
 
         public static void SpawnEnemyDebug()
