@@ -5,6 +5,7 @@ namespace Stickman
     public abstract class Character : Object
     {
         public Inventory Inventory;
+        public Object ActiveItem;
         public MoveState State;
 
         public float JumpHeight;
@@ -12,9 +13,6 @@ namespace Stickman
         private float TimeSinceSlide;
 
         public bool IsGrounded;
-
-        public Weapon MeleeWeapon;
-        public Weapon ProjectileWeapon;
 
         public Character()
         {
@@ -88,32 +86,10 @@ namespace Stickman
             obj.Owner = this;
 
             return true;
-
-            /*
-            if (obj.Attribute.Type == WeaponType.Projectile)
-            {
-                if (ProjectileWeapon == null)
-                    ProjectileWeapon = obj;
-            }
-            else if (obj.Attribute.Type == WeaponType.Melee)
-            {
-                if (MeleeWeapon == null)
-                    MeleeWeapon = obj;
-            }
-            else
-            {
-                return;
-            }
-            */
         }
 
         public void Unequip(Object obj)
         {
-            if (obj is Weapon wpn)
-            {
-                wpn.LastOwner = this;
-            }
-
             obj.transform.parent = null;
             obj.Owner = null;
         }

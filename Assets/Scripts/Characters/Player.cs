@@ -24,7 +24,7 @@ namespace Stickman
 
             if (Input.GetKeyDown(KeyCode.Space))
             {
-                ProjectileWeapon?.Throw();
+                //ProjectileWeapon?.Throw();
                 SwapState(MoveState.Attacking);
             }
             if (IsGrounded)

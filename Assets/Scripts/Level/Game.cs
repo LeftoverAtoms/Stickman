@@ -35,17 +35,6 @@ namespace Stickman
         {
             var wpnAttribute = Resources.Load<ScriptableWeapon>($"ScriptableObjects/Weapons/{name}");
 
-            if (wpnAttribute.Type == WeaponType.Projectile)
-            {
-                if (character.ProjectileWeapon != null)
-                    return;
-            }
-            else if (wpnAttribute.Type == WeaponType.Melee)
-            {
-                if (character.MeleeWeapon != null)
-                    return;
-            }
-
             var wpn = Instantiate(Weapon, character.transform).GetComponent<Weapon>();
             wpn.Attribute = wpnAttribute;
             if(!character.Equip(wpn))

@@ -3,7 +3,7 @@ using UnityEngine;
 namespace Stickman
 {
     [CreateAssetMenu(fileName = "UntitledWeapon", menuName = "Weapon")]
-    public class ScriptableWeapon : ScriptableObject
+    public class ScriptableItem : ScriptableObject
     {
         public Vector2 LaunchVelocity;
         public WeaponType Type;

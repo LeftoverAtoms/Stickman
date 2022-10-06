@@ -2,25 +2,18 @@ using UnityEngine;
 
 namespace Stickman
 {
-    public class Weapon : Object
+    public class Weapon : Item
     {
-        public ScriptableWeapon Attribute;
-        public Character LastOwner;
-        private WeaponState State;
         public Vector2 Velocity;
 
         protected override void FixedUpdate()
         {
-            if (State == WeaponState.Attack)
+            if (State == ItemState.Used)
             {
-                if (Attribute.Type == WeaponType.Melee)
+                if (Attribute.Type == WeaponType.Projectile)
                 {
-
-                }
-                else if (Attribute.Type == WeaponType.Projectile)
-                {
-                    Velocity.y -= 9.8f * Time.deltaTime; // Gravity
-                    transform.Translate(Velocity * Time.deltaTime, Space.World);
+                    Velocity.y -= 9.8f * Time.fixedDeltaTime; // Gravity
+                    transform.Translate(Velocity * Time.fixedDeltaTime, Space.World);
                     transform.Rotate(Vector3.back, 10f, Space.Self);
                 }
             }
@@ -28,34 +21,30 @@ namespace Stickman
 
         public void Throw()
         {
-            if (State == WeaponState.Attack)
+            if (State == ItemState.Used)
                 return;
 
             (Owner as Character)?.Unequip(this);
             Velocity = GetInitialVelocity();
-            State = WeaponState.Attack;
+            State = ItemState.Used;
         }
 
-        public void Attack()
+        public override void Use()
         {
-            if (State == WeaponState.Attack)
-                return;
-
             if (Attribute.Type == WeaponType.Projectile)
             {
                 (Owner as Character)?.Unequip(this);
                 Velocity = GetInitialVelocity();
             }
-            State = WeaponState.Attack;
         }
 
         private void OnTriggerEnter2D(Collider2D collision)
         {
-            if (State == WeaponState.Attack)
+            if (State == ItemState.Used)
             {
                 if (collision.gameObject.TryGetComponent<Object>(out Object obj))
                 {
-                    if (LastOwner.CanDamage(obj))
+                    if (this.CanDamage(obj))
                     {
                         obj.TakeDamage();
                         Destroy(this.gameObject);
@@ -84,15 +73,6 @@ namespace Stickman
             return velocity;
         }
 
-        public void SwapState(WeaponState state)
-        {
-            if (state == WeaponState.Attack)
-            {
-                State = WeaponState.Attack;
-                Attack();
-            }
-        }
-
         /*
         public void Melee()
         {
@@ -114,13 +94,5 @@ namespace Stickman
             }
         }
         */
-    }
-
-    public enum WeaponState
-    {
-        Collectible,
-        Active,
-        Equiped,
-        Attack,
     }
 }

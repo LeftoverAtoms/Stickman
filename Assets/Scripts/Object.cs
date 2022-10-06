@@ -32,7 +32,7 @@ namespace Stickman
 
         public virtual bool CanDamage(Object obj)
         {
-            if (Vector2.Dot(LookDirection, obj.LookDirection) < 0f)
+            if (Vector2.Dot(this.LookDirection, obj.LookDirection) < 0f)
             {
                 return true;
             }

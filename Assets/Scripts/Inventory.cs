@@ -8,7 +8,7 @@ namespace Stickman
         public List<Object> Items;
         public Object ActiveItem;
 
-        public int Space = 2;
+        public int Slots = 2;
 
         public Inventory(Character owner)
         {
@@ -18,7 +18,7 @@ namespace Stickman
 
         public bool CanAdd()
         {
-            if (Items.Count < Space)
+            if (Items.Count < Slots)
             {
                 return true;
             }
