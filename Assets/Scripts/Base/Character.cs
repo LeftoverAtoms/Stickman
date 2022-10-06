@@ -5,7 +5,7 @@ namespace Stickman
     public abstract class Character : Object
     {
         public Inventory Inventory;
-        public MoveState MoveState;
+        public MoveState State;
 
         public float JumpHeight;
         public float MaxSlideTime;
@@ -27,12 +27,12 @@ namespace Stickman
         {
             if (IsGrounded)
             {
-                if (MoveState == MoveState.Jumping)
+                if (State == MoveState.Jumping)
                 {
                     Body.AddForce(Vector2.up * JumpHeight, ForceMode2D.Impulse);
                     IsGrounded = false;
                 }
-                if (MoveState == MoveState.Sliding)
+                if (State == MoveState.Sliding)
                 {
                     Collider.offset = new Vector2(0f, -0.375f);
                     Collider.size = new Vector2(BBoxSize.x, BBoxSize.y / 4f);
@@ -131,14 +131,14 @@ namespace Stickman
             switch (state)
             {
                 case MoveState.Running:
-                MoveState = MoveState.Running;
+                State = MoveState.Running;
                 break;
                 case MoveState.Jumping:
-                MoveState = MoveState.Jumping;
+                State = MoveState.Jumping;
                 Animator.SetBool("Jumping", true);
                 break;
                 case MoveState.Sliding:
-                MoveState = MoveState.Sliding;
+                State = MoveState.Sliding;
                 Animator.SetBool("Sliding", true);
                 TimeSinceSlide = 0f;
                 break;

@@ -26,7 +26,7 @@ namespace Stickman
             }
         }
 
-        public void TryThrow()
+        public void Throw()
         {
             if (State == WeaponState.Attack)
                 return;
@@ -51,12 +51,9 @@ namespace Stickman
 
         private void OnTriggerEnter2D(Collider2D collision)
         {
-            bool IsBaseObject = collision.gameObject.TryGetComponent<Object>(out Object obj);
-            bool IsCharacter = collision.gameObject.TryGetComponent<Character>(out Character character);
-
             if (State == WeaponState.Attack)
             {
-                if (IsBaseObject)
+                if (collision.gameObject.TryGetComponent<Object>(out Object obj))
                 {
                     if (LastOwner.CanDamage(obj))
                     {
@@ -69,9 +66,9 @@ namespace Stickman
                     Destroy(this.gameObject);
                 }
             }
-            else if (IsCharacter)
+            else if (collision.gameObject.TryGetComponent<Character>(out Character chr))
             {
-                character.Equip(this);
+                chr.Equip(this);
             }
         }
 
@@ -85,6 +82,15 @@ namespace Stickman
                 velocity.x -= Game.Current.Speed * 0.25f;
             }
             return velocity;
+        }
+
+        public void SwapState(WeaponState state)
+        {
+            if (state == WeaponState.Attack)
+            {
+                State = WeaponState.Attack;
+                Attack();
+            }
         }
 
         /*

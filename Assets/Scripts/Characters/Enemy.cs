@@ -25,7 +25,7 @@ namespace Stickman
             var dist = Vector2.Distance(transform.position, Target.transform.position);
             if (dist <= ThrowRange)
             {
-                ProjectileWeapon?.TryThrow();
+                ProjectileWeapon?.Throw();
             }
         }
     }

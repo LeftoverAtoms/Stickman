@@ -20,7 +20,6 @@ namespace Stickman
         {
             if (Items.Count < Space)
             {
-                UnityEngine.Debug.Log(Items.Count);
                 return true;
             }
             return false;
@@ -29,7 +28,6 @@ namespace Stickman
         public void Add(Object obj)
         {
             Items.Add(obj);
-            UnityEngine.Debug.Log(Items.Count);
         }
 
         public void Remove(Object obj)

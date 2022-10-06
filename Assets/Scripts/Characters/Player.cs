@@ -24,16 +24,16 @@ namespace Stickman
 
             if (Input.GetKeyDown(KeyCode.Space))
             {
-                ProjectileWeapon?.TryThrow();
+                ProjectileWeapon?.Throw();
                 SwapState(MoveState.Attacking);
             }
             if (IsGrounded)
             {
-                if (Input.GetKeyDown(KeyCode.W) && MoveState != MoveState.Jumping)
+                if (Input.GetKeyDown(KeyCode.W) && State != MoveState.Jumping)
                 {
                     SwapState(MoveState.Jumping);
                 }
-                if (Input.GetKey(KeyCode.S) && MoveState != MoveState.Sliding)
+                if (Input.GetKey(KeyCode.S) && State != MoveState.Sliding)
                 {
                     SwapState(MoveState.Sliding);
                 }
