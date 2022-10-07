@@ -19,21 +19,13 @@ namespace Stickman
             }
         }
 
-        public void Throw()
-        {
-            if (State == ItemState.Used)
-                return;
-
-            (Owner as Character)?.Unequip(this);
-            Velocity = GetInitialVelocity();
-            State = ItemState.Used;
-        }
-
         public override void Use()
         {
+            base.Use();
+
             if (Attribute.Type == WeaponType.Projectile)
             {
-                (Owner as Character)?.Unequip(this);
+                Owner.Unequip(this);
                 Velocity = GetInitialVelocity();
             }
         }

@@ -12,12 +12,13 @@ namespace Stickman
             if (State != ItemState.Usable)
                 return;
 
+            Owner.State = CharState.Attacking;
             State = ItemState.Used;
         }
     }
 
     public enum ItemState
     {
-        Usable, Used, Pickupable
+        Usable, Used, Collectable
     }
 }

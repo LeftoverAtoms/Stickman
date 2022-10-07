@@ -33,11 +33,11 @@ namespace Stickman
 
         public static void GiveWeapon(string name, Character character)
         {
-            var wpnAttribute = Resources.Load<ScriptableWeapon>($"ScriptableObjects/Weapons/{name}");
+            var wpnAttribute = Resources.Load<ScriptableItem>($"ScriptableObjects/Weapons/{name}");
 
             var wpn = Instantiate(Weapon, character.transform).GetComponent<Weapon>();
             wpn.Attribute = wpnAttribute;
-            if(!character.Equip(wpn))
+            if (!character.Equip(wpn))
             {
                 Destroy(wpn);
             }

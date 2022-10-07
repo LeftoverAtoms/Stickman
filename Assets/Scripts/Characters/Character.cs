@@ -5,8 +5,8 @@ namespace Stickman
     public abstract class Character : Object
     {
         public Inventory Inventory;
-        public Object ActiveItem;
-        public MoveState State;
+        public Item ActiveItem;
+        public CharState State;
 
         public float JumpHeight;
         public float MaxSlideTime;
@@ -25,12 +25,12 @@ namespace Stickman
         {
             if (IsGrounded)
             {
-                if (State == MoveState.Jumping)
+                if (State == CharState.Jumping)
                 {
                     Body.AddForce(Vector2.up * JumpHeight, ForceMode2D.Impulse);
                     IsGrounded = false;
                 }
-                if (State == MoveState.Sliding)
+                if (State == CharState.Sliding)
                 {
                     Collider.offset = new Vector2(0f, -0.375f);
                     Collider.size = new Vector2(BBoxSize.x, BBoxSize.y / 4f);
@@ -38,7 +38,7 @@ namespace Stickman
                     TimeSinceSlide += Time.deltaTime;
                     if (TimeSinceSlide >= MaxSlideTime)
                     {
-                        SwapState(MoveState.Running);
+                        SwapState(CharState.Running);
                     }
                 }
             }
@@ -58,7 +58,7 @@ namespace Stickman
             {
                 if (contact.normal == Vector2.up)
                 {
-                    SwapState(MoveState.Running);
+                    SwapState(CharState.Running);
                     IsGrounded = true;
                 }
             }
@@ -66,7 +66,7 @@ namespace Stickman
 
         public override bool CanDamage(Object obj)
         {
-            //if (MoveState == MoveState.Sliding)
+            //if (CharState == CharState.Sliding)
             //    return false;
 
             return base.CanDamage(obj);
@@ -94,7 +94,7 @@ namespace Stickman
             obj.Owner = null;
         }
 
-        protected void SwapState(MoveState state)
+        protected void SwapState(CharState state)
         {
             // Reset Animator.
             Animator.SetBool("Jumping", false);
@@ -106,15 +106,15 @@ namespace Stickman
 
             switch (state)
             {
-                case MoveState.Running:
-                State = MoveState.Running;
+                case CharState.Running:
+                State = CharState.Running;
                 break;
-                case MoveState.Jumping:
-                State = MoveState.Jumping;
+                case CharState.Jumping:
+                State = CharState.Jumping;
                 Animator.SetBool("Jumping", true);
                 break;
-                case MoveState.Sliding:
-                State = MoveState.Sliding;
+                case CharState.Sliding:
+                State = CharState.Sliding;
                 Animator.SetBool("Sliding", true);
                 TimeSinceSlide = 0f;
                 break;
@@ -122,7 +122,7 @@ namespace Stickman
         }
     }
 
-    public enum MoveState
+    public enum CharState // I have no idea how this should work.
     {
         Running, Jumping, Sliding, Attacking
     }
