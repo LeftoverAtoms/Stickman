@@ -6,7 +6,7 @@ namespace Stickman
     {
         public Inventory Inventory;
         public Item ActiveItem;
-        public CharState State;
+        public PawnState State;
 
         public float JumpHeight;
         public float MaxSlideTime;
@@ -25,20 +25,20 @@ namespace Stickman
         {
             if (IsGrounded)
             {
-                if (State == CharState.Jumping)
+                if (State == PawnState.Jumping)
                 {
                     Body.AddForce(Vector2.up * JumpHeight, ForceMode2D.Impulse);
                     IsGrounded = false;
                 }
-                if (State == CharState.Sliding)
+                if (State == PawnState.Sliding)
                 {
                     Collider.offset = new Vector2(0f, -0.375f);
                     Collider.size = new Vector2(BBoxSize.x, BBoxSize.y / 4f);
 
-                    TimeSinceSlide += Time.deltaTime;
+                    TimeSinceSlide += Time.fixedDeltaTime;
                     if (TimeSinceSlide >= MaxSlideTime)
                     {
-                        SwapState(CharState.Running);
+                        SwapState(PawnState.Running);
                     }
                 }
             }
@@ -58,7 +58,7 @@ namespace Stickman
             {
                 if (contact.normal == Vector2.up)
                 {
-                    SwapState(CharState.Running);
+                    SwapState(PawnState.Running);
                     IsGrounded = true;
                 }
             }
@@ -66,13 +66,13 @@ namespace Stickman
 
         public override bool CanDamage(Object obj)
         {
-            //if (CharState == CharState.Sliding)
+            //if (PawnState == PawnState.Sliding)
             //    return false;
 
             return base.CanDamage(obj);
         }
 
-        public bool Equip(Object obj) // TODO: Make a class for this.
+        public bool Equip(Item obj)
         {
             if (obj.Owner != null)
                 return false;
@@ -88,41 +88,56 @@ namespace Stickman
             return true;
         }
 
-        public void Unequip(Object obj)
+        public void Unequip(Item obj)
         {
             obj.transform.parent = null;
             obj.Owner = null;
         }
 
-        protected void SwapState(CharState state)
+        protected void SwapState(PawnState state)
         {
-            // Reset Animator.
-            Animator.SetBool("Jumping", false);
-            Animator.SetBool("Sliding", false);
-
-            // Reset Collider.
-            Collider.offset = Vector2.zero;
-            Collider.size = BBoxSize;
-
-            switch (state)
+            // Stop Sliding.
+            if (state != PawnState.Sliding && State == PawnState.Sliding)
             {
-                case CharState.Running:
-                State = CharState.Running;
-                break;
-                case CharState.Jumping:
-                State = CharState.Jumping;
+                // Reset Collider.
+                Collider.offset = Vector2.zero;
+                Collider.size = BBoxSize;
+
+                Animator.SetBool("Sliding", false);
+            }
+            // Stop Jumping.
+            if (state != PawnState.Jumping && State == PawnState.Jumping)
+            {
+                Animator.SetBool("Jumping", false);
+            }
+
+            // Start Running.
+            if (state == PawnState.Running && State != PawnState.Running)
+            {
+                State = PawnState.Running;
+            }
+            // Start Jumping.
+            else if (state == PawnState.Jumping && State != PawnState.Jumping)
+            {
+                State = PawnState.Jumping;
                 Animator.SetBool("Jumping", true);
-                break;
-                case CharState.Sliding:
-                State = CharState.Sliding;
+            }
+            // Start Sliding.
+            else if (state == PawnState.Sliding && State != PawnState.Sliding)
+            {
+                State = PawnState.Sliding;
                 Animator.SetBool("Sliding", true);
                 TimeSinceSlide = 0f;
-                break;
+            }
+            // Start Attacking.
+            else if (state == PawnState.Attacking && State != PawnState.Attacking)
+            {
+
             }
         }
     }
 
-    public enum CharState // I have no idea how this should work.
+    public enum PawnState
     {
         Running, Jumping, Sliding, Attacking
     }

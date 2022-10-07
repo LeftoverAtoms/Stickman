@@ -4,15 +4,16 @@ namespace Stickman
 {
     public class Inventory
     {
-        public Character Owner;
-        public List<Object> Items;
-        public Object ActiveItem;
+        public readonly Character Owner;
+        public readonly int Slots;
 
-        public int Slots = 2;
+        public Item ActiveItem;
+        public List<Item> Items;
 
         public Inventory(Character owner)
         {
-            Items = new List<Object>();
+            Items = new List<Item>();
+            Slots = 2;
             Owner = owner;
         }
 
@@ -25,12 +26,12 @@ namespace Stickman
             return false;
         }
 
-        public void Add(Object obj)
+        public void Add(Item obj)
         {
             Items.Add(obj);
         }
 
-        public void Remove(Object obj)
+        public void Remove(Item obj)
         {
             Owner.Unequip(obj);
             Items.Remove(obj);

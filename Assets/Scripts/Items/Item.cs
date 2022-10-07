@@ -12,7 +12,7 @@ namespace Stickman
             if (State != ItemState.Usable)
                 return;
 
-            Owner.State = CharState.Attacking;
+            Owner.State = PawnState.Attacking;
             State = ItemState.Used;
         }
     }

@@ -10,7 +10,7 @@ namespace Stickman
         {
             if (State == ItemState.Used)
             {
-                if (Attribute.Type == WeaponType.Projectile)
+                if (Attribute.UseType == UseType.Projectile)
                 {
                     Velocity.y -= 9.8f * Time.fixedDeltaTime; // Gravity
                     transform.Translate(Velocity * Time.fixedDeltaTime, Space.World);
@@ -23,7 +23,7 @@ namespace Stickman
         {
             base.Use();
 
-            if (Attribute.Type == WeaponType.Projectile)
+            if (Attribute.UseType == UseType.Projectile)
             {
                 Owner.Unequip(this);
                 Velocity = GetInitialVelocity();

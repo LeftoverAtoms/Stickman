@@ -30,13 +30,13 @@ namespace Stickman
             }
             if (IsGrounded)
             {
-                if (Input.GetKeyDown(KeyCode.W) && State != CharState.Jumping)
+                if (Input.GetKeyDown(KeyCode.W))
                 {
-                    SwapState(CharState.Jumping);
+                    SwapState(PawnState.Jumping);
                 }
-                if (Input.GetKey(KeyCode.S) && State != CharState.Sliding)
+                if (Input.GetKey(KeyCode.S))
                 {
-                    SwapState(CharState.Sliding);
+                    SwapState(PawnState.Sliding);
                 }
             }
         }
