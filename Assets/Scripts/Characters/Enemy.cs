@@ -20,7 +20,7 @@ namespace Stickman
         {
             base.FixedUpdate();
 
-            transform.Translate(Game.Current.Speed * Time.deltaTime * LookDirection);
+            transform.Translate(Game.Speed * Time.deltaTime * LookDirection);
 
             var dist = Vector2.Distance(transform.position, Target.transform.position);
             if (dist <= ThrowRange)

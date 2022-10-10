@@ -43,6 +43,8 @@ namespace Stickman
             }
         }
 
+        public bool HasOwner() => Owner != null;
+
         ///<summary>Basic damage detection, override to add further functionality.</summary>
         public virtual bool CanDamage(Object obj) => Vector2.Dot(this.LookDirection, obj.LookDirection) < 0f;
 

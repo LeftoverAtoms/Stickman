@@ -2,24 +2,18 @@ using UnityEngine;
 
 namespace Stickman
 {
-    public class Game : MonoBehaviour
+    public static class Game
     {
-        // The reference to this class and all it's variables
-        // within that instance can be accessed with this variable.
-        public static Game Current { get; private set; }
+        public static Background Background;
+        public static Player Player;
 
-        // Store class references.
-        public static Background Background { get; private set; }
-        public static Player Player { get; private set; }
-
-        // Prefabs
         public static GameObject[] Groups;
         public static GameObject Weapon;
 
-        public float Speed = 6f;
-        public bool GameHasEnded = false;
+        public static bool IsGameOver = false;
+        public static float Speed = 6f;
 
-        private void Awake()
+        static Game()
         {
             Background = GameObject.FindGameObjectWithTag("Background").GetComponent<Background>();
             Player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
@@ -28,25 +22,24 @@ namespace Stickman
             Weapon = Resources.Load<GameObject>("Prefabs/Weapon");
 
             Enemy.Target = Player;
-            Current = this;
         }
 
-        public static void GiveWeapon(string name, Character character)
+        public static void GiveWeapon(string name, Character chr)
         {
-            var wpnAttribute = Resources.Load<ScriptableItem>($"ScriptableObjects/Weapons/{name}");
+            if (!chr.Inventory.CanAdd()) return;
 
-            var wpn = Instantiate(Weapon, character.transform).GetComponent<Weapon>();
-            wpn.Attribute = wpnAttribute;
-            if (!character.Equip(wpn))
-            {
-                Destroy(wpn);
-            }
+            var item = Resources.Load<ScriptableItem>($"ScriptableObjects/Items/{name}");
+            var obj = UnityEngine.Object.Instantiate(Weapon, chr.transform);
+            var wpn = obj.GetComponent<Weapon>();
+
+            wpn.SetAttributes(item);
+            chr.Equip(wpn, true);
         }
 
         public static void SpawnEnemyDebug()
         {
-            var enemy = Resources.Load<GameObject>("Prefabs/Enemy");
-            Instantiate(enemy, new Vector2(15f, 1f), default).GetComponent<Weapon>();
+            var obj = Resources.Load<GameObject>("Prefabs/Enemy");
+            obj = UnityEngine.Object.Instantiate(obj, new Vector2(15f, 1f), default);
         }
     }
 }

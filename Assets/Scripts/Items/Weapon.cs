@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Stickman
 {
-    public class Weapon : Item
+    public class Weapon : HeldObject
     {
         public Vector2 Velocity;
 
@@ -10,7 +10,7 @@ namespace Stickman
         {
             if (State == ItemState.Used)
             {
-                if (Attribute.UseType == UseType.Projectile)
+                if (Attribute.Behavior == AttributeBehavior.Projectile)
                 {
                     Velocity.y -= 9.8f * Time.fixedDeltaTime; // Gravity
                     transform.Translate(Velocity * Time.fixedDeltaTime, Space.World);
@@ -23,9 +23,9 @@ namespace Stickman
         {
             base.Use();
 
-            if (Attribute.UseType == UseType.Projectile)
+            if (Attribute.Behavior == AttributeBehavior.Projectile)
             {
-                Owner.Unequip(this);
+                Owner?.Unequip(this);
                 Velocity = GetInitialVelocity();
             }
         }
@@ -55,36 +55,41 @@ namespace Stickman
 
         private Vector2 GetInitialVelocity()
         {
-            var velocity = Attribute.LaunchVelocity;
+            var velocity = Attribute.ThrowVelocity;
 
-            if (LookDirection.x < 0) // Vector2.left
+            if (LookDirection.x == Vector2.left.x)
             {
                 velocity.x = -velocity.x;
-                velocity.x -= Game.Current.Speed * 0.25f;
+                velocity.x -= Game.Speed * 0.25f;
             }
             return velocity;
         }
 
-        /*
-        public void Melee()
-        {
-            IsMeleeing = true;
-
-            var hits = Physics2D.RaycastAll(Owner.transform.position, LookDirection, MeleeRange);
-
-            foreach (var hit in hits)
-            {
-                if (hit.collider.gameObject.TryGetComponent(out Character obj))
-                {
-                    if (Owner.IsTeamedWith(obj))
-                    {
-                        Debug.Log(obj.name);
-                        obj.TakeDamage();
-                        break;
-                    }
-                }
-            }
-        }
-        */
+        ///<summary>TODO: This function seems odd, rename or set attribute in constructor?</summary>
+        public void SetAttributes(ScriptableItem attributes) => Attribute = attributes;
     }
 }
+
+
+
+/*
+public void Melee()
+{
+    IsMeleeing = true;
+
+    var hits = Physics2D.RaycastAll(Owner.transform.position, LookDirection, MeleeRange);
+
+    foreach (var hit in hits)
+    {
+        if (hit.collider.gameObject.TryGetComponent(out Character obj))
+        {
+            if (Owner.IsTeamedWith(obj))
+            {
+                Debug.Log(obj.name);
+                obj.TakeDamage();
+                break;
+            }
+        }
+    }
+}
+*/

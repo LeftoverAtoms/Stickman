@@ -4,7 +4,7 @@ namespace Stickman
 {
     public class Obstacle : Object
     {
-        private float InitalXPos = 24f;
+        private readonly float InitalXPos = 24f;
 
         private void Awake()
         {
@@ -14,7 +14,7 @@ namespace Stickman
 
         protected override void FixedUpdate()
         {
-            transform.Translate(LookDirection * Game.Current.Speed * Time.deltaTime);
+            transform.Translate(Game.Speed * Time.deltaTime * LookDirection);
         }
     }
 }

@@ -5,7 +5,7 @@ namespace Stickman
     public class Background : MonoBehaviour
     {
         private Vector2 InitalPos;
-        private float RepeatWidth = 40.96f;
+        private readonly float RepeatWidth = 40.96f;
 
         private void Start()
         {
@@ -14,7 +14,7 @@ namespace Stickman
 
         private void FixedUpdate()
         {
-            transform.Translate(Game.Current.Speed * Time.deltaTime * Vector3.left);
+            transform.Translate(Game.Speed * Time.deltaTime * Vector3.left);
 
             if (transform.position.x < InitalPos.x - RepeatWidth)
             {

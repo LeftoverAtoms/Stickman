@@ -5,7 +5,7 @@ namespace Stickman
     public abstract class Character : Object
     {
         public Inventory Inventory;
-        public Item ActiveItem;
+        public HeldObject ActiveItem;
         public PawnState State;
 
         public float JumpHeight;
@@ -72,24 +72,26 @@ namespace Stickman
             return base.CanDamage(obj);
         }
 
-        public bool Equip(Item obj)
+        public void Equip(HeldObject obj, bool make_active = false)
         {
-            if (obj.Owner != null)
-                return false;
+            if (!Inventory.CanAdd() && obj.HasOwner())
+                return;
 
-            if (!Inventory.CanAdd())
-                return false;
+            if (make_active)
+            {
+                ActiveItem = obj;
+            }
 
             Inventory.Add(obj);
-            obj.transform.parent = transform;
-            obj.LookDirection = LookDirection;
+            obj.transform.parent = this.transform;
+            obj.LookDirection = this.LookDirection;
             obj.Owner = this;
-
-            return true;
         }
 
-        public void Unequip(Item obj)
+        public void Unequip(HeldObject obj, bool throw_object = false)
         {
+            Inventory.Remove(obj);
+            ActiveItem = Inventory.Switch();
             obj.transform.parent = null;
             obj.Owner = null;
         }

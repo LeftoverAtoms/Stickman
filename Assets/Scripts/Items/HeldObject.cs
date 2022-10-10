@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Stickman
 {
-    public class Item : Object
+    public class HeldObject : Object
     {
         public ScriptableItem Attribute;
         public ItemState State;
@@ -12,7 +12,6 @@ namespace Stickman
             if (State != ItemState.Usable)
                 return;
 
-            Owner.State = PawnState.Attacking;
             State = ItemState.Used;
         }
     }

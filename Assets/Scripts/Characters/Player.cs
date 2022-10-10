@@ -26,7 +26,7 @@ namespace Stickman
 
             if (Input.GetKeyDown(KeyCode.Space))
             {
-                ActiveItem.Use();
+                ActiveItem?.Use();
             }
             if (IsGrounded)
             {
@@ -43,7 +43,7 @@ namespace Stickman
 
         public override void OnKilled()
         {
-            Game.Current.GameHasEnded = true;
+            Game.IsGameOver = true;
             gameObject.SetActive(false);
         }
     }
