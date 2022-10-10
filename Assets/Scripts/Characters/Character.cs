@@ -44,26 +44,6 @@ namespace Stickman
             }
         }
 
-        protected virtual void OnCollisionEnter2D(Collision2D collision)
-        {
-            if (collision.gameObject.TryGetComponent<Object>(out Object obj))
-            {
-                if (obj.CanDamage(this))
-                {
-                    this.TakeDamage();
-                }
-            }
-
-            foreach (var contact in collision.contacts)
-            {
-                if (contact.normal == Vector2.up)
-                {
-                    SwapState(PawnState.Running);
-                    IsGrounded = true;
-                }
-            }
-        }
-
         public override bool CanDamage(Object obj)
         {
             //if (PawnState == PawnState.Sliding)
@@ -90,8 +70,7 @@ namespace Stickman
 
         public void Unequip(HeldObject obj, bool throw_object = false)
         {
-            Inventory.Remove(obj);
-            ActiveItem = Inventory.Switch();
+            Inventory.Remove(obj, out ActiveItem);
             obj.transform.parent = null;
             obj.Owner = null;
         }
@@ -137,10 +116,33 @@ namespace Stickman
 
             }
         }
+
+        protected virtual void OnCollisionEnter2D(Collision2D collision)
+        {
+            if (collision.gameObject.TryGetComponent<Object>(out Object obj))
+            {
+
+                Debug.Log(this.name);
+                if (obj.CanDamage(this))
+                {
+                    this.TakeDamage();
+                }
+                else if (obj is HeldObject item)
+                {
+                    this.Equip(item, true);
+                }
+            }
+
+            foreach (var contact in collision.contacts)
+            {
+                if (contact.normal == Vector2.up)
+                {
+                    SwapState(PawnState.Running);
+                    IsGrounded = true;
+                }
+            }
+        }
     }
 
-    public enum PawnState
-    {
-        Running, Jumping, Sliding, Attacking
-    }
+    public enum PawnState {  Running, Jumping, Sliding, Attacking }
 }

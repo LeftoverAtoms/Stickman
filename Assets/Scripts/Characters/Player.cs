@@ -17,7 +17,7 @@ namespace Stickman
             // Debug
             if (Input.GetKeyDown(KeyCode.C))
             {
-                Game.GiveWeapon("Bottle", this);
+                Game.Give("Bottle", this);
             }
             if (Input.GetKeyDown(KeyCode.X))
             {

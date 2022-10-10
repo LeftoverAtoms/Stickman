@@ -8,7 +8,7 @@ namespace Stickman
         public static Player Player;
 
         public static GameObject[] Groups;
-        public static GameObject Weapon;
+        public static GameObject Item;
 
         public static bool IsGameOver = false;
         public static float Speed = 6f;
@@ -19,21 +19,24 @@ namespace Stickman
             Player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
 
             Groups = Resources.LoadAll<GameObject>("Prefabs/Groups");
-            Weapon = Resources.Load<GameObject>("Prefabs/Weapon");
+            Item = Resources.Load<GameObject>("Prefabs/Item");
 
             Enemy.Target = Player;
         }
 
-        public static void GiveWeapon(string name, Character chr)
+        public static void Give(string name, Character chr)
         {
             if (!chr.Inventory.CanAdd()) return;
 
-            var item = Resources.Load<ScriptableItem>($"ScriptableObjects/Items/{name}");
-            var obj = UnityEngine.Object.Instantiate(Weapon, chr.transform);
-            var wpn = obj.GetComponent<Weapon>();
+            var atr = Resources.Load<ScriptableItem>($"ScriptableObjects/Items/{name}");
+            var obj = UnityEngine.Object.Instantiate(Item, chr.transform);
 
-            wpn.SetAttributes(item);
-            chr.Equip(wpn, true);
+            HeldObject item;
+            if (atr.Type == AttributeType.Item) item = obj.AddComponent<HeldObject>();
+            else item = obj.AddComponent<Weapon>();
+
+            item.SetAttributes(atr);
+            chr.Equip(item, true);
         }
 
         public static void SpawnEnemyDebug()

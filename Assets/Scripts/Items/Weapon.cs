@@ -64,9 +64,6 @@ namespace Stickman
             }
             return velocity;
         }
-
-        ///<summary>TODO: This function seems odd, rename or set attribute in constructor?</summary>
-        public void SetAttributes(ScriptableItem attributes) => Attribute = attributes;
     }
 }
 
