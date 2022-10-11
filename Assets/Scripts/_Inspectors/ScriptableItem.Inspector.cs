@@ -8,16 +8,18 @@ namespace Stickman
     {
         public override void OnInspectorGUI()
         {
+            EditorGUI.BeginChangeCheck();
+
             var obj = target as ScriptableItem;
+
             obj.Type = (AttributeType)EditorGUILayout.EnumPopup("Type", obj.Type);
-
-            obj.Sprite = (Sprite)EditorGUILayout.ObjectField("Sprite", obj.Sprite, typeof(Sprite), true);
-
-            //EditorGUI.BeginDisabledGroup(false);
             obj.Behavior = (AttributeBehavior)EditorGUILayout.EnumPopup("Behavior", obj.Behavior);
 
+            obj.Sprite = (Sprite)EditorGUILayout.ObjectField("Sprite", obj.Sprite, typeof(Sprite), false);
+
             obj.ThrowVelocity = EditorGUILayout.Vector2Field("Throw Velocity", obj.ThrowVelocity);
-            //EditorGUI.BeginDisabledGroup(false);
+
+            if (EditorGUI.EndChangeCheck()) EditorUtility.SetDirty(target); // Save Changes.
         }
     }
 }

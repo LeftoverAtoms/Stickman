@@ -14,7 +14,6 @@ namespace Stickman
 
         protected override void Update()
         {
-            // Debug
             if (Input.GetKeyDown(KeyCode.C)) Game.Give("wpn_bottle", this);
             if (Input.GetKeyDown(KeyCode.X)) Game.SpawnEnemyDebug();
 
