@@ -4,8 +4,8 @@ namespace Stickman
 {
     public class Background : MonoBehaviour
     {
-        private Vector2 InitalPos;
         private readonly float RepeatWidth = 40.96f;
+        private Vector2 InitalPos;
 
         private void Start()
         {

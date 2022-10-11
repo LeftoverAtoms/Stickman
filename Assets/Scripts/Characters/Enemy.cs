@@ -14,6 +14,7 @@ namespace Stickman
             base.Start();
             CanRecieveDamage = true;
             LookDirection = Vector2.left;
+            Game.Give("wpn_bottle", this);
         }
 
         protected override void FixedUpdate()

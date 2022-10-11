@@ -11,7 +11,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 28f74698a3c748d49ba73ab420889cf8, type: 3}
   m_Name: wpn_bottle
-  m_EditorClassIdentifier: Assembly-CSharp:Stickman:ScriptableItem
-  Behavior: 0
+  m_EditorClassIdentifier: 
   Type: 1
+  Behavior: 1
   ThrowVelocity: {x: 15, y: 3}

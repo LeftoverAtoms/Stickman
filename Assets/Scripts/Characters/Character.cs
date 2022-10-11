@@ -5,17 +5,19 @@ namespace Stickman
     public abstract class Character : Object
     {
         public Inventory Inventory;
-        public HeldObject ActiveItem;
-        public PawnState State;
+        public Item ActiveItem;
+        public _State State;
 
-        public float JumpHeight;
-        public float MaxSlideTime;
+        protected float JumpHeight;
+        protected float MaxSlideTime;
         private float TimeSinceSlide;
 
         public bool IsGrounded;
 
-        public Character()
+        protected override void Start()
         {
+            base.Start();
+
             Inventory = new Inventory(this);
             JumpHeight = 72f;
             MaxSlideTime = 1f;
@@ -25,34 +27,19 @@ namespace Stickman
         {
             if (IsGrounded)
             {
-                if (State == PawnState.Jumping)
+                if (State == _State.Jumping)
                 {
                     Body.AddForce(Vector2.up * JumpHeight, ForceMode2D.Impulse);
-                    IsGrounded = false;
                 }
-                if (State == PawnState.Sliding)
+                if (State == _State.Sliding)
                 {
-                    Collider.offset = new Vector2(0f, -0.375f);
-                    Collider.size = new Vector2(BBoxSize.x, BBoxSize.y / 4f);
-
                     TimeSinceSlide += Time.fixedDeltaTime;
-                    if (TimeSinceSlide >= MaxSlideTime)
-                    {
-                        SwapState(PawnState.Running);
-                    }
+                    if (TimeSinceSlide >= MaxSlideTime) SwapState(_State.Running);
                 }
             }
         }
 
-        public override bool CanDamage(Object obj)
-        {
-            //if (PawnState == PawnState.Sliding)
-            //    return false;
-
-            return base.CanDamage(obj);
-        }
-
-        public void Equip(HeldObject obj, bool make_active = false)
+        public void Equip(Item obj, bool make_active = false)
         {
             if (!Inventory.CanAdd() && obj.HasOwner())
                 return;
@@ -64,85 +51,80 @@ namespace Stickman
 
             Inventory.Add(obj);
             obj.transform.parent = this.transform;
+            obj.transform.position = this.transform.position;
             obj.LookDirection = this.LookDirection;
             obj.Owner = this;
         }
 
-        public void Unequip(HeldObject obj, bool throw_object = false)
+        public void Unequip(Item obj, bool throw_object = false)
         {
             Inventory.Remove(obj, out ActiveItem);
             obj.transform.parent = null;
             obj.Owner = null;
         }
 
-        protected void SwapState(PawnState state)
+        protected void SwapState(_State state)
         {
-            // Stop Sliding.
-            if (state != PawnState.Sliding && State == PawnState.Sliding)
+            if (state != _State.Sliding && State == _State.Sliding)
             {
-                // Reset Collider.
-                Collider.offset = Vector2.zero;
-                Collider.size = BBoxSize;
-
                 Animator.SetBool("Sliding", false);
+                TimeSinceSlide = 0f;
+
+                Collider.offset = Vector2.zero;
+                BBoxSize = new Vector2(1f, 2f);
             }
-            // Stop Jumping.
-            if (state != PawnState.Jumping && State == PawnState.Jumping)
+            if (state != _State.Jumping && State == _State.Jumping)
             {
                 Animator.SetBool("Jumping", false);
+                IsGrounded = true;
             }
 
-            // Start Running.
-            if (state == PawnState.Running && State != PawnState.Running)
+
+            if (state == _State.Running && State != _State.Running)
             {
-                State = PawnState.Running;
+                State = _State.Running;
             }
-            // Start Jumping.
-            else if (state == PawnState.Jumping && State != PawnState.Jumping)
+            else if (state == _State.Jumping && State != _State.Jumping)
             {
-                State = PawnState.Jumping;
+                State = _State.Jumping;
+
                 Animator.SetBool("Jumping", true);
+                IsGrounded = false;
             }
-            // Start Sliding.
-            else if (state == PawnState.Sliding && State != PawnState.Sliding)
+            else if (state == _State.Sliding && State != _State.Sliding)
             {
-                State = PawnState.Sliding;
+                State = _State.Sliding;
+
                 Animator.SetBool("Sliding", true);
-                TimeSinceSlide = 0f;
+                //TimeSinceSlide = 0f;
+
+                Collider.offset = Vector2.down * 0.65f;
+                BBoxSize = new Vector2(1f, 0.75f);
             }
-            // Start Attacking.
-            else if (state == PawnState.Attacking && State != PawnState.Attacking)
+            else if (state == _State.Attacking && State != _State.Attacking)
             {
 
             }
         }
 
+        public enum _State { Running, Jumping, Sliding, Attacking }
+
         protected virtual void OnCollisionEnter2D(Collision2D collision)
         {
             if (collision.gameObject.TryGetComponent<Object>(out Object obj))
             {
-
-                Debug.Log(this.name);
-                if (obj.CanDamage(this))
-                {
-                    this.TakeDamage();
-                }
-                else if (obj is HeldObject item)
-                {
-                    this.Equip(item, true);
-                }
+                if (obj.CanDamage(this)) this.TakeDamage();
+                else if (obj is Item item) this.Equip(item, true);
             }
 
             foreach (var contact in collision.contacts)
             {
                 if (contact.normal == Vector2.up)
                 {
-                    SwapState(PawnState.Running);
+                    SwapState(_State.Running);
                     IsGrounded = true;
                 }
             }
         }
     }
-
-    public enum PawnState {  Running, Jumping, Sliding, Attacking }
 }

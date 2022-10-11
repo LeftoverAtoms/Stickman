@@ -7,30 +7,43 @@ namespace Stickman
         public Character Owner;
         public Animator Animator;
         public Rigidbody2D Body;
-        public BoxCollider2D Collider;
+        public Collider2D Collider;
+        public SpriteRenderer Renderer;
 
         public bool CanRecieveDamage;
-        public Vector2 BBoxSize, LookDirection;
+        public Vector2 LookDirection;
         public float Health;
 
-        protected virtual void FixedUpdate() { }
-        protected virtual void Update() { }
+        public Vector2 BBoxSize
+        {
+            get
+            {
+                if (Collider is BoxCollider2D box) return box.size;
+                else return Vector2.zero;
+            }
+            set
+            {
+                if (Collider is BoxCollider2D box) BBoxSize = box.size;
+            }
+        }
 
         protected virtual void Start()
         {
             Animator = GetComponent<Animator>();
             Body = GetComponent<Rigidbody2D>();
             Collider = GetComponent<BoxCollider2D>();
+            Renderer = GetComponent<SpriteRenderer>();
 
             Health = 100f;
-
-            if (Collider != null)
-            {
-                BBoxSize = Collider.size;
-            }
         }
 
-        public void TakeDamage(float dmg = 100f)
+        protected virtual void FixedUpdate() { }
+
+        protected virtual void Update() { }
+
+        public virtual bool CanDamage(Object obj) => Vector2.Dot(this.LookDirection, obj.LookDirection) < 0f;
+
+        public virtual void TakeDamage(float dmg = 100f)
         {
             if (CanRecieveDamage)
             {
@@ -43,12 +56,9 @@ namespace Stickman
             }
         }
 
-        public bool HasOwner() => Owner != null;
-
-        ///<summary>Basic damage detection, override to add further functionality.</summary>
-        public virtual bool CanDamage(Object obj) => Vector2.Dot(this.LookDirection, obj.LookDirection) < 0f;
-
         ///<summary>Called when this object has no health remaining.</summary>
         public virtual void OnKilled() => Destroy(gameObject);
+
+        public bool HasOwner() => Owner != null;
     }
 }

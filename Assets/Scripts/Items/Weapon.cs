@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Stickman
 {
-    public class Weapon : HeldObject
+    public class Weapon : Item
     {
         public Vector2 Velocity;
 
@@ -42,10 +42,7 @@ namespace Stickman
                         Destroy(this.gameObject);
                     }
                 }
-                else
-                {
-                    Destroy(this.gameObject);
-                }
+                else Destroy(this.gameObject);
             }
             else if (collision.gameObject.TryGetComponent<Character>(out Character chr))
             {

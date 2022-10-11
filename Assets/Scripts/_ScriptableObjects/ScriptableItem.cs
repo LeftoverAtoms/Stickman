@@ -1,15 +1,15 @@
-using UnityEditor;
 using UnityEngine;
 
 namespace Stickman
 {
-    [CreateAssetMenu(fileName = "UntitledWeapon", menuName = "Item")]
-    public class ScriptableItem : ScriptableObject // Perhaps rename to InventoryObject so the type of object makes more sense.
+    [CreateAssetMenu(fileName = "UntitledItem", menuName = "Item")]
+    public class ScriptableItem : ScriptableObject
     {
-        //////////////////
-        // State Trackers
+        //////////
+        // Global
         public AttributeType Type;
         public AttributeBehavior Behavior;
+        public Sprite Sprite;
 
         ///////////////////
         // Item Attributes
