@@ -1,4 +1,5 @@
 using UnityEngine;
+using System;
 
 namespace Stickman
 {
@@ -24,21 +25,23 @@ namespace Stickman
 
         public static void Give(string name, Character chr)
         {
-            if (!chr.Inventory.CanAdd()) return;
+            if (!chr.Inventory.CanAdd())
+                return;
 
-            var config = Resources.Load<ScriptableItem>($"Items/{name}");
-            var obj = new GameObject("Item");
+            ScriptableItem info = Resources.Load<ScriptableItem>($"Items/{name}");
 
-            Item item;
-            if (config.Type == AttributeType.Item) item = obj.AddComponent<Item>();
-            else item = obj.AddComponent<Weapon>();
+            Type type = null;
+            if (info.Type == ScriptableItem.AttributeType.Weapon) type = typeof(Weapon);
+            else if (info.Type == ScriptableItem.AttributeType.Item) type = typeof(Item);
 
-            item.SetAttributes(config);
+            Item item = new GameObject("Item").AddComponent(type) as Item;
+
+            item.SetAttributes(info);
             chr.Equip(item, true);
         }
 
         // TODO: public static void Spawn(string name, Vector2 pos, [optional equipment]) { }
-        public static void SpawnEnemyDebug()
+        public static void SpawnObject(string name, Vector2 pos)
         {
             var obj = Resources.Load<GameObject>("Prefabs/Enemy");
             UnityEngine.Object.Instantiate(obj, new Vector2(15f, 1f), default);

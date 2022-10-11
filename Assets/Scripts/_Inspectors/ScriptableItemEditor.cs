@@ -12,8 +12,8 @@ namespace Stickman
 
             var obj = target as ScriptableItem;
 
-            obj.Type = (AttributeType)EditorGUILayout.EnumPopup("Type", obj.Type);
-            obj.Behavior = (AttributeBehavior)EditorGUILayout.EnumPopup("Behavior", obj.Behavior);
+            obj.Type = (ScriptableItem.AttributeType)EditorGUILayout.EnumPopup("Type", obj.Type);
+            obj.Behavior = (ScriptableItem.AttributeBehavior)EditorGUILayout.EnumPopup("Behavior", obj.Behavior);
 
             obj.Sprite = (Sprite)EditorGUILayout.ObjectField("Sprite", obj.Sprite, typeof(Sprite), false);
 

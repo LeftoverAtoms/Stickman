@@ -17,8 +17,8 @@ namespace Stickman
         /////////////////////
         // Weapon Attributes
         public Vector2 ThrowVelocity;
-    }
 
-    public enum AttributeBehavior { Melee, Projectile }
-    public enum AttributeType { Item, Weapon }
+        public enum AttributeBehavior { Melee, Projectile }
+        public enum AttributeType { Item, Weapon }
+    }
 }
