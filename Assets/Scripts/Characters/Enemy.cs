@@ -11,12 +11,9 @@ namespace Stickman
 
         protected override void Start()
         {
-            Animator = gameObject.AddComponent<Animator>();
-            Body = gameObject.AddComponent<Rigidbody2D>();
-            Collider = gameObject.AddComponent<BoxCollider2D>();
-            Renderer = gameObject.AddComponent<SpriteRenderer>();
-
             base.Start();
+
+            Renderer.flipX = true; // TODO: Fix Error
 
             CanRecieveDamage = true;
             LookDirection = Vector2.left;

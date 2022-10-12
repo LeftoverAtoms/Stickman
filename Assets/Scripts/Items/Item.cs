@@ -13,12 +13,11 @@ namespace Stickman
             circle.isTrigger = true;
             circle.radius = 0.5f;
             Collider = circle;
-            Renderer = gameObject.AddComponent<SpriteRenderer>();
-            Renderer.sortingOrder = 1;
 
-            Health = 100f;
+            base.Start();
 
             Renderer.sprite = Attribute.Sprite;
+            Renderer.sortingOrder = 1;
         }
 
         public virtual void Use()

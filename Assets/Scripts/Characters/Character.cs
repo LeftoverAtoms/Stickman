@@ -65,7 +65,10 @@ namespace Stickman
 
         protected void SwapState(_State state)
         {
-            if (state != _State.Sliding && State == _State.Sliding)
+            if (state == State)
+                return;
+
+            if (State == _State.Sliding && state != _State.Sliding)
             {
                 Animator.SetBool("Sliding", false);
                 TimeSinceSlide = 0f;
@@ -73,25 +76,24 @@ namespace Stickman
                 Collider.offset = Vector2.zero;
                 BBoxSize = new Vector2(1f, 2f);
             }
-            if (state != _State.Jumping && State == _State.Jumping)
+            if (State == _State.Jumping && state != _State.Jumping)
             {
                 Animator.SetBool("Jumping", false);
-                IsGrounded = true;
             }
 
 
-            if (state == _State.Running && State != _State.Running)
+            if (state == _State.Running)
             {
                 State = _State.Running;
             }
-            else if (state == _State.Jumping && State != _State.Jumping)
+            if (state == _State.Jumping)
             {
                 State = _State.Jumping;
 
                 Animator.SetBool("Jumping", true);
                 IsGrounded = false;
             }
-            else if (state == _State.Sliding && State != _State.Sliding)
+            if (state == _State.Sliding)
             {
                 State = _State.Sliding;
 
@@ -101,7 +103,7 @@ namespace Stickman
                 Collider.offset = Vector2.down * 0.65f;
                 BBoxSize = new Vector2(1f, 0.75f);
             }
-            else if (state == _State.Attacking && State != _State.Attacking)
+            if (state == _State.Attacking)
             {
 
             }

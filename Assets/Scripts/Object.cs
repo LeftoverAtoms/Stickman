@@ -29,10 +29,10 @@ namespace Stickman
 
         protected virtual void Start()
         {
-            Animator = GetComponent<Animator>();
-            Body = GetComponent<Rigidbody2D>();
-            Collider = GetComponent<BoxCollider2D>();
-            Renderer = GetComponent<SpriteRenderer>();
+            if (!gameObject.GetComponent<Animator>()) Animator = gameObject.AddComponent<Animator>();
+            if (!gameObject.GetComponent<Rigidbody2D>()) Body = gameObject.AddComponent<Rigidbody2D>();
+            if (!gameObject.GetComponent<Collider2D>()) Collider = gameObject.AddComponent<BoxCollider2D>();
+            if (!gameObject.GetComponent<SpriteRenderer>()) Renderer = gameObject.AddComponent<SpriteRenderer>();
 
             Health = 100f;
         }

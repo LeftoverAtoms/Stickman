@@ -15,7 +15,7 @@ namespace Stickman
         protected override void Update()
         {
             if (Input.GetKeyDown(KeyCode.C)) Game.Give("wpn_bottle", this);
-            if (Input.GetKeyDown(KeyCode.X)) Game.SpawnObject("enemy", Vector2.right * 16f);
+            if (Input.GetKeyDown(KeyCode.X)) Game.Spawn(typeof(Enemy), Vector2.right * 16f);
 
             if (Input.GetKeyDown(KeyCode.Space)) ActiveItem?.Use();
 
