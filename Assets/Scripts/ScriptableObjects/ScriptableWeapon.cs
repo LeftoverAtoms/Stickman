@@ -8,9 +8,16 @@ namespace Stickman
     {
         public override Type Type => typeof(Weapon);
 
+        // [Shared]
         public e_Behavior Behavior;
+        public float Damage;
 
+        // [Projectile]
         public Vector2 ThrowVelocity;
+
+        // [Melee]
+
+
 
         public enum e_Behavior { Melee, Projectile }
     }

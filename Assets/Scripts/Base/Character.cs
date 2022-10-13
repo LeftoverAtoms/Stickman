@@ -4,6 +4,8 @@ namespace Stickman
 {
     public abstract class Character : Object
     {
+        private ScriptableCharacter Attribute;
+
         public Inventory Inventory;
         public Item ActiveItem;
         public e_State State;
@@ -108,6 +110,8 @@ namespace Stickman
 
             }
         }
+
+        public void SetAttributes(ScriptableCharacter attributes) => Attribute = attributes;
 
         public enum e_State { Running, Jumping, Sliding, Attacking }
 

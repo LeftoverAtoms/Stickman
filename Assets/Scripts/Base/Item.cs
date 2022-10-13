@@ -4,6 +4,8 @@ namespace Stickman
 {
     public class Item : Object
     {
+        private ScriptableItem Attribute;
+
         public ItemState State;
 
         protected override void Start()
@@ -20,7 +22,7 @@ namespace Stickman
                 circle.radius = 0.5f;
             }
 
-            Renderer.sprite = BaseAttribute.Sprite;
+            Renderer.sprite = Attribute.Sprite;
             Renderer.sortingOrder = 1;
         }
 
@@ -31,6 +33,8 @@ namespace Stickman
 
             State = ItemState.Used;
         }
+
+        public void SetAttributes(ScriptableItem attributes) => Attribute = attributes;
     }
 
     public enum ItemState { Usable, Used, Collectable }

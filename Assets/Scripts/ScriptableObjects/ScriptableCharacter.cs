@@ -9,6 +9,7 @@ namespace Stickman
         public override Type Type => typeof(Character);
 
         // [Shared]
+        public ScriptableItem[] Item; // Maybe switch to loadout.
         public float Speed;
 
         // [Player]

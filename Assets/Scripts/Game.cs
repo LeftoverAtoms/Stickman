@@ -54,7 +54,7 @@ namespace Stickman
 
             var obj = new GameObject(info.Type.Name);
             obj.transform.position = pos;
-            var cmp = obj.AddComponent(info.Type) as Object;
+            var cmp = obj.AddComponent(info.Type) as Object; // TODO: Typeof(scriptableobject type)!!!
             cmp.SetAttributes(info);
 
             return obj;

@@ -4,7 +4,7 @@ namespace Stickman
 {
     public class Object : MonoBehaviour
     {
-        public ScriptableObject BaseAttribute;
+        private ScriptableObject Attribute;
 
         public Character Owner;
         public Animator Animator;
@@ -43,7 +43,7 @@ namespace Stickman
 
         protected virtual void Update() { }
 
-        public void SetAttributes(ScriptableObject attributes) => BaseAttribute = attributes;
+        public void SetAttributes(ScriptableObject attributes) => Attribute = attributes;
 
         public virtual bool CanDamage(Object obj) => Vector2.Dot(this.LookDirection, obj.LookDirection) < 0f;
 

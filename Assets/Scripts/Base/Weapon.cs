@@ -11,8 +11,6 @@ namespace Stickman
         protected override void Start()
         {
             base.Start();
-
-            Attribute = BaseAttribute as ScriptableWeapon;
         }
 
         protected override void FixedUpdate()
@@ -70,6 +68,8 @@ namespace Stickman
             }
             return velocity;
         }
+
+        public void SetAttributes(ScriptableWeapon attributes) => Attribute = attributes;
     }
 }
 

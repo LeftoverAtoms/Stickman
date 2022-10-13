@@ -9,7 +9,7 @@ namespace Stickman
         private void Awake()
         {
             transform.position = new Vector2(InitalXPos, transform.position.y); // Prefabs will fix this
-            LookDirection = Vector3.left;
+            LookDirection = Vector2.left;
         }
 
         protected override void FixedUpdate()
