@@ -15,14 +15,14 @@ namespace Stickman
         protected override void Update()
         {
             if (Input.GetKeyDown(KeyCode.C)) Game.Give("wpn_bottle", this);
-            if (Input.GetKeyDown(KeyCode.X)) Game.Spawn(typeof(Enemy), Vector2.right * 16f);
+            if (Input.GetKeyDown(KeyCode.X)) Game.Spawn("Enemy", Vector2.right * 16f);
 
             if (Input.GetKeyDown(KeyCode.Space)) ActiveItem?.Use();
 
             if (IsGrounded)
             {
-                if (Input.GetKeyDown(KeyCode.W)) SwapState(_State.Jumping);
-                if (Input.GetKey(KeyCode.S)) SwapState(_State.Sliding);
+                if (Input.GetKeyDown(KeyCode.W)) SwapState(e_State.Jumping);
+                if (Input.GetKey(KeyCode.S)) SwapState(e_State.Sliding);
             }
         }
 

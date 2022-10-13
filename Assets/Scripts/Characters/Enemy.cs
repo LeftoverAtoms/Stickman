@@ -13,7 +13,7 @@ namespace Stickman
         {
             base.Start();
 
-            Renderer.flipX = true; // TODO: Fix Error
+            //Renderer.flipX = true; // TODO: Fix Error
 
             CanRecieveDamage = true;
             LookDirection = Vector2.left;

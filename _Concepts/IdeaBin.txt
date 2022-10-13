@@ -1,0 +1,3 @@
+Can the Player and Enemy Class be merged into the Character Class or is that too broad?
+
+Obstacle => Hazard but then Enemies can be considered Hazards...

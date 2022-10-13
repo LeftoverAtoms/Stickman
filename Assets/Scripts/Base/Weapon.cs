@@ -4,13 +4,22 @@ namespace Stickman
 {
     public class Weapon : Item
     {
+        private ScriptableWeapon Attribute;
+
         public Vector2 Velocity;
+
+        protected override void Start()
+        {
+            base.Start();
+
+            Attribute = BaseAttribute as ScriptableWeapon;
+        }
 
         protected override void FixedUpdate()
         {
             if (State == ItemState.Used)
             {
-                if (Attribute.Behavior == ScriptableItem.AttributeBehavior.Projectile)
+                if (Attribute.Behavior == ScriptableWeapon.e_Behavior.Projectile)
                 {
                     Velocity.y -= 9.8f * Time.fixedDeltaTime; // Gravity
                     transform.Translate(Velocity * Time.fixedDeltaTime, Space.World);
@@ -23,7 +32,7 @@ namespace Stickman
         {
             base.Use();
 
-            if (Attribute.Behavior == ScriptableItem.AttributeBehavior.Projectile)
+            if (Attribute.Behavior == ScriptableWeapon.e_Behavior.Projectile)
             {
                 Owner?.Unequip(this);
                 Velocity = GetInitialVelocity();

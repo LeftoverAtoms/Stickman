@@ -6,7 +6,7 @@ namespace Stickman
     {
         public Inventory Inventory;
         public Item ActiveItem;
-        public _State State;
+        public e_State State;
 
         protected float JumpHeight;
         protected float MaxSlideTime;
@@ -27,14 +27,14 @@ namespace Stickman
         {
             if (IsGrounded)
             {
-                if (State == _State.Jumping)
+                if (State == e_State.Jumping)
                 {
                     Body.AddForce(Vector2.up * JumpHeight, ForceMode2D.Impulse);
                 }
-                if (State == _State.Sliding)
+                if (State == e_State.Sliding)
                 {
                     TimeSinceSlide += Time.fixedDeltaTime;
-                    if (TimeSinceSlide >= MaxSlideTime) SwapState(_State.Running);
+                    if (TimeSinceSlide >= MaxSlideTime) SwapState(e_State.Running);
                 }
             }
         }
@@ -63,12 +63,12 @@ namespace Stickman
             obj.Owner = null;
         }
 
-        protected void SwapState(_State state)
+        protected void SwapState(e_State state)
         {
             if (state == State)
                 return;
 
-            if (State == _State.Sliding && state != _State.Sliding)
+            if (State == e_State.Sliding && state != e_State.Sliding)
             {
                 Animator.SetBool("Sliding", false);
                 TimeSinceSlide = 0f;
@@ -76,26 +76,26 @@ namespace Stickman
                 Collider.offset = Vector2.zero;
                 BBoxSize = new Vector2(1f, 2f);
             }
-            if (State == _State.Jumping && state != _State.Jumping)
+            if (State == e_State.Jumping && state != e_State.Jumping)
             {
                 Animator.SetBool("Jumping", false);
             }
 
 
-            if (state == _State.Running)
+            if (state == e_State.Running)
             {
-                State = _State.Running;
+                State = e_State.Running;
             }
-            if (state == _State.Jumping)
+            if (state == e_State.Jumping)
             {
-                State = _State.Jumping;
+                State = e_State.Jumping;
 
                 Animator.SetBool("Jumping", true);
                 IsGrounded = false;
             }
-            if (state == _State.Sliding)
+            if (state == e_State.Sliding)
             {
-                State = _State.Sliding;
+                State = e_State.Sliding;
 
                 Animator.SetBool("Sliding", true);
                 //TimeSinceSlide = 0f;
@@ -103,13 +103,13 @@ namespace Stickman
                 Collider.offset = Vector2.down * 0.65f;
                 BBoxSize = new Vector2(1f, 0.75f);
             }
-            if (state == _State.Attacking)
+            if (state == e_State.Attacking)
             {
 
             }
         }
 
-        public enum _State { Running, Jumping, Sliding, Attacking }
+        public enum e_State { Running, Jumping, Sliding, Attacking }
 
         protected virtual void OnCollisionEnter2D(Collision2D collision)
         {
@@ -123,7 +123,7 @@ namespace Stickman
             {
                 if (contact.normal == Vector2.up)
                 {
-                    SwapState(_State.Running);
+                    SwapState(e_State.Running);
                     IsGrounded = true;
                 }
             }
