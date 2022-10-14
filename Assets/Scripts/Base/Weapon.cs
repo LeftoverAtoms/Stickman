@@ -6,20 +6,22 @@ namespace Stickman
 {
     public class Weapon : Item
     {
-        private ScriptableWeapon Attribute;
+        public ScriptableWeapon WeaponAttribute;
 
         public Vector2 Velocity;
 
         protected override void Start()
         {
             base.Start();
+
+            WeaponAttribute = Attribute as ScriptableWeapon;
         }
 
         protected override void FixedUpdate()
         {
-            if (State == ItemState.Used)
+            if (State == e_ItemState.Used)
             {
-                if (Attribute.Behavior == ScriptableWeapon.e_Behavior.Projectile)
+                if (WeaponAttribute.Behavior == ScriptableWeapon.e_Behavior.Projectile)
                 {
                     Velocity.y -= 9.8f * Time.fixedDeltaTime; // Gravity
                     transform.Translate(Velocity * Time.fixedDeltaTime, Space.World);
@@ -32,7 +34,7 @@ namespace Stickman
         {
             base.Use();
 
-            if (Attribute.Behavior == ScriptableWeapon.e_Behavior.Projectile)
+            if (WeaponAttribute.Behavior == ScriptableWeapon.e_Behavior.Projectile)
             {
                 Owner?.Unequip(this);
                 Velocity = GetInitialVelocity();
@@ -41,7 +43,7 @@ namespace Stickman
 
         private void OnTriggerEnter2D(Collider2D collision)
         {
-            if (State == ItemState.Used)
+            if (State == e_ItemState.Used)
             {
                 if (collision.gameObject.TryGetComponent<Object>(out Object obj))
                 {
@@ -61,7 +63,7 @@ namespace Stickman
 
         private Vector2 GetInitialVelocity()
         {
-            var velocity = Attribute.ThrowVelocity;
+            var velocity = WeaponAttribute.ThrowVelocity;
 
             if (LookDirection.x == Vector2.left.x)
             {
@@ -70,8 +72,6 @@ namespace Stickman
             }
             return velocity;
         }
-
-        public void SetAttributes(ScriptableWeapon attributes) => Attribute = attributes;
 
         /*
         public void Melee()

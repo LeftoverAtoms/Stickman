@@ -6,7 +6,7 @@ namespace Stickman
 {
     public abstract class Character : Object
     {
-        private ScriptableCharacter Attribute;
+        public ScriptableCharacter CharacterAttribute;
 
         public Inventory Inventory;
         public Item ActiveItem;
@@ -22,6 +22,7 @@ namespace Stickman
         {
             base.Start();
 
+            CharacterAttribute = Attribute as ScriptableCharacter;
             Inventory = new Inventory(this);
             JumpHeight = 72f;
             MaxSlideTime = 1f;
@@ -45,7 +46,7 @@ namespace Stickman
 
         public void Equip(Item obj, bool make_active = false)
         {
-            if (!Inventory.CanAdd() && obj.HasOwner())
+            if (!Inventory.CanAdd() || obj.HasOwner())
                 return;
 
             if (make_active)
@@ -67,6 +68,26 @@ namespace Stickman
             obj.Owner = null;
         }
 
+        protected virtual void OnCollisionEnter2D(Collision2D collision)
+        {
+            if (collision.gameObject.TryGetComponent<Object>(out Object obj))
+            {
+                if (obj.CanDamage(this)) this.TakeDamage();
+                else if (obj is Item item) this.Equip(item, true);
+            }
+
+            foreach (var contact in collision.contacts)
+            {
+                if (contact.normal == Vector2.up)
+                {
+                    SwapState(e_State.Running);
+                    IsGrounded = true;
+                }
+            }
+        }
+
+        // Note: Look into bitwise operations, this would drastically
+        // simplify the character states even more so.
         protected void SwapState(e_State state)
         {
             if (state == State)
@@ -113,27 +134,7 @@ namespace Stickman
             }
         }
 
-        public void SetAttributes(ScriptableCharacter attributes) => Attribute = attributes;
-
         public enum e_State { Running, Jumping, Sliding, Attacking }
-
-        protected virtual void OnCollisionEnter2D(Collision2D collision)
-        {
-            if (collision.gameObject.TryGetComponent<Object>(out Object obj))
-            {
-                if (obj.CanDamage(this)) this.TakeDamage();
-                else if (obj is Item item) this.Equip(item, true);
-            }
-
-            foreach (var contact in collision.contacts)
-            {
-                if (contact.normal == Vector2.up)
-                {
-                    SwapState(e_State.Running);
-                    IsGrounded = true;
-                }
-            }
-        }
     }
 
     [CreateAssetMenu(fileName = "UntitledCharacter", menuName = "ScriptableObject/Character")]
@@ -142,7 +143,7 @@ namespace Stickman
         public override Type Type => typeof(Character);
 
         // [Shared]
-        public ScriptableItem[] Item; // Maybe switch to loadout.
+        //public ScriptableItem Item; // Could use inventory system.
         public float Speed;
 
         // [Player]

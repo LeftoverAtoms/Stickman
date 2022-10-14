@@ -6,7 +6,7 @@ namespace Stickman
 {
     public class Object : MonoBehaviour
     {
-        private ScriptableObject Attribute;
+        public ScriptableObject Attribute;
 
         public Character Owner;
         public Animator Animator;
@@ -62,7 +62,6 @@ namespace Stickman
             }
         }
 
-        ///<summary>Called when this object has no health remaining.</summary>
         public virtual void OnKilled() => Destroy(gameObject);
 
         public bool HasOwner() => Owner != null;

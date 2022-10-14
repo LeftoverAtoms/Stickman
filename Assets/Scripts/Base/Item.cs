@@ -6,15 +6,17 @@ namespace Stickman
 {
     public class Item : Object
     {
-        private ScriptableItem Attribute;
+        public ScriptableItem ItemAttribute;
 
-        public ItemState State;
+        public e_ItemState State;
 
         protected override void Start()
         {
             Collider = gameObject.AddComponent<CircleCollider2D>();
 
             base.Start();
+
+            ItemAttribute = Attribute as ScriptableItem;
 
             Body.isKinematic = true;
 
@@ -30,16 +32,14 @@ namespace Stickman
 
         public virtual void Use()
         {
-            if (State != ItemState.Usable)
+            if (State != e_ItemState.Usable)
                 return;
 
-            State = ItemState.Used;
+            State = e_ItemState.Used;
         }
 
-        public void SetAttributes(ScriptableItem attributes) => Attribute = attributes;
+        public enum e_ItemState { Usable, Used, Collectable }
     }
-
-    public enum ItemState { Usable, Used, Collectable }
 
     [CreateAssetMenu(fileName = "UntitledItem", menuName = "ScriptableObject/Item")]
     public class ScriptableItem : ScriptableObject

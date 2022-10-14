@@ -1,3 +1,3 @@
-Can the Player and Enemy Class be merged into the Character Class or is that too broad?
+Inventory.Objects[0] contains the fists by default and cannot be overriden by other objects.
 
-Obstacle => Hazard but then Enemies can be considered Hazards...
+Rename Obstacle to Hazard.
