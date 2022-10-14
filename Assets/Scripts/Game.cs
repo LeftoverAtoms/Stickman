@@ -52,7 +52,7 @@ namespace Stickman
             if (info == null)
                 return null;
 
-            var obj = new GameObject(info.Type.Name);
+            var obj = new GameObject(info.Name);
             obj.transform.position = pos;
             var cmp = obj.AddComponent(info.Type) as Object; // TODO: Typeof(scriptableobject type)!!!
             cmp.SetAttributes(info);

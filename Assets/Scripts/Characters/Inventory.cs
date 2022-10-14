@@ -16,7 +16,7 @@ namespace Stickman
             Slots = 2;
         }
 
-        public bool CanAdd() => Objects.Count < Slots;
+        public bool CanAdd() => Objects.Count + 1 < Slots;
 
         public void Add(Item obj)
         {
@@ -25,6 +25,12 @@ namespace Stickman
 
         public void Remove(Item obj, out Item next)
         {
+            if (obj == Objects[0])
+            {
+                next = Objects[0];
+                return;
+            }
+
             Objects.Remove(obj);
 
             if (Objects.Count > 0) next = Objects[0];

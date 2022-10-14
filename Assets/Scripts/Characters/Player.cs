@@ -10,11 +10,13 @@ namespace Stickman
 
             CanRecieveDamage = true;
             LookDirection = Vector2.right;
+
+            Game.Give("Fists", this);
         }
 
         protected override void Update()
         {
-            if (Input.GetKeyDown(KeyCode.C)) Game.Give("wpn_bottle", this);
+            if (Input.GetKeyDown(KeyCode.C)) Game.Give("Bottle", this);
             if (Input.GetKeyDown(KeyCode.X)) Game.Spawn("Enemy", Vector2.right * 16f);
 
             if (Input.GetKeyDown(KeyCode.Space)) ActiveItem?.Use();
