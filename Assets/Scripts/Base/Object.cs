@@ -27,16 +27,18 @@ namespace Stickman
             }
             set
             {
-                if (Collider is BoxCollider2D box) BBoxSize = box.size;
+                if (Collider is BoxCollider2D box) box.size = BBoxSize;
             }
         }
 
         protected virtual void Start()
         {
-            if (!gameObject.GetComponent<Animator>()) Animator = gameObject.AddComponent<Animator>();
-            if (!gameObject.GetComponent<Rigidbody2D>()) Body = gameObject.AddComponent<Rigidbody2D>();
-            if (!gameObject.GetComponent<Collider2D>()) Collider = gameObject.AddComponent<BoxCollider2D>();
-            if (!gameObject.GetComponent<SpriteRenderer>()) Renderer = gameObject.AddComponent<SpriteRenderer>();
+            if (Animator == null) Animator = gameObject.GetComponent<Animator>();
+            if (Body == null) Body = gameObject.TryGetComponent(out Rigidbody2D RB) ? RB : gameObject.AddComponent<Rigidbody2D>();
+            if (Collider == null) Collider = gameObject.TryGetComponent(out Collider2D C) ? C : gameObject.AddComponent<BoxCollider2D>();
+            if (Renderer == null) Renderer = gameObject.TryGetComponent(out SpriteRenderer SR) ? SR : gameObject.AddComponent<SpriteRenderer>();
+
+            Body.isKinematic = true;
 
             Health = 100f;
         }
@@ -67,18 +69,7 @@ namespace Stickman
         public bool HasOwner() => Owner != null;
     }
 
-    [CreateAssetMenu(fileName = "UntitledObject", menuName = "ScriptableObject/Object")]
-    public class ScriptableObject : UnityEngine.ScriptableObject
-    {
-        public virtual Type Type => typeof(Object);
-
-        // Note: Enumerators could be used for things like the name and sprite of an object.
-
-        public string Name;
-        public Vector2Int LookDirection; // Could be delegated to mouse cursor or current target.
-        public Sprite Sprite;
-    }
-
+    /*
     [CustomEditor(typeof(ScriptableObject))]
     public class ObjectEditor : Editor
     {
@@ -101,4 +92,5 @@ namespace Stickman
             obj.Sprite = EditorGUILayout.ObjectField("Sprite:", obj.Sprite, typeof(Sprite), false) as Sprite;
         }
     }
+    */
 }

@@ -18,13 +18,8 @@ namespace Stickman
 
             ItemAttribute = Attribute as ScriptableItem;
 
-            Body.isKinematic = true;
-
-            if (Collider is CircleCollider2D circle)
-            {
-                circle.isTrigger = true;
-                circle.radius = 0.5f;
-            }
+            (Collider as CircleCollider2D).radius = 0.5f;
+            Collider.isTrigger = true;
 
             Renderer.sprite = Attribute.Sprite;
             Renderer.sortingOrder = 1;
@@ -32,19 +27,10 @@ namespace Stickman
 
         public virtual void Use()
         {
-            if (State != e_ItemState.Usable)
-                return;
-
-            State = e_ItemState.Used;
+            if (State == e_ItemState.Usable) State = e_ItemState.Used;
         }
 
         public enum e_ItemState { Usable, Used, Collectable }
-    }
-
-    [CreateAssetMenu(fileName = "UntitledItem", menuName = "ScriptableObject/Item")]
-    public class ScriptableItem : ScriptableObject
-    {
-        public override Type Type => typeof(Item);
     }
 
     /*

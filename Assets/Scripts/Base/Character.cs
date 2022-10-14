@@ -23,9 +23,12 @@ namespace Stickman
             base.Start();
 
             CharacterAttribute = Attribute as ScriptableCharacter;
+
             Inventory = new Inventory(this);
             JumpHeight = 72f;
             MaxSlideTime = 1f;
+
+            Game.Give("Fists", this);
         }
 
         protected override void FixedUpdate()
@@ -135,23 +138,6 @@ namespace Stickman
         }
 
         public enum e_State { Running, Jumping, Sliding, Attacking }
-    }
-
-    [CreateAssetMenu(fileName = "UntitledCharacter", menuName = "ScriptableObject/Character")]
-    public class ScriptableCharacter : ScriptableObject
-    {
-        public override Type Type => typeof(Character);
-
-        // [Shared]
-        //public ScriptableItem Item; // Could use inventory system.
-        public float Speed;
-
-        // [Player]
-        public float JumpHeight;
-        public float SlideTime;
-
-        // [Enemy]
-        public float TargetRange;
     }
 
     /*

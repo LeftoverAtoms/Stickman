@@ -42,6 +42,7 @@ namespace Stickman
             ScriptableObject info = null;
             foreach (var file in Resources.LoadAll<ScriptableObject>("ScriptableObjects"))
             {
+                Debug.Log(file.name);
                 if (file.name == name)
                 {
                     info = file;

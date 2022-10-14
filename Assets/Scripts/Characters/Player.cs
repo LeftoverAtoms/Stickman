@@ -10,8 +10,6 @@ namespace Stickman
 
             CanRecieveDamage = true;
             LookDirection = Vector2.right;
-
-            Game.Give("Fists", this);
         }
 
         protected override void Update()
