@@ -1,3 +1,5 @@
+using System;
+using UnityEditor;
 using UnityEngine;
 
 namespace Stickman
@@ -38,4 +40,27 @@ namespace Stickman
     }
 
     public enum ItemState { Usable, Used, Collectable }
+
+    [CreateAssetMenu(fileName = "UntitledItem", menuName = "ScriptableObject/Item")]
+    public class ScriptableItem : ScriptableObject
+    {
+        public override Type Type => typeof(Item);
+    }
+
+    /*
+    [CustomEditor(typeof(ScriptableItem))]
+    public class ItemEditor : Editor
+    {
+        public override void OnInspectorGUI()
+        {
+            EditorGUI.BeginChangeCheck();
+
+            var obj = target as ScriptableItem;
+            ObjectEditor.CreateObjectFields(obj);
+
+            if (EditorGUI.EndChangeCheck())
+                EditorUtility.SetDirty(target); // Save Changes.
+        }
+    }
+    */
 }

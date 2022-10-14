@@ -1,3 +1,5 @@
+using System;
+using UnityEditor;
 using UnityEngine;
 
 namespace Stickman
@@ -70,29 +72,63 @@ namespace Stickman
         }
 
         public void SetAttributes(ScriptableWeapon attributes) => Attribute = attributes;
-    }
-}
 
-
-
-/*
-public void Melee()
-{
-    IsMeleeing = true;
-
-    var hits = Physics2D.RaycastAll(Owner.transform.position, LookDirection, MeleeRange);
-
-    foreach (var hit in hits)
-    {
-        if (hit.collider.gameObject.TryGetComponent(out Character obj))
+        /*
+        public void Melee()
         {
-            if (Owner.IsTeamedWith(obj))
+            IsMeleeing = true;
+
+            var hits = Physics2D.RaycastAll(Owner.transform.position, LookDirection, MeleeRange);
+
+            foreach (var hit in hits)
             {
-                Debug.Log(obj.name);
-                obj.TakeDamage();
-                break;
+                if (hit.collider.gameObject.TryGetComponent(out Character obj))
+                {
+                    if (Owner.IsTeamedWith(obj))
+                    {
+                        Debug.Log(obj.name);
+                        obj.TakeDamage();
+                        break;
+                    }
+                }
             }
         }
+        */
     }
+
+    [CreateAssetMenu(fileName = "UntitledWeapon", menuName = "ScriptableObject/Weapon")]
+    public class ScriptableWeapon : ScriptableItem
+    {
+        public override Type Type => typeof(Weapon);
+
+        // [Shared]
+        public e_Behavior Behavior;
+        public float Damage;
+
+        // [Projectile]
+        public Vector2 ThrowVelocity;
+
+        // [Melee]
+
+
+
+        public enum e_Behavior { Melee, Projectile }
+    }
+
+    /*
+    [CustomEditor(typeof(ScriptableWeapon))]
+    public class WeaponEditor : Editor
+    {
+        public override void OnInspectorGUI()
+        {
+            EditorGUI.BeginChangeCheck();
+
+            var obj = target as ScriptableWeapon;
+            ObjectEditor.CreateObjectFields(obj);
+
+            if (EditorGUI.EndChangeCheck())
+                EditorUtility.SetDirty(target); // Save Changes.
+        }
+    }
+    */
 }
-*/

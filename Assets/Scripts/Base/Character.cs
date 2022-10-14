@@ -1,3 +1,5 @@
+using System;
+using UnityEditor;
 using UnityEngine;
 
 namespace Stickman
@@ -133,4 +135,41 @@ namespace Stickman
             }
         }
     }
+
+    [CreateAssetMenu(fileName = "UntitledCharacter", menuName = "ScriptableObject/Character")]
+    public class ScriptableCharacter : ScriptableObject
+    {
+        public override Type Type => typeof(Character);
+
+        // [Shared]
+        public ScriptableItem[] Item; // Maybe switch to loadout.
+        public float Speed;
+
+        // [Player]
+        public float JumpHeight;
+        public float SlideTime;
+
+        // [Enemy]
+        public float TargetRange;
+    }
+
+    /*
+    [CustomEditor(typeof(ScriptableCharacter))]
+    public class CharacterEditor : Editor
+    {
+        public override void OnInspectorGUI()
+        {
+            EditorGUI.BeginChangeCheck();
+
+            var obj = target as ScriptableCharacter;
+            //ObjectEditor.CreateObjectFields(obj);
+
+            obj.JumpHeight = EditorGUILayout.FloatField("Jump Height:", obj.JumpHeight);
+            obj.SlideTime = EditorGUILayout.FloatField("Slide Time:", obj.SlideTime);
+
+            if (EditorGUI.EndChangeCheck())
+                EditorUtility.SetDirty(target); // Save Changes.
+        }
+    }
+    */
 }
