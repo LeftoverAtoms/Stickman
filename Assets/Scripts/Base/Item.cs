@@ -27,7 +27,8 @@ namespace Stickman
 
         public virtual void Use()
         {
-            if (State == e_ItemState.Usable) State = e_ItemState.Used;
+            if(State == e_ItemState.Usable)
+                State = e_ItemState.Used;
         }
 
         public enum e_ItemState { Usable, Used, Collectable }

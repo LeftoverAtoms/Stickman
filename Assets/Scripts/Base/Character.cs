@@ -24,7 +24,7 @@ namespace Stickman
 
             CharacterAttribute = Attribute as ScriptableCharacter;
 
-            Inventory = new Inventory(this);
+            Inventory = new Inventory();
             JumpHeight = 72f;
             MaxSlideTime = 1f;
 
@@ -33,31 +33,32 @@ namespace Stickman
 
         protected override void FixedUpdate()
         {
-            if (IsGrounded)
+            if(IsGrounded)
             {
-                if (State == e_State.Jumping)
+                if(State == e_State.Jumping)
                 {
                     Body.AddForce(Vector2.up * JumpHeight, ForceMode2D.Impulse);
                 }
-                if (State == e_State.Sliding)
+                if(State == e_State.Sliding)
                 {
                     TimeSinceSlide += Time.fixedDeltaTime;
-                    if (TimeSinceSlide >= MaxSlideTime) SwapState(e_State.Running);
+                    if(TimeSinceSlide >= MaxSlideTime)
+                        SwapState(e_State.Running);
                 }
             }
         }
 
         public void Equip(Item obj, bool make_active = false)
         {
-            if (!Inventory.CanAdd() || obj.HasOwner())
+            if(obj.HasOwner())
                 return;
 
-            if (make_active)
-            {
-                ActiveItem = obj;
-            }
+            if(!Inventory.Add(obj))
+                return;
 
-            Inventory.Add(obj);
+            if(make_active)
+                ActiveItem = obj;
+
             obj.transform.parent = this.transform;
             obj.transform.position = this.transform.position;
             obj.LookDirection = this.LookDirection;
@@ -73,15 +74,17 @@ namespace Stickman
 
         protected virtual void OnCollisionEnter2D(Collision2D collision)
         {
-            if (collision.gameObject.TryGetComponent<Object>(out Object obj))
+            if(collision.gameObject.TryGetComponent<Object>(out Object obj))
             {
-                if (obj.CanDamage(this)) this.TakeDamage();
-                else if (obj is Item item) this.Equip(item, true);
+                if(obj.CanDamage(this))
+                    this.TakeDamage();
+                else if(obj is Item item)
+                    this.Equip(item, true);
             }
 
-            foreach (var contact in collision.contacts)
+            foreach(var contact in collision.contacts)
             {
-                if (contact.normal == Vector2.up)
+                if(contact.normal == Vector2.up)
                 {
                     SwapState(e_State.Running);
                     IsGrounded = true;
@@ -93,10 +96,10 @@ namespace Stickman
         // simplify the character states even more so.
         protected void SwapState(e_State state)
         {
-            if (state == State)
+            if(state == State)
                 return;
 
-            if (State == e_State.Sliding && state != e_State.Sliding)
+            if(State == e_State.Sliding && state != e_State.Sliding)
             {
                 Animator.SetBool("Sliding", false);
                 TimeSinceSlide = 0f;
@@ -104,24 +107,24 @@ namespace Stickman
                 Collider.offset = Vector2.zero;
                 BBoxSize = new Vector2(1f, 2f);
             }
-            if (State == e_State.Jumping && state != e_State.Jumping)
+            if(State == e_State.Jumping && state != e_State.Jumping)
             {
                 Animator.SetBool("Jumping", false);
             }
 
 
-            if (state == e_State.Running)
+            if(state == e_State.Running)
             {
                 State = e_State.Running;
             }
-            if (state == e_State.Jumping)
+            if(state == e_State.Jumping)
             {
                 State = e_State.Jumping;
 
                 Animator.SetBool("Jumping", true);
                 IsGrounded = false;
             }
-            if (state == e_State.Sliding)
+            if(state == e_State.Sliding)
             {
                 State = e_State.Sliding;
 
@@ -131,7 +134,7 @@ namespace Stickman
                 Collider.offset = Vector2.down * 0.65f;
                 BBoxSize = new Vector2(1f, 0.75f);
             }
-            if (state == e_State.Attacking)
+            if(state == e_State.Attacking)
             {
 
             }

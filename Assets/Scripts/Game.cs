@@ -25,11 +25,11 @@ namespace Stickman
 
         public static void Give(string name, Character chr)
         {
-            if (!chr.Inventory.CanAdd())
+            if(!chr.Inventory.HasOpenSlots())
                 return;
 
             GameObject obj = Spawn(name);
-            if (obj.TryGetComponent<Item>(out Item item))
+            if(obj.TryGetComponent<Item>(out Item item))
             {
                 chr.Equip(item, true);
             }
@@ -40,17 +40,17 @@ namespace Stickman
         {
             // Find file.
             ScriptableObject info = null;
-            foreach (var file in Resources.LoadAll<ScriptableObject>("ScriptableObjects"))
+            foreach(var file in Resources.LoadAll<ScriptableObject>("Config"))
             {
                 Debug.Log(file.name);
-                if (file.name == name)
+                if(file.name == name)
                 {
                     info = file;
                     break;
                 }
             }
 
-            if (info == null)
+            if(info == null)
                 return null;
 
             var obj = new GameObject(info.Name);

@@ -1,40 +1,40 @@
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace Stickman
 {
     public class Inventory
     {
-        public readonly Character Owner;
-        public List<Item> Objects;
+        private List<Item> Items;
+        private List<Weapon> Weapons;
+
+        private Weapon DefaultWeapon;
         public int Slots;
 
-        public Inventory(Character owner)
+        public Inventory()
         {
-            Owner = owner;
-            Objects = new List<Item>();
             Slots = 2;
+            Items = new List<Item>() { Capacity = Slots };
+            Weapons = new List<Weapon> { Capacity = Slots };
         }
 
-        public bool CanAdd() => Objects.Count + 1 < Slots;
+        public bool HasOpenSlots() => (Items.Count + Weapons.Count > Slots);
 
-        public void Add(Item obj)
+        public bool Add(Item obj)
         {
-            if (CanAdd()) Objects.Add(obj);
+            if(this.HasOpenSlots()) return false;
+
+            if(obj is Weapon wpn) Weapons.Add(wpn);
+            else if(obj is Item) Items.Add(obj);
+            else return false;
+
+            return true;
         }
 
+        public bool Remove(Item obj) => (Items.Remove(obj));
         public void Remove(Item obj, out Item next)
         {
-            if (obj == Objects[0])
-            {
-                next = Objects[0];
-                return;
-            }
-
-            Objects.Remove(obj);
-
-            if (Objects.Count > 0) next = Objects[0];
-            else next = null;
+            Items.Remove(obj);
+            next = DefaultWeapon;
         }
     }
 }

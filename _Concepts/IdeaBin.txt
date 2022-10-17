@@ -1,3 +1,5 @@
 Inventory.Objects[0] contains the fists by default and cannot be overriden by other objects.
 
 Rename Obstacle to Hazard.
+
+Inventory selector shows quantity of duplicate items.
