@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ddfaea5638823f6409910f876fe28bd0, type: 3}
   m_Name: Fists
   m_EditorClassIdentifier: Assembly-CSharp:Stickman:ScriptableWeapon
-  Name: 
+  Name: Fists
   LookDirection: {x: 0, y: 0}
   Sprite: {fileID: 0}
   Behavior: 0
-  Damage: 0
+  Damage: 50
   ThrowVelocity: {x: 0, y: 0}

@@ -28,7 +28,7 @@ namespace Stickman
             JumpHeight = 72f;
             MaxSlideTime = 1f;
 
-            Game.Give("Fists", this);
+            //Game.Give("Fists", this);
         }
 
         protected override void FixedUpdate()

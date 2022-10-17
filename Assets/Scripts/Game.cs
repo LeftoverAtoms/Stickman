@@ -20,7 +20,9 @@ namespace Stickman
 
             Groups = Resources.LoadAll<GameObject>("Prefabs/Groups");
 
-            Enemy.Target = Player;
+            Enemy.Target = Player; // Maybe enemies should be able to target other enemies.
+
+            SpawnObject("a");
         }
 
         public static void Give(string name, Character chr)
@@ -28,34 +30,38 @@ namespace Stickman
             if(!chr.Inventory.HasOpenSlots())
                 return;
 
-            GameObject obj = Spawn(name);
+            GameObject obj = SpawnObject(name);
             if(obj.TryGetComponent<Item>(out Item item))
             {
                 chr.Equip(item, true);
             }
         }
 
-        // Note: "Nifty Command" GameObject.GetComponent<Object>().GetType();
-        public static GameObject Spawn(string name, Vector2 pos = default)
+        public static GameObject SpawnObject(string name, Vector2 pos = default)
         {
-            // Find file.
+            /*
+            // Locate the configuration file for this object by using it's name.
             ScriptableObject info = null;
             foreach(var file in Resources.LoadAll<ScriptableObject>("Config"))
             {
-                Debug.Log(file.name);
-                if(file.name == name)
-                {
-                    info = file;
-                    break;
-                }
+                if(file.name == name) { info = file; break; }
             }
+            if(info == null) return null;
+            */
 
-            if(info == null)
-                return null;
+            ScriptableObject info = null;
+            var assets = Resources.LoadAll<ScriptableObject>("Config");
+            for(int i = 0; i < assets.Length; i++)
+            {
+                if(assets[i].name == name) { info = assets[i]; break; }
+                Debug.Log(i);
+                if(i >= assets.Length) return null;
+            }
 
             var obj = new GameObject(info.Name);
             obj.transform.position = pos;
-            var cmp = obj.AddComponent(info.Type) as Object; // TODO: Typeof(scriptableobject type)!!!
+
+            var cmp = obj.AddComponent(info.Type) as Object;
             cmp.SetAttributes(info);
 
             return obj;
