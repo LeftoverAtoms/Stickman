@@ -4,15 +4,15 @@ namespace Stickman
 {
     public class Player : Character
     {
-        protected override void Start()
+        public override void Start()
         {
             base.Start();
 
-            CanRecieveDamage = true;
-            LookDirection = Vector2.right;
+            isInvulnerable = true;
+            lookDirection = Vector2.right;
         }
 
-        protected override void Update()
+        public override void Update()
         {
             if(Input.GetKeyDown(KeyCode.C)) { Game.Give("Bottle", this); }
             if(Input.GetKeyDown(KeyCode.X)) { Game.SpawnObject("Enemy", Vector2.right * 16f); }

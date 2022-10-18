@@ -1,15 +1,15 @@
-using System;
-using UnityEditor;
 using UnityEngine;
 
 namespace Stickman
 {
     public class Item : Object
     {
-        public bool Usable;
-        public bool Pickupable;
+        public Character owner;
 
-        protected override void Start()
+        public bool usable;
+        public bool pickupable;
+
+        public override void Start()
         {
             base.Start();
 
@@ -22,7 +22,7 @@ namespace Stickman
 
         public virtual void Use()
         {
-            if(Usable) {Usable = false;}
+            if(usable) {usable = false;}
         }
     }
 

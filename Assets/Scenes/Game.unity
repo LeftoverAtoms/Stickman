@@ -178,6 +178,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Enemy (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 7279338420880184899, guid: cc3b29890efcd0449954d36d54ea9410, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cc3b29890efcd0449954d36d54ea9410, type: 3}
 --- !u!1001 &95401433
@@ -235,6 +239,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Enemy (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 7279338420880184899, guid: cc3b29890efcd0449954d36d54ea9410, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cc3b29890efcd0449954d36d54ea9410, type: 3}
 --- !u!1001 &322323784
@@ -291,6 +299,10 @@ PrefabInstance:
     - target: {fileID: 7279338420880184899, guid: cc3b29890efcd0449954d36d54ea9410, type: 3}
       propertyPath: m_Name
       value: Enemy
+      objectReference: {fileID: 0}
+    - target: {fileID: 7279338420880184899, guid: cc3b29890efcd0449954d36d54ea9410, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cc3b29890efcd0449954d36d54ea9410, type: 3}
@@ -747,9 +759,10 @@ MonoBehaviour:
   LookDirection: {x: 0, y: 0}
   Health: 100
   CharacterAttribute: {fileID: 0}
-  ActiveItem: {fileID: 0}
+  activeItem: {fileID: 0}
   State: 0
-  IsGrounded: 0
+  isGrounded: 0
+  relativeVelocity: {x: 0, y: 0}
 --- !u!212 &2536138144191754130
 SpriteRenderer:
   m_ObjectHideFlags: 0

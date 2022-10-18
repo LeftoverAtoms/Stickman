@@ -9,12 +9,12 @@ namespace Stickman
         private void Awake()
         {
             transform.position = new Vector2(InitalXPos, transform.position.y); // Prefabs will fix this
-            LookDirection = Vector2.left;
+            lookDirection = Vector2.left;
         }
 
-        protected override void FixedUpdate()
+        public override void FixedUpdate()
         {
-            transform.Translate(Game.Speed * Time.deltaTime * LookDirection);
+            transform.Translate(Game.Speed * Time.deltaTime * lookDirection);
         }
     }
 }

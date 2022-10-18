@@ -16,9 +16,7 @@ namespace Stickman
 
         public bool isGrounded;
 
-        public Vector2 relativeVelocity;
-
-        protected override void Start()
+        public override void Start()
         {
             base.Start();
 
@@ -31,7 +29,7 @@ namespace Stickman
             //Game.Give("Fists", this);
         }
 
-        protected override void FixedUpdate()
+        public override void FixedUpdate()
         {
             if(isGrounded)
             {
@@ -50,7 +48,7 @@ namespace Stickman
 
         public void Equip(Item obj, bool make_active = false)
         {
-            if(obj.HasOwner())
+            if(obj.owner != null)
                 return;
 
             if(!inventory.Add(obj))
@@ -61,15 +59,15 @@ namespace Stickman
 
             obj.transform.parent = this.transform;
             obj.transform.position = this.transform.position;
-            obj.LookDirection = this.LookDirection;
-            obj.Owner = this;
+            obj.lookDirection = this.lookDirection;
+            obj.owner = this;
         }
 
         public void Unequip(Item obj, bool throw_object = false)
         {
             inventory.Remove(obj, out activeItem);
             obj.transform.parent = null;
-            obj.Owner = null;
+            obj.owner = null;
         }
 
         protected virtual void OnCollisionEnter2D(Collision2D collision)

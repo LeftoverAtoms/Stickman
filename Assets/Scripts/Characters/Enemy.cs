@@ -9,21 +9,21 @@ namespace Stickman
         public float MeleeRange = 1f;
         public float ThrowRange = 10f;
 
-        protected override void Start()
+        public override void Start()
         {
             base.Start();
 
             //Renderer.flipX = true; // TODO: Fix Error
 
-            CanRecieveDamage = true;
-            LookDirection = Vector2.left;
+            isInvulnerable = true;
+            lookDirection = Vector2.left;
         }
 
-        protected override void FixedUpdate()
+        public override void FixedUpdate()
         {
             base.FixedUpdate();
 
-            transform.Translate(Game.Speed * Time.fixedDeltaTime * LookDirection);
+            transform.Translate(Game.Speed * Time.fixedDeltaTime * lookDirection);
 
             var dist = Vector2.Distance(transform.position, Target.transform.position);
             if (dist <= ThrowRange)

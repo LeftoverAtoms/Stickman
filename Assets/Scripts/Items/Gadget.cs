@@ -6,7 +6,7 @@ namespace Stickman
     {
         public ScriptableItem ItemAttribute;
 
-        protected override void Start()
+        public override void Start()
         {
             base.Start();
 

@@ -8,16 +8,16 @@ namespace Stickman
 
         public Vector2 Velocity;
 
-        protected override void Start()
+        public override void Start()
         {
             base.Start();
 
             WeaponAttribute = Attribute as ScriptableWeapon;
         }
 
-        protected override void FixedUpdate()
+        public override void FixedUpdate()
         {
-            if (!this.Usable)
+            if (!this.usable)
             {
                 if (WeaponAttribute.Behavior == ScriptableWeapon.e_Behavior.Projectile)
                 {
@@ -34,14 +34,14 @@ namespace Stickman
 
             if (WeaponAttribute.Behavior == ScriptableWeapon.e_Behavior.Projectile)
             {
-                Owner?.Unequip(this);
+                owner?.Unequip(this);
                 Velocity = GetInitialVelocity();
             }
         }
 
         private void OnTriggerEnter2D(Collider2D collision)
         {
-            if (this.Usable)
+            if (this.usable)
             {
                 if (collision.gameObject.TryGetComponent<Object>(out Object obj))
                 {
@@ -63,7 +63,7 @@ namespace Stickman
         {
             var velocity = WeaponAttribute.ThrowVelocity;
 
-            if (LookDirection.x == Vector2.left.x)
+            if (lookDirection.x == Vector2.left.x)
             {
                 velocity.x = -velocity.x;
                 velocity.x -= Game.Speed * 0.25f;

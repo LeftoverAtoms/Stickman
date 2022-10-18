@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 namespace Stickman
@@ -7,76 +6,50 @@ namespace Stickman
     {
         public ScriptableObject Attribute;
 
-        public Character Owner;
         public Animator Animator;
         public Rigidbody2D Body;
         public BoxCollider2D Collider;
         public SpriteRenderer Renderer;
 
-        public bool CanRecieveDamage;
-        public Vector2 LookDirection;
-        public float Health;
+        public bool isInvulnerable;
+        public Vector2 lookDirection;
+        public float health;
 
-        protected virtual void Start()
+        public Vector2 velocity;
+
+        public virtual void Start()
         {
+            /*
             if (Animator == null) Animator = gameObject.GetComponent<Animator>();
             if (Body == null) Body = gameObject.TryGetComponent(out Rigidbody2D RB) ? RB : gameObject.AddComponent<Rigidbody2D>();
             if (Collider == null) Collider = gameObject.TryGetComponent(out BoxCollider2D C) ? C : gameObject.AddComponent<BoxCollider2D>();
             if (Renderer == null) Renderer = gameObject.TryGetComponent(out SpriteRenderer SR) ? SR : gameObject.AddComponent<SpriteRenderer>();
+            */
 
-            Body.isKinematic = false;
-
-            Health = 100f;
+            health = 100f;
         }
 
-        protected virtual void FixedUpdate() { }
+        public virtual void FixedUpdate() { }
 
-        protected virtual void Update() { }
+        public virtual void Update() { }
 
         public void SetAttributes(ScriptableObject attributes) => Attribute = attributes;
 
-        public virtual bool CanDamage(Object obj) => Vector2.Dot(this.LookDirection, obj.LookDirection) < 0f;
+        public virtual bool CanDamage(Object obj) => Vector2.Dot(this.lookDirection, obj.lookDirection) < 0f;
 
         public virtual void TakeDamage(float dmg = 100f)
         {
-            if (CanRecieveDamage)
+            if (isInvulnerable)
             {
-                Health -= dmg;
-                if (Health <= 0f)
+                health -= dmg;
+                if (health <= 0f)
                 {
-                    Health = 0f;
+                    health = 0f;
                     OnKilled();
                 }
             }
         }
 
         public virtual void OnKilled() => Destroy(gameObject);
-
-        public bool HasOwner() => Owner != null;
     }
-
-    /*
-    [CustomEditor(typeof(ScriptableObject))]
-    public class ObjectEditor : Editor
-    {
-        // GUILayoutOption: https://answers.unity.com/questions/702499/what-is-a-guilayoutoption.html
-        public override void OnInspectorGUI()
-        {
-            EditorGUI.BeginChangeCheck();
-
-            var obj = target as ScriptableObject;
-            CreateObjectFields(obj);
-
-            if (EditorGUI.EndChangeCheck())
-                EditorUtility.SetDirty(target); // Save Changes.
-        }
-
-        public static void CreateObjectFields(ScriptableObject obj)
-        {
-            obj.Name = EditorGUILayout.TextField("Name:", obj.Name);
-            obj.LookDirection = EditorGUILayout.Vector2IntField("Look Direction:", obj.LookDirection);
-            obj.Sprite = EditorGUILayout.ObjectField("Sprite:", obj.Sprite, typeof(Sprite), false) as Sprite;
-        }
-    }
-    */
 }
