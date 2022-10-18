@@ -737,6 +737,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 24e1e6b61ef54484fab7697ce43868a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Attribute: {fileID: 0}
   Owner: {fileID: 0}
   Animator: {fileID: 0}
   Body: {fileID: 0}
@@ -745,6 +746,7 @@ MonoBehaviour:
   CanRecieveDamage: 0
   LookDirection: {x: 0, y: 0}
   Health: 100
+  CharacterAttribute: {fileID: 0}
   ActiveItem: {fileID: 0}
   State: 0
   IsGrounded: 0

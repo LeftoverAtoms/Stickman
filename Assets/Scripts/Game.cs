@@ -39,24 +39,13 @@ namespace Stickman
 
         public static GameObject SpawnObject(string name, Vector2 pos = default)
         {
-            /*
-            // Locate the configuration file for this object by using it's name.
+            // Locate the config file for this object by name.
             ScriptableObject info = null;
             foreach(var file in Resources.LoadAll<ScriptableObject>("Config"))
             {
                 if(file.name == name) { info = file; break; }
             }
             if(info == null) return null;
-            */
-
-            ScriptableObject info = null;
-            var assets = Resources.LoadAll<ScriptableObject>("Config");
-            for(int i = 0; i < assets.Length; i++)
-            {
-                if(assets[i].name == name) { info = assets[i]; break; }
-                Debug.Log(i);
-                if(i >= assets.Length) return null;
-            }
 
             var obj = new GameObject(info.Name);
             obj.transform.position = pos;

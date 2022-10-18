@@ -74,6 +74,8 @@ namespace Stickman
 
         protected virtual void OnCollisionEnter2D(Collision2D collision)
         {
+            Debug.Log(collision.gameObject.name);
+
             if(collision.gameObject.TryGetComponent<Object>(out Object obj))
             {
                 if(obj.CanDamage(this))
@@ -131,8 +133,8 @@ namespace Stickman
                 Animator.SetBool("Sliding", true);
                 //TimeSinceSlide = 0f;
 
-                Collider.offset = Vector2.down * 0.65f;
-                BBoxSize = new Vector2(1f, 0.75f);
+                Collider.offset = Vector2.down * 0.35f;
+                BBoxSize = new Vector2(1f, 1.25f);
             }
             if(state == e_State.Attacking)
             {
