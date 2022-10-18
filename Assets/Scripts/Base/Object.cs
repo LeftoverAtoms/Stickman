@@ -1,5 +1,4 @@
 using System;
-using UnityEditor;
 using UnityEngine;
 
 namespace Stickman
@@ -11,34 +10,21 @@ namespace Stickman
         public Character Owner;
         public Animator Animator;
         public Rigidbody2D Body;
-        public Collider2D Collider;
+        public BoxCollider2D Collider;
         public SpriteRenderer Renderer;
 
         public bool CanRecieveDamage;
         public Vector2 LookDirection;
         public float Health;
 
-        public Vector2 BBoxSize
-        {
-            get
-            {
-                if (Collider is BoxCollider2D box) return box.size;
-                else return Vector2.zero;
-            }
-            set
-            {
-                if (Collider is BoxCollider2D box) box.size = BBoxSize;
-            }
-        }
-
         protected virtual void Start()
         {
             if (Animator == null) Animator = gameObject.GetComponent<Animator>();
             if (Body == null) Body = gameObject.TryGetComponent(out Rigidbody2D RB) ? RB : gameObject.AddComponent<Rigidbody2D>();
-            if (Collider == null) Collider = gameObject.TryGetComponent(out Collider2D C) ? C : gameObject.AddComponent<BoxCollider2D>();
+            if (Collider == null) Collider = gameObject.TryGetComponent(out BoxCollider2D C) ? C : gameObject.AddComponent<BoxCollider2D>();
             if (Renderer == null) Renderer = gameObject.TryGetComponent(out SpriteRenderer SR) ? SR : gameObject.AddComponent<SpriteRenderer>();
 
-            Body.isKinematic = true;
+            Body.isKinematic = false;
 
             Health = 100f;
         }

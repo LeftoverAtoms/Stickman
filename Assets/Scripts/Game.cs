@@ -27,8 +27,10 @@ namespace Stickman
 
         public static void Give(string name, Character chr)
         {
-            if(!chr.Inventory.HasOpenSlots())
+            if(!chr.inventory.CanAppend)
                 return;
+
+            Debug.Log("a");
 
             GameObject obj = SpawnObject(name);
             if(obj.TryGetComponent<Item>(out Item item))
@@ -43,8 +45,10 @@ namespace Stickman
             ScriptableObject info = null;
             foreach(var file in Resources.LoadAll<ScriptableObject>("Config"))
             {
+                Debug.Log($"{file.Type.Name} {file.name}");
                 if(file.name == name) { info = file; break; }
             }
+            Debug.Log(info);
             if(info == null) return null;
 
             var obj = new GameObject(info.Name);
@@ -52,6 +56,8 @@ namespace Stickman
 
             var cmp = obj.AddComponent(info.Type) as Object;
             cmp.SetAttributes(info);
+
+            Debug.Log(obj);
 
             return obj;
         }

@@ -1,5 +1,3 @@
-using System;
-using UnityEditor;
 using UnityEngine;
 
 namespace Stickman
@@ -19,7 +17,7 @@ namespace Stickman
 
         protected override void FixedUpdate()
         {
-            if (State == e_ItemState.Used)
+            if (!this.Usable)
             {
                 if (WeaponAttribute.Behavior == ScriptableWeapon.e_Behavior.Projectile)
                 {
@@ -43,7 +41,7 @@ namespace Stickman
 
         private void OnTriggerEnter2D(Collider2D collision)
         {
-            if (State == e_ItemState.Used)
+            if (this.Usable)
             {
                 if (collision.gameObject.TryGetComponent<Object>(out Object obj))
                 {

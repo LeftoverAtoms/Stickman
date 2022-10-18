@@ -6,20 +6,15 @@ namespace Stickman
 {
     public class Item : Object
     {
-        public ScriptableItem ItemAttribute;
-
-        public e_ItemState State;
+        public bool Usable;
+        public bool Pickupable;
 
         protected override void Start()
         {
-            Collider = gameObject.AddComponent<CircleCollider2D>();
-
             base.Start();
 
-            ItemAttribute = Attribute as ScriptableItem;
-
-            (Collider as CircleCollider2D).radius = 0.5f;
             Collider.isTrigger = true;
+            Collider.size = new Vector2(0.5f, 0.5f);
 
             Renderer.sprite = Attribute.Sprite;
             Renderer.sortingOrder = 1;
@@ -27,11 +22,8 @@ namespace Stickman
 
         public virtual void Use()
         {
-            if(State == e_ItemState.Usable)
-                State = e_ItemState.Used;
+            if(Usable) {Usable = false;}
         }
-
-        public enum e_ItemState { Usable, Used, Collectable }
     }
 
     /*
