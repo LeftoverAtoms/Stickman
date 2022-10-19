@@ -6,12 +6,12 @@ namespace Stickman
     [CreateAssetMenu(fileName = "UntitledObject", menuName = "ScriptableObject/Object")]
     public class ScriptableObject : UnityEngine.ScriptableObject
     {
-        public virtual Type Type => typeof(Object);
+        public virtual Type type => typeof(Object);
 
         // Note: Enumerators could be used for things like the name and sprite of an object.
 
-        public string Name;
-        public Vector2Int LookDirection; // Could be delegated to mouse cursor or current target.
-        public Sprite Sprite;
+        //public string name;
+        public Vector2Int lookDirection; // Could be delegated to mouse cursor or current target.
+        public Sprite sprite;
     }
 }

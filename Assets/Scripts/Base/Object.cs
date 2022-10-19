@@ -4,17 +4,18 @@ namespace Stickman
 {
     public class Object : MonoBehaviour
     {
-        public ScriptableObject Attribute;
-
         public Animator Animator;
         public Rigidbody2D Body;
         public BoxCollider2D Collider;
         public SpriteRenderer Renderer;
 
+        public Sprite sprite;
+
         public bool isInvulnerable;
         public Vector2 lookDirection;
         public float health;
 
+        public Vector2 wishVelocity;
         public Vector2 velocity;
 
         public virtual void Start()
@@ -33,7 +34,12 @@ namespace Stickman
 
         public virtual void Update() { }
 
-        public void SetAttributes(ScriptableObject attributes) => Attribute = attributes;
+        public virtual void SetProperties(ScriptableObject property)
+        {
+            gameObject.name = property.name;
+            sprite = property.sprite;
+            lookDirection = property.lookDirection;
+        }
 
         public virtual bool CanDamage(Object obj) => Vector2.Dot(this.lookDirection, obj.lookDirection) < 0f;
 

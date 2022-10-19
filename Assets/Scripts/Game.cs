@@ -45,17 +45,17 @@ namespace Stickman
             ScriptableObject info = null;
             foreach(var file in Resources.LoadAll<ScriptableObject>("Config"))
             {
-                Debug.Log($"{file.Type.Name} {file.name}");
+                Debug.Log($"{file.type.Name} {file.name}");
                 if(file.name == name) { info = file; break; }
             }
             Debug.Log(info);
             if(info == null) return null;
 
-            var obj = new GameObject(info.Name);
+            var obj = new GameObject(info.name);
             obj.transform.position = pos;
 
-            var cmp = obj.AddComponent(info.Type) as Object;
-            cmp.SetAttributes(info);
+            var cmp = obj.AddComponent(info.type) as Object;
+            cmp.SetProperties(info);
 
             Debug.Log(obj);
 

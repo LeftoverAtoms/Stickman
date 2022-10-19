@@ -4,11 +4,9 @@ namespace Stickman
 {
     public abstract partial class Character : Object
     {
-        public ScriptableCharacter CharacterAttribute;
-
         public Inventory inventory;
         public Item activeItem;
-        public e_State State;
+        public State state;
 
         protected float jumpHeight;
         protected float maxSlideTime;
@@ -19,8 +17,6 @@ namespace Stickman
         public override void Start()
         {
             base.Start();
-
-            CharacterAttribute = Attribute as ScriptableCharacter;
 
             inventory = new Inventory();
             jumpHeight = 72f;
@@ -33,15 +29,15 @@ namespace Stickman
         {
             if(isGrounded)
             {
-                if(State == e_State.Jumping)
+                if(state == State.Jumping)
                 {
                     Body.AddForce(Vector2.up * jumpHeight, ForceMode2D.Impulse);
                 }
-                if(State == e_State.Sliding)
+                if(state == State.Sliding)
                 {
                     timeSinceSlide += Time.fixedDeltaTime;
                     if(timeSinceSlide >= maxSlideTime)
-                        SwapState(e_State.Running);
+                        SwapState(State.Running);
                 }
             }
         }
@@ -84,7 +80,7 @@ namespace Stickman
             {
                 if(contact.normal == Vector2.up)
                 {
-                    SwapState(e_State.Running);
+                    SwapState(State.Running);
                     isGrounded = true;
                 }
             }
@@ -93,9 +89,9 @@ namespace Stickman
         // Note: Look into bitwise operations, this would drastically
         // simplify the character states even more so.
         // Queue states with a NextState variable.
-        protected void SwapState(e_State state)
+        protected void SwapState(State state)
         {
-            if(state == State) return;
+            if(this.state == state) return;
 
             Animator.SetBool("Jumping", false);
             Animator.SetBool("Sliding", false);
@@ -104,20 +100,20 @@ namespace Stickman
             Collider.offset = Vector2.zero;
             Collider.size = new Vector2(1f, 2f);
 
-            if(state == e_State.Running)
+            if(state == State.Running)
             {
-                State = e_State.Running;
+                this.state = State.Running;
             }
-            if(state == e_State.Jumping)
+            if(state == State.Jumping)
             {
-                State = e_State.Jumping;
+                this.state = State.Jumping;
 
                 Animator.SetBool("Jumping", true);
                 isGrounded = false;
             }
-            if(state == e_State.Sliding)
+            if(state == State.Sliding)
             {
-                State = e_State.Sliding;
+                this.state = State.Sliding;
 
                 Animator.SetBool("Sliding", true);
                 //TimeSinceSlide = 0f;
@@ -125,7 +121,7 @@ namespace Stickman
                 Collider.offset = Vector2.down * 0.35f;
                 Collider.size = new Vector2(1f, 1.25f);
             }
-            if(state == e_State.Attacking)
+            if(state == State.Attacking)
             {
 
             }

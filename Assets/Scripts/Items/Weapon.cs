@@ -4,25 +4,14 @@ namespace Stickman
 {
     public class Weapon : Item
     {
-        public ScriptableWeapon WeaponAttribute;
-
-        public Vector2 Velocity;
-
-        public override void Start()
-        {
-            base.Start();
-
-            WeaponAttribute = Attribute as ScriptableWeapon;
-        }
-
         public override void FixedUpdate()
         {
             if (!this.usable)
             {
                 if (WeaponAttribute.Behavior == ScriptableWeapon.e_Behavior.Projectile)
                 {
-                    Velocity.y -= 9.8f * Time.fixedDeltaTime; // Gravity
-                    transform.Translate(Velocity * Time.fixedDeltaTime, Space.World);
+                    velocity.y -= 9.8f * Time.fixedDeltaTime; // Gravity
+                    transform.Translate(velocity * Time.fixedDeltaTime, Space.World);
                     transform.Rotate(Vector3.back, 10f, Space.Self);
                 }
             }
@@ -35,7 +24,7 @@ namespace Stickman
             if (WeaponAttribute.Behavior == ScriptableWeapon.e_Behavior.Projectile)
             {
                 owner?.Unequip(this);
-                Velocity = GetInitialVelocity();
+                velocity = GetInitialVelocity();
             }
         }
 

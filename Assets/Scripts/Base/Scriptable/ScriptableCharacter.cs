@@ -6,7 +6,7 @@ namespace Stickman
     [CreateAssetMenu(fileName = "UntitledCharacter", menuName = "ScriptableObject/Character")]
     public class ScriptableCharacter : ScriptableObject
     {
-        public override Type Type => typeof(Character);
+        public override Type type => typeof(Character);
 
         // [Shared]
         //public ScriptableItem Item; // Could use inventory system.

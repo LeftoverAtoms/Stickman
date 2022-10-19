@@ -16,7 +16,7 @@ namespace Stickman
             Collider.isTrigger = true;
             Collider.size = new Vector2(0.5f, 0.5f);
 
-            Renderer.sprite = Attribute.Sprite;
+            Renderer.sprite = sprite;
             Renderer.sortingOrder = 1;
         }
 

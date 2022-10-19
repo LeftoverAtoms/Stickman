@@ -5,7 +5,7 @@ namespace Stickman
 {
     public abstract partial class Character : Object
     {
-        public enum e_State { Idle, Running, Jumping, Sliding, Attacking }
+        public enum State { Idle, Running, Jumping, Sliding, Attacking }
 
         protected virtual void Attack()
         {
@@ -24,9 +24,9 @@ namespace Stickman
 
         protected virtual void Slide()
         {
-            if(State != e_State.Sliding)
+            if(state != State.Sliding)
             {
-                State = e_State.Sliding;
+                state = State.Sliding;
                 Animator.SetBool("Sliding", true);
 
                 Collider.offset = Vector2.down * 0.35f;
@@ -40,7 +40,7 @@ namespace Stickman
 
         protected virtual void ResetState()
         {
-            State = e_State.Running;
+            state = State.Running;
             Animator.SetBool("Jumping", false);
             Animator.SetBool("Sliding", false);
             timeSinceSlide = 0f;
