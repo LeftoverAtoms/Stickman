@@ -4,6 +4,9 @@ namespace Stickman
 {
     public class Weapon : Item
     {
+        public ScriptableWeapon.Behavior behavior;
+        public Vector2 throwVelocity;
+
         public override void FixedUpdate()
         {
             if (!this.usable)

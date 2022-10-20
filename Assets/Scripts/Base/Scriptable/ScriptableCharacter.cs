@@ -13,7 +13,7 @@ namespace Stickman
         //public float Speed;
 
         // [Player]
-        //public float JumpHeight;
+        public float JumpHeight;
         //public float SlideTime;
 
         // [Enemy]

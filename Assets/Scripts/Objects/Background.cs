@@ -14,7 +14,7 @@ namespace Stickman
 
         public override void FixedUpdate()
         {
-            transform.Translate(Game.Player.velocity * Time.deltaTime * Vector3.left);
+            if(Game.Player != null) transform.Translate(Game.Player.velocity * Time.deltaTime * Vector3.left);
 
             if (transform.position.x < initalPos.x - repeatWidth)
             {

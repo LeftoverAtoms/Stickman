@@ -14,8 +14,10 @@ namespace Stickman
 
         static Game()
         {
+            //Player = SpawnObject("Player").AddComponent<Player>();
+            //Player = new GameObject().AddComponent<Player>();
+            SpawnObject("Player").AddComponent<Player>();
             Background = GameObject.FindGameObjectWithTag("Background").GetComponent<Background>();
-            Player = SpawnObject("Stickman").GetComponent<Player>();
 
             Enemy.Target = Player; // Maybe enemies should be able to target other enemies.
         }
@@ -35,24 +37,21 @@ namespace Stickman
         public static GameObject SpawnObject(string name, Vector2 pos = default)
         {
             // Locate the config file for this object by name.
-            ScriptableObject info = null;
             foreach(var file in Resources.LoadAll<ScriptableObject>("Config"))
             {
-                Debug.Log($"{file.type.Name} {file.name}");
-                if(file.name == name) { info = file; break; }
+                Debug.Log($"[Type: {file.type.Name}] [File: {file.name}]");
+                if(file.name == name)
+                {
+                    var obj = new GameObject(file.name);
+                    obj.transform.position = pos;
+
+                    var comp = obj.AddComponent(file.type);
+                    (comp as Object).SetProperties(file as ScriptableCharacter);
+
+                    return obj;
+                }
             }
-            Debug.Log(info);
-            if(info == null) return null;
-
-            var obj = new GameObject(info.name);
-            obj.transform.position = pos;
-
-            var cmp = obj.AddComponent(info.type) as Object;
-            cmp.SetProperties(info);
-
-            Debug.Log(obj);
-
-            return obj;
+            return null;
         }
     }
 }

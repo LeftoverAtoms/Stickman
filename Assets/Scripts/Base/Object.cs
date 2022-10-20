@@ -26,7 +26,9 @@ namespace Stickman
 
         public virtual void FixedUpdate()
         {
-            if(this is not Player)
+            // Not keyword not recognized.
+            if(this is Player) {}
+            else
             {
                 transform.Translate(Game.RelativeSpeed * Time.fixedDeltaTime * lookDirection);
                 Debug.Log(Game.RelativeSpeed * Time.fixedDeltaTime * lookDirection);
