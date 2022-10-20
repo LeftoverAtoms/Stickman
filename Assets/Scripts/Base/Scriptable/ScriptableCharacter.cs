@@ -10,14 +10,13 @@ namespace Stickman
 
         // [Shared]
         //public ScriptableItem Item; // Could use inventory system.
-        public float Speed;
+        //public float Speed;
 
         // [Player]
-        public float JumpHeight;
-        public float SlideTime;
+        //public float JumpHeight;
+        //public float SlideTime;
 
         // [Enemy]
-        public float TargetRange;
+        //public float TargetRange;
     }
-
 }

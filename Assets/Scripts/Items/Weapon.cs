@@ -8,7 +8,7 @@ namespace Stickman
         {
             if (!this.usable)
             {
-                if (WeaponAttribute.Behavior == ScriptableWeapon.e_Behavior.Projectile)
+                if (behavior == ScriptableWeapon.Behavior.Projectile)
                 {
                     velocity.y -= 9.8f * Time.fixedDeltaTime; // Gravity
                     transform.Translate(velocity * Time.fixedDeltaTime, Space.World);
@@ -21,7 +21,7 @@ namespace Stickman
         {
             base.Use();
 
-            if (WeaponAttribute.Behavior == ScriptableWeapon.e_Behavior.Projectile)
+            if (behavior == ScriptableWeapon.Behavior.Projectile)
             {
                 owner?.Unequip(this);
                 velocity = GetInitialVelocity();
@@ -50,7 +50,7 @@ namespace Stickman
 
         private Vector2 GetInitialVelocity()
         {
-            var velocity = WeaponAttribute.ThrowVelocity;
+            var velocity = throwVelocity;
 
             if (lookDirection.x == Vector2.left.x)
             {

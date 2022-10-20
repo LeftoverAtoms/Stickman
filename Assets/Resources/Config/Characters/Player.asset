@@ -12,10 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 892bb272a462e8c47afaa4e9d19729cd, type: 3}
   m_Name: Player
   m_EditorClassIdentifier: 
-  Name: Stickman
-  LookDirection: {x: 1, y: 0}
-  Sprite: {fileID: 1350262567, guid: c51ad78b71f90de419c6d5e6e98f847e, type: 3}
-  Speed: 0
-  JumpHeight: 0
-  SlideTime: 0
-  TargetRange: 0
+  lookDirection: {x: 0, y: 0}
+  sprite: {fileID: 1350262567, guid: c51ad78b71f90de419c6d5e6e98f847e, type: 3}
+  animatorController: {fileID: 9100000, guid: d6f64337a9178634f9db792aa0121818, type: 2}

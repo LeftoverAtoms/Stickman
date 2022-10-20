@@ -11,28 +11,37 @@ namespace Stickman
 
         public Sprite sprite;
 
-        public bool isInvulnerable;
-        public Vector2 lookDirection;
+        public bool isInvincible;
         public float health;
 
+        public Vector2 lookDirection;
         public Vector2 wishVelocity;
         public Vector2 velocity;
 
         public virtual void Start()
         {
-            /*
-            if (Animator == null) Animator = gameObject.GetComponent<Animator>();
-            if (Body == null) Body = gameObject.TryGetComponent(out Rigidbody2D RB) ? RB : gameObject.AddComponent<Rigidbody2D>();
-            if (Collider == null) Collider = gameObject.TryGetComponent(out BoxCollider2D C) ? C : gameObject.AddComponent<BoxCollider2D>();
-            if (Renderer == null) Renderer = gameObject.TryGetComponent(out SpriteRenderer SR) ? SR : gameObject.AddComponent<SpriteRenderer>();
-            */
-
+            CreateComponents();
             health = 100f;
         }
 
-        public virtual void FixedUpdate() { }
+        public virtual void FixedUpdate()
+        {
+            if(this is not Player)
+            {
+                transform.Translate(Game.RelativeSpeed * Time.fixedDeltaTime * lookDirection);
+                Debug.Log(Game.RelativeSpeed * Time.fixedDeltaTime * lookDirection);
+            }
+        }
 
         public virtual void Update() { }
+
+        public virtual void CreateComponents()
+        {
+            //if (Animator == null) Animator = gameObject.TryGetComponent(out Animator A) ? A : gameObject.AddComponent<Animator>();
+            //if (Body == null) Body = gameObject.TryGetComponent(out Rigidbody2D RB) ? RB : gameObject.AddComponent<Rigidbody2D>();
+            if (Collider == null) Collider = gameObject.TryGetComponent(out BoxCollider2D C) ? C : gameObject.AddComponent<BoxCollider2D>();
+            if (Renderer == null) Renderer = gameObject.TryGetComponent(out SpriteRenderer SR) ? SR : gameObject.AddComponent<SpriteRenderer>();
+        }
 
         public virtual void SetProperties(ScriptableObject property)
         {
@@ -45,7 +54,7 @@ namespace Stickman
 
         public virtual void TakeDamage(float dmg = 100f)
         {
-            if (isInvulnerable)
+            if(isInvincible == false)
             {
                 health -= dmg;
                 if (health <= 0f)

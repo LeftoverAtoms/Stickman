@@ -1,5 +1,4 @@
 using UnityEngine;
-using System;
 
 namespace Stickman
 {
@@ -8,29 +7,23 @@ namespace Stickman
         public static Background Background;
         public static Player Player;
 
-        public static GameObject[] Groups;
-
         public static bool IsGameOver = false;
+
+        public static float RelativeSpeed => Speed + Player.velocity.x;
         public static float Speed = 6f;
 
         static Game()
         {
             Background = GameObject.FindGameObjectWithTag("Background").GetComponent<Background>();
-            Player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
-
-            Groups = Resources.LoadAll<GameObject>("Prefabs/Groups");
+            Player = SpawnObject("Stickman").GetComponent<Player>();
 
             Enemy.Target = Player; // Maybe enemies should be able to target other enemies.
-
-            SpawnObject("a");
         }
 
         public static void Give(string name, Character chr)
         {
             if(!chr.inventory.CanAppend)
                 return;
-
-            Debug.Log("a");
 
             GameObject obj = SpawnObject(name);
             if(obj.TryGetComponent<Item>(out Item item))

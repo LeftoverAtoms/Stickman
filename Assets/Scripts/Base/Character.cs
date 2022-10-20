@@ -8,8 +8,8 @@ namespace Stickman
         public Item activeItem;
         public State state;
 
-        protected float jumpHeight;
-        protected float maxSlideTime;
+        private float jumpHeight;
+        private float maxSlideTime;
         private float timeSinceSlide;
 
         public bool isGrounded;
@@ -36,8 +36,7 @@ namespace Stickman
                 if(state == State.Sliding)
                 {
                     timeSinceSlide += Time.fixedDeltaTime;
-                    if(timeSinceSlide >= maxSlideTime)
-                        SwapState(State.Running);
+                    if(timeSinceSlide >= maxSlideTime) SwapState(State.Running);
                 }
             }
         }
@@ -50,8 +49,7 @@ namespace Stickman
             if(!inventory.Add(obj))
                 return;
 
-            if(make_active)
-                activeItem = obj;
+            if(make_active) activeItem = obj;
 
             obj.transform.parent = this.transform;
             obj.transform.position = this.transform.position;
@@ -86,65 +84,12 @@ namespace Stickman
             }
         }
 
-        // Note: Look into bitwise operations, this would drastically
-        // simplify the character states even more so.
-        // Queue states with a NextState variable.
-        protected void SwapState(State state)
+        public override void CreateComponents()
         {
-            if(this.state == state) return;
-
-            Animator.SetBool("Jumping", false);
-            Animator.SetBool("Sliding", false);
-            timeSinceSlide = 0f;
-
-            Collider.offset = Vector2.zero;
-            Collider.size = new Vector2(1f, 2f);
-
-            if(state == State.Running)
-            {
-                this.state = State.Running;
-            }
-            if(state == State.Jumping)
-            {
-                this.state = State.Jumping;
-
-                Animator.SetBool("Jumping", true);
-                isGrounded = false;
-            }
-            if(state == State.Sliding)
-            {
-                this.state = State.Sliding;
-
-                Animator.SetBool("Sliding", true);
-                //TimeSinceSlide = 0f;
-
-                Collider.offset = Vector2.down * 0.35f;
-                Collider.size = new Vector2(1f, 1.25f);
-            }
-            if(state == State.Attacking)
-            {
-
-            }
+            if (Animator == null) Animator = gameObject.TryGetComponent(out Animator A) ? A : gameObject.AddComponent<Animator>();
+            if (Body == null) Body = gameObject.TryGetComponent(out Rigidbody2D RB) ? RB : gameObject.AddComponent<Rigidbody2D>();
+            if (Collider == null) Collider = gameObject.TryGetComponent(out BoxCollider2D C) ? C : gameObject.AddComponent<BoxCollider2D>();
+            if (Renderer == null) Renderer = gameObject.TryGetComponent(out SpriteRenderer SR) ? SR : gameObject.AddComponent<SpriteRenderer>();
         }
     }
-
-    /*
-    [CustomEditor(typeof(ScriptableCharacter))]
-    public class CharacterEditor : Editor
-    {
-        public override void OnInspectorGUI()
-        {
-            EditorGUI.BeginChangeCheck();
-
-            var obj = target as ScriptableCharacter;
-            //ObjectEditor.CreateObjectFields(obj);
-
-            obj.JumpHeight = EditorGUILayout.FloatField("Jump Height:", obj.JumpHeight);
-            obj.SlideTime = EditorGUILayout.FloatField("Slide Time:", obj.SlideTime);
-
-            if (EditorGUI.EndChangeCheck())
-                EditorUtility.SetDirty(target); // Save Changes.
-        }
-    }
-    */
 }

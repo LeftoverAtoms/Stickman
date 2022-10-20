@@ -6,7 +6,7 @@ namespace Stickman
     {
         private List<Item> Items;
 
-        private Weapon DefaultWeapon;
+        //private Weapon DefaultWeapon;
         public int Slots;
 
         public Inventory()
@@ -23,7 +23,8 @@ namespace Stickman
             else {Items.Add(obj); return true;}
         }
 
-        public void Remove(Item obj, out Item next) {Items.Remove(obj); next = DefaultWeapon;}
+        //public void Remove(Item obj, out Item next) {Items.Remove(obj); next = DefaultWeapon;}
+        public void Remove(Item obj, out Item next) {Items.Remove(obj); next = Items[0];}
         public bool Remove(Item obj) => (Items.Remove(obj));
     }
 }

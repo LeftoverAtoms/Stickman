@@ -6,18 +6,18 @@ namespace Stickman
     [CreateAssetMenu(fileName = "UntitledWeapon", menuName = "ScriptableObject/Weapon")]
     public class ScriptableWeapon : ScriptableItem
     {
-        public override Type Type => typeof(Weapon);
+        //public override Type type => typeof(Weapon);
 
         // [Shared]
-        public e_Behavior Behavior;
-        public float Damage;
+        public Behavior behavior;
+        public float damage;
 
         // [Projectile]
-        public Vector2 ThrowVelocity;
+        public Vector2 throwVelocity;
 
         // [Melee]
 
 
-        public enum e_Behavior { Melee, Projectile }
+        public enum Behavior { Melee, Projectile }
     }
 }

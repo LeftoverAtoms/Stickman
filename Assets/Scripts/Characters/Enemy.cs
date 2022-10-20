@@ -15,15 +15,13 @@ namespace Stickman
 
             //Renderer.flipX = true; // TODO: Fix Error
 
-            isInvulnerable = true;
+            isInvincible = true;
             lookDirection = Vector2.left;
         }
 
         public override void FixedUpdate()
         {
             base.FixedUpdate();
-
-            transform.Translate(Game.Speed * Time.fixedDeltaTime * lookDirection);
 
             var dist = Vector2.Distance(transform.position, Target.transform.position);
             if (dist <= ThrowRange)

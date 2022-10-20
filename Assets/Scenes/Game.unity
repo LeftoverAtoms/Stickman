@@ -621,6 +621,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b2d8550adb29bc4590cf9c92031d92e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Animator: {fileID: 0}
+  Body: {fileID: 0}
+  Collider: {fileID: 0}
+  Renderer: {fileID: 0}
+  sprite: {fileID: 0}
+  isInvincible: 0
+  health: 0
+  lookDirection: {x: 0, y: 0}
+  wishVelocity: {x: 0, y: 0}
+  velocity: {x: 0, y: 0}
 --- !u!65 &1065834522
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -654,7 +664,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!95 &1633028117
 Animator:
   serializedVersion: 4
@@ -749,20 +759,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 24e1e6b61ef54484fab7697ce43868a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Attribute: {fileID: 0}
-  Owner: {fileID: 0}
   Animator: {fileID: 0}
   Body: {fileID: 0}
   Collider: {fileID: 0}
   Renderer: {fileID: 0}
-  CanRecieveDamage: 0
-  LookDirection: {x: 0, y: 0}
-  Health: 100
-  CharacterAttribute: {fileID: 0}
+  sprite: {fileID: 0}
+  isInvincible: 0
+  health: 0
+  lookDirection: {x: 0, y: 0}
+  wishVelocity: {x: 0, y: 0}
+  velocity: {x: 0, y: 0}
   activeItem: {fileID: 0}
-  State: 0
+  state: 0
   isGrounded: 0
-  relativeVelocity: {x: 0, y: 0}
 --- !u!212 &2536138144191754130
 SpriteRenderer:
   m_ObjectHideFlags: 0
