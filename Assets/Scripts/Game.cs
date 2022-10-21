@@ -5,7 +5,7 @@ namespace Stickman
     public static class Game
     {
         public static Background Background;
-        public static Player Player;
+        public static Character Player;
 
         public static bool IsGameOver = false;
 
@@ -14,10 +14,10 @@ namespace Stickman
 
         static Game()
         {
-            //Player = SpawnObject("Player").AddComponent<Player>();
-            //Player = new GameObject().AddComponent<Player>();
-            SpawnObject("Player").AddComponent<Player>();
-            Background = GameObject.FindGameObjectWithTag("Background").GetComponent<Background>();
+            Debug.Log("aye");
+
+            Player = SpawnObject<Character>("Player");
+            //Background = GameObject.FindGameObjectWithTag("Background").GetComponent<Background>();
 
             Enemy.Target = Player; // Maybe enemies should be able to target other enemies.
         }
@@ -27,14 +27,11 @@ namespace Stickman
             if(!chr.inventory.CanAppend)
                 return;
 
-            GameObject obj = SpawnObject(name);
-            if(obj.TryGetComponent<Item>(out Item item))
-            {
-                chr.Equip(item, true);
-            }
+            var item = SpawnObject<Item>(name);
+            chr.Equip(item, true);
         }
 
-        public static GameObject SpawnObject(string name, Vector2 pos = default)
+        public static T SpawnObject<T>(string name, Vector2 pos = default) where T : Object
         {
             // Locate the config file for this object by name.
             foreach(var file in Resources.LoadAll<ScriptableObject>("Config"))
@@ -45,10 +42,10 @@ namespace Stickman
                     var obj = new GameObject(file.name);
                     obj.transform.position = pos;
 
-                    var comp = obj.AddComponent(file.type);
-                    (comp as Object).SetProperties(file as ScriptableCharacter);
+                    var comp = obj.AddComponent<T>();
+                    comp.SetProperties(file);
 
-                    return obj;
+                    return comp;
                 }
             }
             return null;

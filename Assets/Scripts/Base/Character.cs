@@ -91,5 +91,10 @@ namespace Stickman
             if (Collider == null) Collider = gameObject.TryGetComponent(out BoxCollider2D C) ? C : gameObject.AddComponent<BoxCollider2D>();
             if (Renderer == null) Renderer = gameObject.TryGetComponent(out SpriteRenderer SR) ? SR : gameObject.AddComponent<SpriteRenderer>();
         }
+
+        public override void SetProperties(ScriptableObject property)
+        {
+            base.SetProperties(property);
+        }
     }
 }

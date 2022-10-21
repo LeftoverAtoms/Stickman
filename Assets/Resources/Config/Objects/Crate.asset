@@ -12,6 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc531d9ce325146488a39ed224152a6a, type: 3}
   m_Name: Crate
   m_EditorClassIdentifier: 
-  Name: Crate
-  LookDirection: {x: 0, y: 0}
-  Sprite: {fileID: 21300000, guid: 965a085a409e49e4790c2d70a8ae13e7, type: 3}
+  lookDirection: {x: 0, y: 0}
+  sprite: {fileID: 21300000, guid: 965a085a409e49e4790c2d70a8ae13e7, type: 3}
