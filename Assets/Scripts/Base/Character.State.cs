@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Stickman
 {
-    public abstract partial class Character : Object
+    public partial class Character : Object
     {
         public enum State { Idle, Running, Jumping, Sliding, Attacking }
 

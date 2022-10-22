@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Stickman
 {
-    public abstract partial class Character : Object
+    public partial class Character : Object
     {
         public Inventory inventory;
         public Item activeItem;
@@ -17,6 +17,10 @@ namespace Stickman
         public override void Start()
         {
             base.Start();
+
+            Animator.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>("Animations/Stickman/Player");
+            Body.mass = 10f;
+            Body.gravityScale = 2f;
 
             inventory = new Inventory();
             jumpHeight = 72f;
@@ -57,7 +61,7 @@ namespace Stickman
             obj.owner = this;
         }
 
-        public void Unequip(Item obj, bool throw_object = false)
+        public void Unequip(Item obj /*, bool throw_object = false*/)
         {
             inventory.Remove(obj, out activeItem);
             obj.transform.parent = null;
@@ -66,7 +70,7 @@ namespace Stickman
 
         protected virtual void OnCollisionEnter2D(Collision2D collision)
         {
-            if(collision.gameObject.TryGetComponent<Object>(out Object obj))
+            if(collision.gameObject.TryGetComponent(out Object obj))
             {
                 if(obj.CanDamage(this))
                     this.TakeDamage();
@@ -90,11 +94,6 @@ namespace Stickman
             if (Body == null) Body = gameObject.TryGetComponent(out Rigidbody2D RB) ? RB : gameObject.AddComponent<Rigidbody2D>();
             if (Collider == null) Collider = gameObject.TryGetComponent(out BoxCollider2D C) ? C : gameObject.AddComponent<BoxCollider2D>();
             if (Renderer == null) Renderer = gameObject.TryGetComponent(out SpriteRenderer SR) ? SR : gameObject.AddComponent<SpriteRenderer>();
-        }
-
-        public override void SetProperties(ScriptableObject property)
-        {
-            base.SetProperties(property);
         }
     }
 }

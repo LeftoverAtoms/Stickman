@@ -10,13 +10,12 @@ namespace Stickman
         public override void Start()
         {
             initalPos = transform.position;
+            lookDirection = Vector2.left;
         }
 
         public override void FixedUpdate()
         {
-            //if(Game.Player != null) transform.Translate(Game.Player.velocity * Time.deltaTime * Vector3.left);
-
-            Debug.Log(Game.Player);
+            base.FixedUpdate();
 
             if (transform.position.x < initalPos.x - repeatWidth)
             {

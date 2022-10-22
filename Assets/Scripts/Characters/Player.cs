@@ -8,7 +8,6 @@ namespace Stickman
         {
             base.Start();
 
-            isInvincible = true;
             lookDirection = Vector2.right;
         }
 
@@ -22,12 +21,10 @@ namespace Stickman
                 if (Input.GetKey(KeyCode.S)) SwapState(State.Sliding);
             }
 
-            /*
             if(Input.GetKeyDown(KeyCode.C)) { Game.Give("Bottle", this); }
-            if(Input.GetKeyDown(KeyCode.X)) { Game.SpawnObject("Enemy", Vector2.right * 16f); }
+            if(Input.GetKeyDown(KeyCode.X)) { Game.Spawn<Enemy>("Player", Vector2.right * 16f); }
 
             if(Input.GetKeyDown(KeyCode.Space)) activeItem?.Use();
-            */
         }
 
         public override void OnKilled()

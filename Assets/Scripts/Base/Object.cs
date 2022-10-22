@@ -26,12 +26,10 @@ namespace Stickman
 
         public virtual void FixedUpdate()
         {
-            // Not keyword not recognized.
-            if(this is Player) {}
-            else
+            if(lookDirection == Vector2.left)
             {
                 transform.Translate(Game.RelativeSpeed * Time.fixedDeltaTime * lookDirection);
-                Debug.Log(Game.RelativeSpeed * Time.fixedDeltaTime * lookDirection);
+                //Debug.Log(Game.RelativeSpeed * Time.fixedDeltaTime * lookDirection);
             }
         }
 

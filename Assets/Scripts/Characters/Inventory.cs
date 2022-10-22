@@ -19,7 +19,7 @@ namespace Stickman
 
         public bool Add(Item obj)
         {
-            if(CanAppend) {return false;}
+            if(!CanAppend) {return false;}
             else {Items.Add(obj); return true;}
         }
 
