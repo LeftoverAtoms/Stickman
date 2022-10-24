@@ -9,7 +9,7 @@ namespace Stickman
 
         public static bool IsGameOver = false;
 
-        public static float RelativeSpeed => Speed + Player.velocity.x;
+        public static float RelativeSpeed => Player.velocity.x + Speed;
         public static float Speed = 6f;
 
         public void Start()
