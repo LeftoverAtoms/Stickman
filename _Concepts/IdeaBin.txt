@@ -3,3 +3,9 @@ Inventory.Objects[0] contains the fists by default and cannot be overriden by ot
 Rename Obstacle to Hazard.
 
 Inventory selector shows quantity of duplicate items.
+
+Score is based off distance and enemies killed.
+
+If an enemy detects the player, they will chase them indefinitely. This will give the player an incentive to kill all enemies and use their weapons.
+
+SHOULD I COMPLETELY RETHINK THIS GAME?
