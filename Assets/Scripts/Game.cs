@@ -15,7 +15,7 @@ namespace Stickman
         public void Start()
         {
             Player = Spawn<Player>("Player");
-            Background = GameObject.FindGameObjectWithTag("Background").GetComponent<Background>();
+            Background = GameObject.Find("Background").GetComponent<Background>();
 
             Enemy.Target = Player;
         }

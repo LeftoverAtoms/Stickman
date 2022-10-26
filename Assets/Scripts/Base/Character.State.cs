@@ -22,7 +22,7 @@ namespace Stickman
             if(state != State.Jumping)
             {
                 state = State.Jumping;
-                Animator.SetBool("Jumping", true);
+                animator.SetBool("Jumping", true);
                 isGrounded = false;
             }
         }
@@ -32,10 +32,10 @@ namespace Stickman
             if(state != State.Sliding)
             {
                 state = State.Sliding;
-                Animator.SetBool("Sliding", true);
+                animator.SetBool("Sliding", true);
 
-                Collider.offset = Vector2.down * 0.35f;
-                Collider.size = new Vector2(1f, 1.25f);
+                collider.offset = Vector2.down * 0.35f;
+                collider.size = new Vector2(1f, 1.25f);
             }
             else if(timeSinceSlide >= maxSlideTime)
             {
@@ -46,12 +46,12 @@ namespace Stickman
         protected virtual void ResetState()
         {
             state = State.Running;
-            Animator.SetBool("Jumping", false);
-            Animator.SetBool("Sliding", false);
+            animator.SetBool("Jumping", false);
+            animator.SetBool("Sliding", false);
             timeSinceSlide = 0f;
 
-            Collider.offset = Vector2.zero;
-            Collider.size = new Vector2(1f, 2f);
+            collider.offset = Vector2.zero;
+            collider.size = new Vector2(1f, 2f);
         }
 
         // Note: Look into bitwise operations, this would drastically
@@ -61,12 +61,12 @@ namespace Stickman
         {
             if(this.state == state) return;
 
-            Animator.SetBool("Jumping", false);
-            Animator.SetBool("Sliding", false);
+            animator.SetBool("Jumping", false);
+            animator.SetBool("Sliding", false);
             timeSinceSlide = 0f;
 
-            Collider.offset = Vector2.zero;
-            Collider.size = new Vector2(1f, 2f);
+            collider.offset = Vector2.zero;
+            collider.size = new Vector2(1f, 2f);
 
             if(state == State.Running)
             {
@@ -76,18 +76,18 @@ namespace Stickman
             {
                 this.state = State.Jumping;
 
-                Animator.SetBool("Jumping", true);
+                animator.SetBool("Jumping", true);
                 isGrounded = false;
             }
             if(state == State.Sliding)
             {
                 this.state = State.Sliding;
 
-                Animator.SetBool("Sliding", true);
+                animator.SetBool("Sliding", true);
                 //TimeSinceSlide = 0f;
 
-                Collider.offset = Vector2.down * 0.35f;
-                Collider.size = new Vector2(1f, 1.25f);
+                collider.offset = Vector2.down * 0.35f;
+                collider.size = new Vector2(1f, 1.25f);
             }
             if(state == State.Attacking)
             {

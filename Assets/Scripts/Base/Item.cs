@@ -13,11 +13,11 @@ namespace Stickman
         {
             base.Start();
 
-            Collider.isTrigger = true;
-            Collider.size = new Vector2(0.5f, 0.5f);
+            collider.isTrigger = true;
+            collider.size = new Vector2(0.5f, 0.5f);
 
-            Renderer.sprite = sprite;
-            Renderer.sortingOrder = 1;
+            renderer.sprite = sprite;
+            renderer.sortingOrder = 1;
         }
 
         public virtual void Use()

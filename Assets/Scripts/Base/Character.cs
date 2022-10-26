@@ -18,9 +18,9 @@ namespace Stickman
         {
             base.Start();
 
-            Animator.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>("Animations/Stickman/Player");
-            Body.mass = 10f;
-            Body.gravityScale = 2f;
+            animator.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>("Animations/Stickman/Player");
+            body.mass = 10f;
+            body.gravityScale = 2f;
 
             inventory = new Inventory();
             jumpHeight = 72f;
@@ -35,7 +35,7 @@ namespace Stickman
             {
                 if(state == State.Jumping)
                 {
-                    Body.AddForce(Vector2.up * jumpHeight, ForceMode2D.Impulse);
+                    body.AddForce(Vector2.up * jumpHeight, ForceMode2D.Impulse);
                 }
                 if(state == State.Sliding)
                 {
@@ -90,10 +90,10 @@ namespace Stickman
 
         public override void CreateComponents()
         {
-            if (Animator == null) Animator = gameObject.TryGetComponent(out Animator A) ? A : gameObject.AddComponent<Animator>();
-            if (Body == null) Body = gameObject.TryGetComponent(out Rigidbody2D RB) ? RB : gameObject.AddComponent<Rigidbody2D>();
-            if (Collider == null) Collider = gameObject.TryGetComponent(out BoxCollider2D C) ? C : gameObject.AddComponent<BoxCollider2D>();
-            if (Renderer == null) Renderer = gameObject.TryGetComponent(out SpriteRenderer SR) ? SR : gameObject.AddComponent<SpriteRenderer>();
+            if (animator == null) animator = gameObject.TryGetComponent(out Animator A) ? A : gameObject.AddComponent<Animator>();
+            if (body == null) body = gameObject.TryGetComponent(out Rigidbody2D RB) ? RB : gameObject.AddComponent<Rigidbody2D>();
+            if (collider == null) collider = gameObject.TryGetComponent(out BoxCollider2D C) ? C : gameObject.AddComponent<BoxCollider2D>();
+            if (renderer == null) renderer = gameObject.TryGetComponent(out SpriteRenderer SR) ? SR : gameObject.AddComponent<SpriteRenderer>();
         }
     }
 }

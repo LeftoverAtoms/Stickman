@@ -8,6 +8,7 @@ namespace Stickman
         {
             base.Start();
 
+            isPlayer = true;
             lookDirection = Vector2.right;
         }
 
